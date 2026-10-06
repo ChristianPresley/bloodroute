@@ -1,5 +1,5 @@
 // Downloads the icons the site uses and writes icons.js (window.VR_ICONS = { name: dataURI }).
-// Run: node site/build-icons.js
+// Run: node site/build-icons.js (the Pages workflow runs it at deploy time; icons.js is git-ignored)
 // Item, spell and passive icons: vrising.gaming.tools CDN. Boss portraits and station images: V Rising Fandom wiki.
 const fs = require('fs');
 const path = require('path');
@@ -73,6 +73,7 @@ const ITEMS = {
   'Iron Ore': 'poneti_icon_mining_06_clearironore.webp', 'Silver Ore': 'poneti_icon_mining_10_mangan.webp',
   'Fishing Pole': 'poneti_icon_cooking_59_fishingrod.webp', 'Minor Explosive Box': 'stunlock_icon_explosivebox_minor.webp',
   'Scholar': 'bloodtype_scholar_big.webp', 'Draculin': 'bloodtype_draculin_big.webp', 'Mutant': 'bloodtype_mutant_big.webp',
+  'Warrior': 'bloodtype_warrior_big.webp', 'Rogue': 'bloodtype_rogue_big.webp', 'Brute': 'bloodtype_brute_big.webp',
   'Enhanced Conductivity': 'stunlock_icon_ability_spell_storm_passive_enhancedconductivity.webp',
   'Wicked Power': 'stunlock_icon_spellpassive_wickedpower.webp', 'Hunger for Blood': 'stunlock_icon_spellpassive_vbloodslayer.webp',
   'Renewing Flames': 'stunlock_icon_ignitechaosbuff.webp', 'Cold Soul': 'stunlock_icon_ability_spell_frost_passive_coldsoul.webp',

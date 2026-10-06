@@ -2,13 +2,15 @@
 
 Bloodroute: a V Rising progression planner. Step-by-step paths from fresh spawn to Dracula for every archetype — V Blood boss order with map links, gear to craft, a stockpile tracker that tells you what to gather early, and endgame builds backed by a damage simulator.
 
-The first route is a **PvE spellcaster**. More archetypes will follow.
+**Live site: https://christianpresley.github.io/bloodroute/**
+
+Pick an archetype, then follow its route. The **PvE Spellcaster** route is ready; Warrior, Rogue and Brute are coming. Progress and stockpile counts are saved per archetype in your browser profile, and you can export or import a backup from the archetype page.
 
 ## What's here
 
 | Path | What it is |
 |---|---|
-| `site/` | The planner: a single-page site with eight phases, a "next step" card, boss cards with Map Genie links, phase loadouts, a stockpile tracker and endgame builds. Progress is saved in the browser. |
+| `site/` | The planner: an archetype picker, then each route's phases, "next step" card, boss cards with Map Genie links, phase loadouts, stockpile tracker and endgame builds. Deployed to GitHub Pages by `.github/workflows/pages.yml`. |
 | `calc/` | The damage simulator and optimizer used to choose every loadout. `optimizer_results.json` holds the curated results. |
 | `docs/` | The written guides: build guide, full progression schedule, V Blood rewards and research sources. |
 
@@ -38,11 +40,31 @@ To run it in a browser, serve `calc/` over http and open `index.html`.
 
 ### Stockpile targets
 
-`site/needs.js` lists the materials each phase needs. It is generated from item recipes:
+`site/routes/spellcaster/needs.js` lists the materials each phase needs. It is generated from item recipes:
 
 ```bash
 node site/build-needs.js          # reads data/items.json
 ```
+
+## Adding an archetype
+
+The site has a fixed shell and one folder per route:
+
+```
+site/
+  index.html             app shell
+  assets/app.css         styles
+  js/core.js             icon and map-link helpers, saved-data store
+  js/app.js              archetype picker and route planner
+  routes/registry.js     the archetypes shown on the picker
+  routes/spellcaster/    route.js (phases, bosses, loadouts, endgame) + needs.js (stockpile)
+```
+
+1. Create `site/routes/<id>/route.js`. Copy the spellcaster route: it calls `BR.registerRoute({ id, phases, resources, needs, slotIcons, finish, renderEndgame, renderRef })`. Phases and `needs` are required; the Endgame and Reference tabs are hidden if their render functions are missing.
+2. In `site/routes/registry.js`, set the archetype's `status` to `'ready'` and list its files in `files`.
+3. Add any new icon names to `site/build-icons.js`.
+
+Saved data lives in one localStorage entry (`bloodroute:v1`), keyed by route id, so routes never overwrite each other.
 
 ## Game data
 
