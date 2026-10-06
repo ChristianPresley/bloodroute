@@ -1,0 +1,3398 @@
+{
+ "generated": "2026-10-05T23:43:38.171Z",
+ "patch": "1.1.13",
+ "model": "calc/engine.js",
+ "assumptions": {
+  "rainHitFrac": 0.6,
+  "eyeHitFrac": 0.3,
+  "bloodStormBoltFrac": 1,
+  "chainsCompleteFrac": 1,
+  "tendrilsBoltFrac": 1,
+  "staticIcd": 0,
+  "ultCdrMode": "cutOnly",
+  "effScalesFixed": true,
+  "capBypass": true,
+  "effOnSecondary": false,
+  "bloodthirstSpells": true,
+  "hungerPowerBreak": "primary",
+  "spFormula": "total",
+  "primaryTime": 0.6,
+  "afDuration": 2.5,
+  "lowHpFrac": 0.3,
+  "dt": 0.05
+ },
+ "fightLengths": [
+  90,
+  180,
+  300,
+  600
+ ],
+ "note": "dps = mean of 90/180/300/600 s fights, 32 fresh-seed runs each, 12 rotation policies; damageBySource600/casts600/policy are from the 600 s fights",
+ "stages": {
+  "early": {
+   "run": "early",
+   "seconds": 26,
+   "log": [
+    "A: 53 feasible spell pairs x 2 contexts -> 15 kept @2s",
+    "B: 90 loadouts ranked @4s",
+    "C: tuned 1/10 @4s",
+    "C: tuned 2/10 @4s",
+    "C: tuned 3/10 @5s",
+    "C: tuned 4/10 @5s",
+    "C: tuned 5/10 @6s",
+    "C: tuned 6/10 @6s",
+    "C: tuned 7/10 @7s",
+    "C: tuned 8/10 @7s",
+    "C: tuned 9/10 @8s",
+    "C: tuned 10/10 @8s",
+    "D: 17 candidates screened @17s",
+    "D: confirmed @26s"
+   ],
+   "keptPairs": [
+    [
+     "Chaos Volley",
+     "Bone Explosion"
+    ],
+    [
+     "Chaos Volley",
+     "Shadowbolt"
+    ],
+    [
+     "Chaos Volley",
+     "Rain of Chaos"
+    ],
+    [
+     "Chaos Volley",
+     "Spectral Wolf"
+    ],
+    [
+     "Chaos Volley",
+     "Wraith Spear"
+    ],
+    [
+     "Chaos Volley",
+     "Corrupted Skull"
+    ],
+    [
+     "Chaos Volley",
+     "Aftershock"
+    ],
+    [
+     "Chaos Volley",
+     "Frost Bat"
+    ],
+    [
+     "Chaos Volley",
+     "Ice Nova"
+    ],
+    [
+     "Rain of Chaos",
+     "Shadowbolt"
+    ],
+    [
+     "Rain of Chaos",
+     "Bone Explosion"
+    ],
+    [
+     "Chaos Volley",
+     "Void"
+    ],
+    [
+     "Shadowbolt",
+     "Bone Explosion"
+    ],
+    [
+     "Aftershock",
+     "Shadowbolt"
+    ],
+    [
+     "Rain of Chaos",
+     "Wraith Spear"
+    ]
+   ],
+   "top": [
+    {
+     "dps": 33.29,
+     "dps600": 31.43,
+     "se600": 0.02,
+     "byLength": {
+      "90": 35.27,
+      "180": 33.78,
+      "300": 32.68,
+      "600": 31.43
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Bone Explosion",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 112,
+      "Bone Explosion": 81,
+      "Chaos Barrage": 5,
+      "Veil of Blood": 78
+     },
+     "damageBySource600": {
+      "Chaos Volley": 16.28,
+      "Bone Explosion": 6.49,
+      "Chaos Barrage": 4.36,
+      "Ignite": 2.43,
+      "Veil of Blood": 1.87
+     }
+    },
+    {
+     "dps": 32.74,
+     "dps600": 31.36,
+     "se600": 0.02,
+     "byLength": {
+      "90": 33.62,
+      "180": 33.31,
+      "300": 32.66,
+      "600": 31.36
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Shadowbolt",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 102,
+      "Shadowbolt": 94,
+      "Chaos Barrage": 5,
+      "Veil of Blood": 78
+     },
+     "damageBySource600": {
+      "Chaos Volley": 13.6,
+      "Shadowbolt": 10.02,
+      "Chaos Barrage": 3.89,
+      "Ignite": 2.2,
+      "Veil of Blood": 1.66
+     }
+    },
+    {
+     "dps": 32.28,
+     "dps600": 31.12,
+     "se600": 0.05,
+     "byLength": {
+      "90": 33.38,
+      "180": 32.48,
+      "300": 32.15,
+      "600": 31.12
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Rain of Chaos",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 100,
+      "Rain of Chaos": 72,
+      "Chaos Barrage": 5,
+      "Veil of Blood": 77
+     },
+     "damageBySource600": {
+      "Chaos Volley": 13.32,
+      "Rain of Chaos": 9.54,
+      "Chaos Barrage": 3.89,
+      "Ignite": 2.72,
+      "Veil of Blood": 1.64
+     }
+    },
+    {
+     "dps": 31.57,
+     "dps600": 30.15,
+     "se600": 0.02,
+     "byLength": {
+      "90": 32.82,
+      "180": 31.92,
+      "300": 31.38,
+      "600": 30.15
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Wraith Spear",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 106,
+      "Wraith Spear": 91,
+      "Chaos Barrage": 5,
+      "Veil of Blood": 77
+     },
+     "damageBySource600": {
+      "Chaos Volley": 14.12,
+      "Wraith Spear": 8.24,
+      "Chaos Barrage": 3.89,
+      "Ignite": 2.26,
+      "Veil of Blood": 1.64
+     }
+    },
+    {
+     "dps": 31.57,
+     "dps600": 30.35,
+     "se600": 0.02,
+     "byLength": {
+      "90": 32.33,
+      "180": 32.04,
+      "300": 31.54,
+      "600": 30.35
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Spectral Wolf",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 110,
+      "Spectral Wolf": 98,
+      "Chaos Barrage": 5,
+      "Veil of Blood": 77
+     },
+     "damageBySource600": {
+      "Chaos Volley": 14.66,
+      "Spectral Wolf": 7.83,
+      "Chaos Barrage": 3.89,
+      "Ignite": 2.33,
+      "Veil of Blood": 1.64
+     }
+    },
+    {
+     "dps": 31.4,
+     "dps600": 29.55,
+     "se600": 0.02,
+     "byLength": {
+      "90": 33.29,
+      "180": 31.92,
+      "300": 30.82,
+      "600": 29.55
+     },
+     "build": {
+      "veil": "Veil of Shadow",
+      "s1": "Chaos Volley",
+      "s2": "Bone Explosion",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 112,
+      "Bone Explosion": 81,
+      "Chaos Barrage": 5,
+      "Veil of Shadow": 78
+     },
+     "damageBySource600": {
+      "Chaos Volley": 16.27,
+      "Bone Explosion": 6.48,
+      "Chaos Barrage": 4.36,
+      "Ignite": 2.43
+     }
+    },
+    {
+     "dps": 31.06,
+     "dps600": 29.68,
+     "se600": 0.02,
+     "byLength": {
+      "90": 31.88,
+      "180": 31.68,
+      "300": 31,
+      "600": 29.68
+     },
+     "build": {
+      "veil": "Veil of Shadow",
+      "s1": "Chaos Volley",
+      "s2": "Shadowbolt",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 102,
+      "Shadowbolt": 94,
+      "Chaos Barrage": 5,
+      "Veil of Shadow": 78
+     },
+     "damageBySource600": {
+      "Chaos Volley": 13.59,
+      "Shadowbolt": 10.01,
+      "Chaos Barrage": 3.89,
+      "Ignite": 2.2
+     }
+    },
+    {
+     "dps": 30.99,
+     "dps600": 29.77,
+     "se600": 0.02,
+     "byLength": {
+      "90": 32.31,
+      "180": 31.16,
+      "300": 30.74,
+      "600": 29.77
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Shadowbolt",
+      "ult": "Volatile Arachnid"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 102,
+      "Shadowbolt": 94,
+      "Volatile Arachnid": 5,
+      "Veil of Blood": 78
+     },
+     "damageBySource600": {
+      "Chaos Volley": 13.76,
+      "Shadowbolt": 10.11,
+      "Ignite": 2.21,
+      "Volatile Arachnid": 2.03,
+      "Veil of Blood": 1.66
+     }
+    },
+    {
+     "dps": 30.95,
+     "dps600": 29.51,
+     "se600": 0.02,
+     "byLength": {
+      "90": 32.45,
+      "180": 31.21,
+      "300": 30.64,
+      "600": 29.51
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Aftershock",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 112,
+      "Aftershock": 81,
+      "Chaos Barrage": 5,
+      "Veil of Blood": 78
+     },
+     "damageBySource600": {
+      "Chaos Volley": 14.92,
+      "Aftershock": 6.04,
+      "Chaos Barrage": 3.89,
+      "Ignite": 2.99,
+      "Veil of Blood": 1.66
+     }
+    },
+    {
+     "dps": 30.37,
+     "dps600": 29.55,
+     "se600": 0.02,
+     "byLength": {
+      "90": 30.45,
+      "180": 30.82,
+      "300": 30.64,
+      "600": 29.55
+     },
+     "build": {
+      "veil": "Veil of Blood",
+      "s1": "Chaos Volley",
+      "s2": "Corrupted Skull",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "early",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Ring of the Sorcerer",
+      "elixir": "none",
+      "passives": [],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 25.8,
+      "bSP": 21.6,
+      "cdr": 18.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 24,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 104,
+      "Veil of Blood": 78,
+      "Corrupted Skull": 109,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Chaos Volley": 15.15,
+      "Corrupted Skull": 5.56,
+      "Chaos Barrage": 4.47,
+      "Ignite": 2.53,
+      "Veil of Blood": 1.84
+     }
+    }
+   ]
+  },
+  "mid": {
+   "run": "mid",
+   "seconds": 429,
+   "log": [
+    "A: 275 feasible spell pairs x 6 contexts -> 20 kept @41s",
+    "B: 1400 loadouts ranked @81s",
+    "C: tuned 1/10 @102s",
+    "C: tuned 2/10 @123s",
+    "C: tuned 3/10 @143s",
+    "C: tuned 4/10 @164s",
+    "C: tuned 5/10 @184s",
+    "C: tuned 6/10 @205s",
+    "C: tuned 7/10 @228s",
+    "C: tuned 8/10 @249s",
+    "C: tuned 9/10 @270s",
+    "C: tuned 10/10 @291s",
+    "D: 26 candidates screened @422s",
+    "D: confirmed @429s"
+   ],
+   "keptPairs": [
+    [
+     "Lightning Tendrils",
+     "Unholy Chains"
+    ],
+    [
+     "Curse",
+     "Unholy Chains"
+    ],
+    [
+     "Rain of Chaos",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Lightning Tendrils"
+    ],
+    [
+     "Carrion Swarm",
+     "Unholy Chains"
+    ],
+    [
+     "Rain of Chaos",
+     "Lightning Tendrils"
+    ],
+    [
+     "Carrion Swarm",
+     "Lightning Tendrils"
+    ],
+    [
+     "Ball Lightning",
+     "Unholy Chains"
+    ],
+    [
+     "Arctic Storm",
+     "Unholy Chains"
+    ],
+    [
+     "Lightning Tendrils",
+     "Bone Explosion"
+    ],
+    [
+     "Frost Bat",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Bone Explosion"
+    ],
+    [
+     "Wraith Spear",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Curse"
+    ],
+    [
+     "Bone Explosion",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Carrion Swarm"
+    ],
+    [
+     "Chaos Volley",
+     "Rain of Chaos"
+    ],
+    [
+     "Chaos Volley",
+     "Ball Lightning"
+    ],
+    [
+     "Chaos Volley",
+     "Shadowbolt"
+    ]
+   ],
+   "top": [
+    {
+     "dps": 119.24,
+     "dps600": 116.6,
+     "se600": 0.07,
+     "byLength": {
+      "90": 122.57,
+      "180": 118.95,
+      "300": 118.84,
+      "600": 116.6
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Prowler",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 12,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 109,
+      "Veil of Chaos": 80,
+      "Unholy Chains": 92,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 44.18,
+      "Lightning Tendrils": 36.99,
+      "Veil of Chaos": 9.44,
+      "Static shock": 9.33,
+      "Chaos Barrage": 8.35,
+      "Ignite": 5.92,
+      "Agonizing Flames": 2.4
+     }
+    },
+    {
+     "dps": 116.15,
+     "dps600": 113,
+     "se600": 0.06,
+     "byLength": {
+      "90": 118.85,
+      "180": 116.83,
+      "300": 115.92,
+      "600": 113
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Bat",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 35.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 112,
+      "Unholy Chains": 85,
+      "Chaos Barrage": 5,
+      "Veil of Chaos": 76
+     },
+     "damageBySource600": {
+      "Unholy Chains": 41.15,
+      "Lightning Tendrils": 38.25,
+      "Static shock": 9.32,
+      "Veil of Chaos": 8.6,
+      "Chaos Barrage": 7.98,
+      "Ignite": 5.62,
+      "Agonizing Flames": 2.09
+     }
+    },
+    {
+     "dps": 114.96,
+     "dps600": 111.48,
+     "se600": 0.07,
+     "byLength": {
+      "90": 117.39,
+      "180": 116.48,
+      "300": 114.49,
+      "600": 111.48
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Bat",
+      "passives": [
+       "Enhanced Conductivity",
+       "Renewing Flames",
+       "Spiritual Infusion"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "veil",
+       "s1",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Veil of Chaos": 77,
+      "Lightning Tendrils": 108,
+      "Unholy Chains": 87,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 42.15,
+      "Lightning Tendrils": 36.59,
+      "Static shock": 8.99,
+      "Veil of Chaos": 8.83,
+      "Chaos Barrage": 8.22,
+      "Ignite": 4.53,
+      "Agonizing Flames": 2.17
+     }
+    },
+    {
+     "dps": 114.71,
+     "dps600": 112.51,
+     "se600": 0.07,
+     "byLength": {
+      "90": 115.15,
+      "180": 115.81,
+      "300": 115.35,
+      "600": 112.51
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Chaos Volley",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Prowler",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 12,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 120,
+      "Veil of Chaos": 82,
+      "Unholy Chains": 88,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 42.82,
+      "Chaos Volley": 39.47,
+      "Veil of Chaos": 10.04,
+      "Chaos Barrage": 8.22,
+      "Ignite": 7.16,
+      "Agonizing Flames": 4.8
+     }
+    },
+    {
+     "dps": 113.4,
+     "dps600": 112.26,
+     "se600": 0.06,
+     "byLength": {
+      "90": 114.54,
+      "180": 113.47,
+      "300": 113.31,
+      "600": 112.26
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Volatile Arachnid"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Prowler",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 12,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 109,
+      "Unholy Chains": 93,
+      "Volatile Arachnid": 5,
+      "Veil of Chaos": 80
+     },
+     "damageBySource600": {
+      "Unholy Chains": 44.42,
+      "Lightning Tendrils": 36.92,
+      "Veil of Chaos": 9.41,
+      "Static shock": 9.14,
+      "Ignite": 5.7,
+      "Volatile Arachnid": 4.28,
+      "Agonizing Flames": 2.37
+     }
+    },
+    {
+     "dps": 113.37,
+     "dps600": 111.61,
+     "se600": 0.06,
+     "byLength": {
+      "90": 113.64,
+      "180": 114.66,
+      "300": 113.55,
+      "600": 111.61
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Wisp Dance"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Prowler",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s2",
+       "veil",
+       "s1"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 12,
+      "eff": 20
+     },
+     "casts600": {
+      "Unholy Chains": 87,
+      "Veil of Chaos": 84,
+      "Lightning Tendrils": 112,
+      "Wisp Dance": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 41.69,
+      "Lightning Tendrils": 38.44,
+      "Veil of Chaos": 9.88,
+      "Static shock": 9.1,
+      "Ignite": 5.99,
+      "Wisp Dance": 4.07,
+      "Agonizing Flames": 2.44
+     }
+    },
+    {
+     "dps": 113.3,
+     "dps600": 112.12,
+     "se600": 0.05,
+     "byLength": {
+      "90": 114.34,
+      "180": 113.36,
+      "300": 113.36,
+      "600": 112.12
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Spectral Guardian"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Prowler",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 12,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 109,
+      "Unholy Chains": 93,
+      "Spectral Guardian": 5,
+      "Veil of Chaos": 80
+     },
+     "damageBySource600": {
+      "Unholy Chains": 44.36,
+      "Lightning Tendrils": 37,
+      "Veil of Chaos": 9.41,
+      "Static shock": 9.14,
+      "Ignite": 5.71,
+      "Spectral Guardian": 4.11,
+      "Agonizing Flames": 2.38
+     }
+    },
+    {
+     "dps": 112.46,
+     "dps600": 109.74,
+     "se600": 0.08,
+     "byLength": {
+      "90": 113.43,
+      "180": 114.3,
+      "300": 112.37,
+      "600": 109.74
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Curse",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Bat",
+      "passives": [
+       "Enhanced Conductivity",
+       "Renewing Flames",
+       "Spiritual Infusion"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Curse": 98,
+      "Unholy Chains": 96,
+      "Chaos Barrage": 5,
+      "Veil of Chaos": 77
+     },
+     "damageBySource600": {
+      "Unholy Chains": 49.46,
+      "Curse": 35.98,
+      "Veil of Chaos": 9.16,
+      "Chaos Barrage": 8.35,
+      "Ignite": 4.53,
+      "Agonizing Flames": 2.25
+     }
+    },
+    {
+     "dps": 111.83,
+     "dps600": 110.82,
+     "se600": 0.08,
+     "byLength": {
+      "90": 110.46,
+      "180": 112.36,
+      "300": 113.68,
+      "600": 110.82
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Wisp Dance"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Bat",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 35.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 109,
+      "Unholy Chains": 93,
+      "Wisp Dance": 5,
+      "Veil of Chaos": 75
+     },
+     "damageBySource600": {
+      "Unholy Chains": 45,
+      "Lightning Tendrils": 36.75,
+      "Static shock": 9.13,
+      "Veil of Chaos": 8.62,
+      "Ignite": 5.36,
+      "Wisp Dance": 3.83,
+      "Agonizing Flames": 2.13
+     }
+    },
+    {
+     "dps": 111.67,
+     "dps600": 110.59,
+     "se600": 0.07,
+     "byLength": {
+      "90": 110.69,
+      "180": 113.38,
+      "300": 112.04,
+      "600": 110.59
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Raging Tempest"
+     },
+     "cfg": {
+      "stage": "mid",
+      "primary": "Scholar",
+      "secondary": null,
+      "amulet": "Blood Merlot Amulet",
+      "elixir": "Elixir of the Prowler",
+      "passives": [
+       "Enhanced Conductivity",
+       "Chaos Kindling",
+       "Renewing Flames"
+      ],
+      "weapon": []
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 40.9,
+      "bSP": 27.4,
+      "cdr": 29.4,
+      "crit": 5,
+      "critPower": 140,
+      "ultPower": 29,
+      "ultCDR": 0,
+      "veilCDR": 12,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 111,
+      "Veil of Chaos": 82,
+      "Unholy Chains": 86,
+      "Raging Tempest": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 41.34,
+      "Lightning Tendrils": 37.79,
+      "Veil of Chaos": 9.59,
+      "Static shock": 9.02,
+      "Ignite": 5.87,
+      "Raging Tempest": 4.67,
+      "Agonizing Flames": 2.31
+     }
+    }
+   ]
+  },
+  "late-pre": {
+   "run": "late-pre",
+   "seconds": 584,
+   "log": [
+    "A: 276 feasible spell pairs x 6 contexts -> 22 kept @40s",
+    "B: 2002 loadouts ranked @104s",
+    "C: tuned 1/10 @145s",
+    "C: tuned 2/10 @169s",
+    "C: tuned 3/10 @186s",
+    "C: tuned 4/10 @213s",
+    "C: tuned 5/10 @244s",
+    "C: tuned 6/10 @279s",
+    "C: tuned 7/10 @307s",
+    "C: tuned 8/10 @341s",
+    "C: tuned 9/10 @382s",
+    "C: tuned 10/10 @415s",
+    "D: 23 candidates screened @579s",
+    "D: confirmed @584s"
+   ],
+   "keptPairs": [
+    [
+     "Lightning Tendrils",
+     "Unholy Chains"
+    ],
+    [
+     "Carrion Swarm",
+     "Unholy Chains"
+    ],
+    [
+     "Ice Nova",
+     "Lightning Tendrils"
+    ],
+    [
+     "Chaos Volley",
+     "Lightning Tendrils"
+    ],
+    [
+     "Shadowbolt",
+     "Lightning Tendrils"
+    ],
+    [
+     "Carrion Swarm",
+     "Lightning Tendrils"
+    ],
+    [
+     "Curse",
+     "Unholy Chains"
+    ],
+    [
+     "Frost Bat",
+     "Unholy Chains"
+    ],
+    [
+     "Lightning Tendrils",
+     "Bone Explosion"
+    ],
+    [
+     "Ball Lightning",
+     "Unholy Chains"
+    ],
+    [
+     "Crystal Lance",
+     "Lightning Tendrils"
+    ],
+    [
+     "Ice Nova",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Unholy Chains"
+    ],
+    [
+     "Rain of Chaos",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Shadowbolt"
+    ],
+    [
+     "Shadowbolt",
+     "Ice Nova"
+    ],
+    [
+     "Shadowbolt",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Ice Nova"
+    ],
+    [
+     "Rain of Chaos",
+     "Lightning Tendrils"
+    ],
+    [
+     "Chaos Volley",
+     "Crystal Lance"
+    ],
+    [
+     "Chaos Volley",
+     "Carrion Swarm"
+    ],
+    [
+     "Shadowbolt",
+     "Carrion Swarm"
+    ]
+   ],
+   "top": [
+    {
+     "dps": 257.72,
+     "dps600": 256.33,
+     "se600": 0.5,
+     "byLength": {
+      "90": 258.39,
+      "180": 257.66,
+      "300": 258.51,
+      "600": 256.33
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 131.94,
+      "Unholy Chains": 115.38,
+      "Chaos Barrage": 5,
+      "Veil of Chaos": 67.88
+     },
+     "damageBySource600": {
+      "Unholy Chains": 113.55,
+      "Lightning Tendrils": 88.91,
+      "Static shock": 17.54,
+      "Veil of Chaos": 16.85,
+      "Chaos Barrage": 9.28,
+      "Ignite": 7.36,
+      "Agonizing Flames": 2.84
+     }
+    },
+    {
+     "dps": 251.56,
+     "dps600": 250.86,
+     "se600": 0.51,
+     "byLength": {
+      "90": 252.34,
+      "180": 251.02,
+      "300": 252.01,
+      "600": 250.86
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Volatile Arachnid"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": false
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Volatile Arachnid": 5,
+      "Lightning Tendrils": 130.06,
+      "Unholy Chains": 115.84,
+      "Veil of Chaos": 68.47
+     },
+     "damageBySource600": {
+      "Unholy Chains": 114.06,
+      "Lightning Tendrils": 87.66,
+      "Veil of Chaos": 17.2,
+      "Static shock": 17.01,
+      "Ignite": 7.36,
+      "Volatile Arachnid": 4.69,
+      "Agonizing Flames": 2.87
+     }
+    },
+    {
+     "dps": 251.14,
+     "dps600": 250.53,
+     "se600": 0.5,
+     "byLength": {
+      "90": 252.62,
+      "180": 250.23,
+      "300": 251.18,
+      "600": 250.53
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Spectral Guardian"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": false
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Spectral Guardian": 5,
+      "Lightning Tendrils": 130.28,
+      "Unholy Chains": 115.97,
+      "Veil of Chaos": 68.47
+     },
+     "damageBySource600": {
+      "Unholy Chains": 113.94,
+      "Lightning Tendrils": 87.64,
+      "Veil of Chaos": 17.19,
+      "Static shock": 17.03,
+      "Ignite": 7.35,
+      "Spectral Guardian": 4.51,
+      "Agonizing Flames": 2.87
+     }
+    },
+    {
+     "dps": 249.07,
+     "dps600": 246.6,
+     "se600": 0.51,
+     "byLength": {
+      "90": 250,
+      "180": 251.27,
+      "300": 248.4,
+      "600": 246.6
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Chaos Volley",
+      "s2": "Lightning Tendrils",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Chaos Volley": 155.88,
+      "Lightning Tendrils": 139.41,
+      "Chaos Barrage": 5,
+      "Veil of Chaos": 76.59
+     },
+     "damageBySource600": {
+      "Chaos Volley": 95.85,
+      "Lightning Tendrils": 90,
+      "Static shock": 18.72,
+      "Veil of Chaos": 18.24,
+      "Chaos Barrage": 8.82,
+      "Ignite": 7.9,
+      "Agonizing Flames": 7.08
+     }
+    },
+    {
+     "dps": 248.49,
+     "dps600": 246.3,
+     "se600": 0.73,
+     "byLength": {
+      "90": 246.73,
+      "180": 252.14,
+      "300": 248.81,
+      "600": 246.3
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Shadowbolt",
+      "s2": "Lightning Tendrils",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Shadowbolt": 153.03,
+      "Veil of Chaos": 76.19,
+      "Lightning Tendrils": 134.69,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Shadowbolt": 104.22,
+      "Lightning Tendrils": 86.95,
+      "Static shock": 17.99,
+      "Veil of Chaos": 17.89,
+      "Chaos Barrage": 8.77,
+      "Ignite": 7.47,
+      "Agonizing Flames": 3
+     }
+    },
+    {
+     "dps": 248.3,
+     "dps600": 248.54,
+     "se600": 0.6,
+     "byLength": {
+      "90": 248.84,
+      "180": 246.73,
+      "300": 249.1,
+      "600": 248.54
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Raging Tempest"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 131.03,
+      "Unholy Chains": 114.03,
+      "Raging Tempest": 5,
+      "Veil of Chaos": 66.03
+     },
+     "damageBySource600": {
+      "Unholy Chains": 111.87,
+      "Lightning Tendrils": 87.89,
+      "Static shock": 17.02,
+      "Veil of Chaos": 16.49,
+      "Ignite": 7.18,
+      "Raging Tempest": 5.32,
+      "Agonizing Flames": 2.77
+     }
+    },
+    {
+     "dps": 247.71,
+     "dps600": 250.3,
+     "se600": 0.61,
+     "byLength": {
+      "90": 241.8,
+      "180": 247.86,
+      "300": 250.87,
+      "600": 250.3
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Wisp Dance"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Hunger for Blood",
+       "Wicked Power",
+       "Enhanced Conductivity",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Lightning Tendrils": 129.34,
+      "Unholy Chains": 117.31,
+      "Wisp Dance": 5,
+      "Veil of Chaos": 67.5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 114.57,
+      "Lightning Tendrils": 87.05,
+      "Static shock": 17.13,
+      "Veil of Chaos": 16.99,
+      "Ignite": 7.24,
+      "Wisp Dance": 4.49,
+      "Agonizing Flames": 2.83
+     }
+    },
+    {
+     "dps": 247.69,
+     "dps600": 247.72,
+     "se600": 0.56,
+     "byLength": {
+      "90": 247.92,
+      "180": 246.56,
+      "300": 248.55,
+      "600": 247.72
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Heart Strike"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": false
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Heart Strike": 5,
+      "Lightning Tendrils": 129.97,
+      "Unholy Chains": 115.84,
+      "Veil of Chaos": 68.19
+     },
+     "damageBySource600": {
+      "Unholy Chains": 113.96,
+      "Lightning Tendrils": 87.36,
+      "Veil of Chaos": 17.1,
+      "Static shock": 16.87,
+      "Ignite": 7.34,
+      "Agonizing Flames": 2.86,
+      "Heart Strike": 2.24
+     }
+    },
+    {
+     "dps": 247.18,
+     "dps600": 247.68,
+     "se600": 0.63,
+     "byLength": {
+      "90": 246.5,
+      "180": 246.35,
+      "300": 248.2,
+      "600": 247.68
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Arctic Leap"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": false
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Arctic Leap": 5,
+      "Lightning Tendrils": 130.19,
+      "Unholy Chains": 115.56,
+      "Veil of Chaos": 68.25
+     },
+     "damageBySource600": {
+      "Unholy Chains": 113.67,
+      "Lightning Tendrils": 87.76,
+      "Veil of Chaos": 17.09,
+      "Static shock": 16.87,
+      "Ignite": 7.36,
+      "Agonizing Flames": 2.87,
+      "Arctic Leap": 1.86,
+      "Freeze-immune proc": 0.2
+     }
+    },
+    {
+     "dps": 246.14,
+     "dps600": 245.56,
+     "se600": 0.67,
+     "byLength": {
+      "90": 246.56,
+      "180": 246.46,
+      "300": 245.97,
+      "600": 245.56
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Ice Nova",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Amulet of the Arch-Warlock",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "bSP",
+       "cdr",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.4,
+      "cdr": 35,
+      "crit": 48.2,
+      "critPower": 181.6,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 20
+     },
+     "casts600": {
+      "Ice Nova": 130.25,
+      "Unholy Chains": 113.91,
+      "Chaos Barrage": 5,
+      "Veil of Chaos": 69.88
+     },
+     "damageBySource600": {
+      "Unholy Chains": 114.22,
+      "Ice Nova": 85.84,
+      "Veil of Chaos": 18.12,
+      "Chaos Barrage": 9.55,
+      "Ignite": 7.49,
+      "Freeze-immune proc": 5.45,
+      "Agonizing Flames": 3.06,
+      "Static shock": 1.82
+     }
+    }
+   ]
+  },
+  "late": {
+   "run": "late",
+   "seconds": 550,
+   "log": [
+    "A: 276 feasible spell pairs x 6 contexts -> 24 kept @41s",
+    "B: 2352 loadouts ranked @117s",
+    "C: tuned 1/10 @135s",
+    "C: tuned 2/10 @183s",
+    "C: tuned 3/10 @217s",
+    "C: tuned 4/10 @233s",
+    "C: tuned 5/10 @252s",
+    "C: tuned 6/10 @271s",
+    "C: tuned 7/10 @287s",
+    "C: tuned 8/10 @302s",
+    "C: tuned 9/10 @322s",
+    "C: tuned 10/10 @341s",
+    "D: 26 candidates screened @543s",
+    "D: confirmed @550s"
+   ],
+   "keptPairs": [
+    [
+     "Carrion Swarm",
+     "Lightning Tendrils"
+    ],
+    [
+     "Rain of Chaos",
+     "Lightning Tendrils"
+    ],
+    [
+     "Lightning Tendrils",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Lightning Tendrils"
+    ],
+    [
+     "Ball Lightning",
+     "Lightning Tendrils"
+    ],
+    [
+     "Shadowbolt",
+     "Lightning Tendrils"
+    ],
+    [
+     "Lightning Tendrils",
+     "Bone Explosion"
+    ],
+    [
+     "Ice Nova",
+     "Unholy Chains"
+    ],
+    [
+     "Ice Nova",
+     "Lightning Tendrils"
+    ],
+    [
+     "Curse",
+     "Lightning Tendrils"
+    ],
+    [
+     "Frost Bat",
+     "Lightning Tendrils"
+    ],
+    [
+     "Chaos Volley",
+     "Bone Explosion"
+    ],
+    [
+     "Rain of Chaos",
+     "Unholy Chains"
+    ],
+    [
+     "Frost Bat",
+     "Unholy Chains"
+    ],
+    [
+     "Carrion Swarm",
+     "Unholy Chains"
+    ],
+    [
+     "Curse",
+     "Unholy Chains"
+    ],
+    [
+     "Ball Lightning",
+     "Unholy Chains"
+    ],
+    [
+     "Crystal Lance",
+     "Lightning Tendrils"
+    ],
+    [
+     "Chaos Volley",
+     "Unholy Chains"
+    ],
+    [
+     "Chaos Volley",
+     "Shadowbolt"
+    ],
+    [
+     "Chaos Volley",
+     "Ice Nova"
+    ],
+    [
+     "Chaos Volley",
+     "Carrion Swarm"
+    ],
+    [
+     "Chaos Volley",
+     "Crystal Lance"
+    ],
+    [
+     "Rain of Chaos",
+     "Shadowbolt"
+    ]
+   ],
+   "top": [
+    {
+     "dps": 275.47,
+     "dps600": 271.27,
+     "se600": 0.79,
+     "byLength": {
+      "90": 286.45,
+      "180": 273.58,
+      "300": 270.57,
+      "600": 271.27
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Mutant",
+      "secondary": {
+       "blood": "Draculin",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Blasphemous",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "veilCDR"
+      ]
+     },
+     "policy": {
+      "order": [
+       "veil",
+       "s1",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 32.04,
+      "cdr": 11,
+      "crit": 45,
+      "critPower": 164,
+      "ultPower": 42.2,
+      "ultCDR": 52.08,
+      "veilCDR": 28.52,
+      "eff": 36
+     },
+     "casts600": {
+      "Veil of Chaos": 95,
+      "Lightning Tendrils": 94.81,
+      "Unholy Chains": 79,
+      "Blood Storm": 16
+     },
+     "damageBySource600": {
+      "Blood Storm": 87.06,
+      "Unholy Chains": 71.73,
+      "Lightning Tendrils": 61.58,
+      "Veil of Chaos": 22.11,
+      "Static shock": 16.49,
+      "Ignite": 8.28,
+      "Agonizing Flames": 4.02
+     }
+    },
+    {
+     "dps": 267.04,
+     "dps600": 265.91,
+     "se600": 0.66,
+     "byLength": {
+      "90": 265.59,
+      "180": 269.08,
+      "300": 267.58,
+      "600": 265.91
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Shadowbolt",
+      "s2": "Lightning Tendrils",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Shadowbolt": 157.59,
+      "Lightning Tendrils": 139.94,
+      "Blood Storm": 5,
+      "Veil of Chaos": 71.16
+     },
+     "damageBySource600": {
+      "Shadowbolt": 111.32,
+      "Lightning Tendrils": 90.62,
+      "Static shock": 18.84,
+      "Blood Storm": 18.01,
+      "Veil of Chaos": 17.06,
+      "Ignite": 7.21,
+      "Agonizing Flames": 2.84
+     }
+    },
+    {
+     "dps": 266.72,
+     "dps600": 263.76,
+     "se600": 0.51,
+     "byLength": {
+      "90": 267.86,
+      "180": 269.27,
+      "300": 266,
+      "600": 263.76
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Chaos Volley",
+      "s2": "Lightning Tendrils",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Chaos Volley": 158.69,
+      "Lightning Tendrils": 140.25,
+      "Blood Storm": 5,
+      "Veil of Chaos": 74.41
+     },
+     "damageBySource600": {
+      "Chaos Volley": 100.14,
+      "Lightning Tendrils": 92.31,
+      "Static shock": 19.09,
+      "Blood Storm": 18.91,
+      "Veil of Chaos": 18.27,
+      "Ignite": 7.94,
+      "Agonizing Flames": 7.1
+     }
+    },
+    {
+     "dps": 265.6,
+     "dps600": 264.07,
+     "se600": 0.59,
+     "byLength": {
+      "90": 263.29,
+      "180": 268.01,
+      "300": 267.02,
+      "600": 264.07
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Lightning Tendrils": 126.34,
+      "Veil of Chaos": 68.91,
+      "Unholy Chains": 114.31,
+      "Blood Storm": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 114.55,
+      "Lightning Tendrils": 85.81,
+      "Blood Storm": 19.41,
+      "Veil of Chaos": 17.4,
+      "Static shock": 16.71,
+      "Ignite": 7.33,
+      "Agonizing Flames": 2.87
+     }
+    },
+    {
+     "dps": 265.08,
+     "dps600": 262.7,
+     "se600": 0.66,
+     "byLength": {
+      "90": 265.36,
+      "180": 266.6,
+      "300": 265.66,
+      "600": 262.7
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Chaos Volley",
+      "s2": "Shadowbolt",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s2",
+       "s1",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Shadowbolt": 162.91,
+      "Chaos Volley": 158.88,
+      "Blood Storm": 5,
+      "Veil of Chaos": 72.63
+     },
+     "damageBySource600": {
+      "Shadowbolt": 113.48,
+      "Chaos Volley": 96.34,
+      "Blood Storm": 18.43,
+      "Veil of Chaos": 17.24,
+      "Ignite": 7.59,
+      "Agonizing Flames": 6.72,
+      "Static shock": 2.9
+     }
+    },
+    {
+     "dps": 264.42,
+     "dps600": 262.03,
+     "se600": 0.75,
+     "byLength": {
+      "90": 264.99,
+      "180": 265.49,
+      "300": 265.16,
+      "600": 262.03
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Lightning Tendrils",
+      "s2": "Unholy Chains",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Hunger for Blood",
+       "Wicked Power",
+       "Enhanced Conductivity",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "cdr",
+       "crit",
+       "critPower"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Lightning Tendrils": 129.56,
+      "Veil of Chaos": 70.59,
+      "Unholy Chains": 117.59,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Unholy Chains": 118.03,
+      "Lightning Tendrils": 88.83,
+      "Veil of Chaos": 17.87,
+      "Static shock": 17.55,
+      "Chaos Barrage": 9.26,
+      "Ignite": 7.53,
+      "Agonizing Flames": 2.95
+     }
+    },
+    {
+     "dps": 262.84,
+     "dps600": 260.59,
+     "se600": 0.62,
+     "byLength": {
+      "90": 263.42,
+      "180": 264.68,
+      "300": 262.66,
+      "600": 260.59
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Shadowbolt",
+      "s2": "Lightning Tendrils",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "veil",
+       "s2"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Shadowbolt": 157.16,
+      "Veil of Chaos": 74.59,
+      "Lightning Tendrils": 142.41,
+      "Chaos Barrage": 5
+     },
+     "damageBySource600": {
+      "Shadowbolt": 110.56,
+      "Lightning Tendrils": 93.57,
+      "Static shock": 19.19,
+      "Veil of Chaos": 17.92,
+      "Chaos Barrage": 8.92,
+      "Ignite": 7.45,
+      "Agonizing Flames": 2.97
+     }
+    },
+    {
+     "dps": 262.12,
+     "dps600": 260.21,
+     "se600": 0.41,
+     "byLength": {
+      "90": 264.77,
+      "180": 261.89,
+      "300": 261.63,
+      "600": 260.21
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Carrion Swarm",
+      "s2": "Lightning Tendrils",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Cold Soul",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s2",
+       "s1",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Lightning Tendrils": 138.69,
+      "Carrion Swarm": 128.56,
+      "Blood Storm": 5,
+      "Veil of Chaos": 73.47
+     },
+     "damageBySource600": {
+      "Lightning Tendrils": 94.31,
+      "Carrion Swarm": 86.1,
+      "Static shock": 31.33,
+      "Blood Storm": 19.06,
+      "Veil of Chaos": 18.52,
+      "Ignite": 7.83,
+      "Agonizing Flames": 3.04
+     }
+    },
+    {
+     "dps": 260.15,
+     "dps600": 260.64,
+     "se600": 0.75,
+     "byLength": {
+      "90": 258.39,
+      "180": 260.96,
+      "300": 260.6,
+      "600": 260.64
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Chaos Volley",
+      "s2": "Shadowbolt",
+      "ult": "Chaos Barrage"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Hunger for Blood",
+       "Renewing Flames",
+       "Cold Soul"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Chaos Volley": 163.44,
+      "Shadowbolt": 166.47,
+      "Chaos Barrage": 5,
+      "Veil of Chaos": 74.53
+     },
+     "damageBySource600": {
+      "Shadowbolt": 117.13,
+      "Chaos Volley": 99.82,
+      "Veil of Chaos": 17.59,
+      "Chaos Barrage": 8.51,
+      "Ignite": 7.65,
+      "Agonizing Flames": 7,
+      "Static shock": 2.94
+     }
+    },
+    {
+     "dps": 259.15,
+     "dps600": 258.16,
+     "se600": 0.51,
+     "byLength": {
+      "90": 257.54,
+      "180": 260.38,
+      "300": 260.54,
+      "600": 258.16
+     },
+     "build": {
+      "veil": "Veil of Chaos",
+      "s1": "Ice Nova",
+      "s2": "Lightning Tendrils",
+      "ult": "Blood Storm"
+     },
+     "cfg": {
+      "stage": "late",
+      "primary": "Draculin",
+      "secondary": {
+       "blood": "Scholar",
+       "tier": 2
+      },
+      "amulet": "Soul Shard of Dracula",
+      "elixir": "Elixir of the Twisted",
+      "passives": [
+       "Enhanced Conductivity",
+       "Wicked Power",
+       "Cold Soul",
+       "Hunger for Blood",
+       "Renewing Flames"
+      ],
+      "weapon": [
+       "crit",
+       "critPower",
+       "cdr"
+      ]
+     },
+     "policy": {
+      "order": [
+       "s1",
+       "s2",
+       "veil"
+      ],
+      "ultHold": true
+     },
+     "stats": {
+      "flatSP": 49,
+      "bSP": 29.32,
+      "cdr": 35,
+      "crit": 50.76,
+      "critPower": 182.88,
+      "ultPower": 5,
+      "ultCDR": 0,
+      "veilCDR": 5,
+      "eff": 36
+     },
+     "casts600": {
+      "Ice Nova": 143.38,
+      "Lightning Tendrils": 138.53,
+      "Blood Storm": 5,
+      "Veil of Chaos": 74.47
+     },
+     "damageBySource600": {
+      "Lightning Tendrils": 93.07,
+      "Ice Nova": 91.8,
+      "Static shock": 19.21,
+      "Blood Storm": 19.14,
+      "Veil of Chaos": 18.52,
+      "Ignite": 7.64,
+      "Freeze-immune proc": 5.7,
+      "Agonizing Flames": 3.08
+     }
+    }
+   ]
+  }
+ },
+ "midContendersChaosBarrage": {
+  "Curse + Unholy Chains": {
+   "dps": 112.46,
+   "byLength": {
+    "90": 113.43,
+    "180": 114.3,
+    "300": 112.37,
+    "600": 109.74
+   },
+   "cfg": {
+    "stage": "mid",
+    "primary": "Scholar",
+    "secondary": null,
+    "amulet": "Blood Merlot Amulet",
+    "elixir": "Elixir of the Bat",
+    "passives": [
+     "Enhanced Conductivity",
+     "Renewing Flames",
+     "Spiritual Infusion"
+    ],
+    "weapon": []
+   },
+   "policy": {
+    "order": [
+     "s1",
+     "s2",
+     "veil"
+    ],
+    "ultHold": true
+   }
+  },
+  "Chaos Volley + Unholy Chains": {
+   "dps": 114.71,
+   "byLength": {
+    "90": 115.15,
+    "180": 115.81,
+    "300": 115.35,
+    "600": 112.51
+   },
+   "cfg": {
+    "stage": "mid",
+    "primary": "Scholar",
+    "secondary": null,
+    "amulet": "Blood Merlot Amulet",
+    "elixir": "Elixir of the Prowler",
+    "passives": [
+     "Enhanced Conductivity",
+     "Chaos Kindling",
+     "Renewing Flames"
+    ],
+    "weapon": []
+   },
+   "policy": {
+    "order": [
+     "s1",
+     "veil",
+     "s2"
+    ],
+    "ultHold": true
+   }
+  },
+  "Lightning Tendrils + Unholy Chains": {
+   "dps": 119.24,
+   "byLength": {
+    "90": 122.57,
+    "180": 118.95,
+    "300": 118.84,
+    "600": 116.6
+   },
+   "cfg": {
+    "stage": "mid",
+    "primary": "Scholar",
+    "secondary": null,
+    "amulet": "Blood Merlot Amulet",
+    "elixir": "Elixir of the Prowler",
+    "passives": [
+     "Enhanced Conductivity",
+     "Chaos Kindling",
+     "Renewing Flames"
+    ],
+    "weapon": []
+   },
+   "policy": {
+    "order": [
+     "s1",
+     "veil",
+     "s2"
+    ],
+    "ultHold": true
+   }
+  }
+ },
+ "sensitivity": {
+  "builds": [
+   "Veil of Chaos | Lightning Tendrils + Unholy Chains | Blood Storm | Soul Shard of Dracula",
+   "Veil of Chaos | Shadowbolt + Lightning Tendrils | Blood Storm | Soul Shard of Dracula",
+   "Veil of Chaos | Chaos Volley + Lightning Tendrils | Blood Storm | Soul Shard of Dracula",
+   "Veil of Chaos | Chaos Volley + Shadowbolt | Blood Storm | Soul Shard of Dracula",
+   "Veil of Chaos | Lightning Tendrils + Unholy Chains | Chaos Barrage | Soul Shard of Dracula",
+   "Veil of Chaos | Lightning Tendrils + Unholy Chains | Chaos Barrage | Amulet of the Arch-Warlock",
+   "Veil of Chaos | Lightning Tendrils + Unholy Chains | Volatile Arachnid | Amulet of the Arch-Warlock",
+   "Veil of Chaos | Lightning Tendrils + Unholy Chains | Spectral Guardian | Amulet of the Arch-Warlock"
+  ],
+  "scenarios": {
+   "baseline": [
+    275.2,
+    266.3,
+    266.5,
+    264.3,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "Ultimate Cooldown Rate works as described": [
+    286.7,
+    266.3,
+    266.5,
+    264.3,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "Ultimate Cooldown Rate does nothing": [
+    252.6,
+    266.3,
+    266.5,
+    264.3,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "Ult CDR does nothing, Veil of Chaos recast = 2nd Veil attack": [
+    280.4,
+    260.2,
+    256.7,
+    257.7,
+    250.1,
+    245.4,
+    240.3,
+    240.7
+   ],
+   "Blood Efficiency does not boost fixed traits (7s cut, 30%)": [
+    246.8,
+    252.5,
+    254.2,
+    245,
+    255.4,
+    251.2,
+    246.3,
+    245.1
+   ],
+   "80% of Lightning Tendrils bolts hit": [
+    261.1,
+    243.9,
+    242.9,
+    264.3,
+    241.8,
+    234.4,
+    229.6,
+    227.6
+   ],
+   "Static shock at most once per second": [
+    262.6,
+    251,
+    251.1,
+    262.6,
+    250.4,
+    242.8,
+    238.2,
+    237.6
+   ],
+   "80% Tendrils bolts + Static once per second": [
+    250.3,
+    231.1,
+    230.2,
+    262.6,
+    230.1,
+    222.8,
+    218.3,
+    216.5
+   ],
+   "Bloodthirst is physical-only": [
+    268.4,
+    256.2,
+    256.1,
+    255.1,
+    258,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "Hunger for Power chain never breaks": [
+    275.2,
+    266.3,
+    266.5,
+    264.3,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "75% of Blood Storm bolts hit": [
+    252.4,
+    262.7,
+    262.3,
+    261.5,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "50% of Blood Storm bolts hit": [
+    230.8,
+    257.4,
+    256.6,
+    256.2,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "25% of Unholy Chains channels fail": [
+    254.1,
+    266.3,
+    266.5,
+    264.3,
+    228.9,
+    226.4,
+    219.7,
+    219.6
+   ],
+   "45% of Rain meteors hit": [
+    275.2,
+    266.3,
+    266.5,
+    264.3,
+    264.8,
+    257.1,
+    251.9,
+    251.3
+   ],
+   "caps are hard (no bypass)": [
+    270.9,
+    249.2,
+    251.4,
+    242.6,
+    246.4,
+    241.8,
+    235.8,
+    235.7
+   ],
+   "Bonus Spell Power applies to base 10 only": [
+    222,
+    218.2,
+    218.4,
+    216.6,
+    217,
+    205.7,
+    201.5,
+    201.1
+   ]
+  }
+ }
+}
