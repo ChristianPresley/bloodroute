@@ -111,11 +111,22 @@ const STATIONS = ['Research Desk', 'Study', 'Athenaeum', 'Alchemy Table', 'Smith
   'Ancestral Forge', 'Blood Homogenizer', 'Eye of Mortium', 'Blood Press', 'Loom', 'Furnace', 'Fabricator', 'Advanced Blood Press',
   'Simple Workbench', 'Sawmill', 'Castle Heart', 'Stygian Summoning Circle', 'Waygate'];
 
-async function dataUri(url) {
-  const r = await fetch(url, { headers: { 'User-Agent': 'bloodroute icon builder (+https://github.com/ChristianPresley/bloodroute)' } });
-  if (!r.ok) throw new Error(`${r.status} ${url}`);
-  const type = (r.headers.get('content-type') || 'image/png').split(';')[0];
-  return `data:${type};base64,${Buffer.from(await r.arrayBuffer()).toString('base64')}`;
+const UA = { 'User-Agent': 'bloodroute icon builder (+https://github.com/ChristianPresley/bloodroute)' };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// Retries transient failures (CDN/wiki hiccups on CI runners) before giving up on an icon.
+async function dataUri(url, tries = 3) {
+  for (let i = 1; ; i++) {
+    try {
+      const r = await fetch(url, { headers: UA });
+      if (!r.ok) throw new Error(`${r.status} ${url}`);
+      const type = (r.headers.get('content-type') || 'image/png').split(';')[0];
+      return `data:${type};base64,${Buffer.from(await r.arrayBuffer()).toString('base64')}`;
+    } catch (e) {
+      if (i >= tries || /^404 /.test(e.message)) throw e;
+      await sleep(1000 * i);
+    }
+  }
 }
 
 async function wikiThumbs(titles, width) {
@@ -124,7 +135,10 @@ async function wikiThumbs(titles, width) {
     const batch = titles.slice(i, i + 40);
     const u = 'https://vrising.fandom.com/api.php?action=query&format=json&redirects=1&prop=pageimages&piprop=thumbnail&pithumbsize=' + width +
       '&titles=' + encodeURIComponent(batch.join('|'));
-    const j = await (await fetch(u)).json();
+    let j;
+    for (let t = 1; ; t++) {
+      try { j = await (await fetch(u, { headers: UA })).json(); break; } catch (e) { if (t >= 3) throw e; await sleep(1000 * t); }
+    }
     const back = {};  // resolve redirects/normalisation back to the requested title
     for (const n of j.query.normalized || []) back[n.to] = n.from;
     for (const n of j.query.redirects || []) back[n.to] = back[n.from] || n.from;
