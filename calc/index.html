@@ -1,0 +1,69 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>V Rising Caster Calculator</title>
+<style>
+  :root { --bg:#faf8f5; --fg:#1d1b19; --muted:#6b645c; --line:#e3ddd5; --accent:#8b1e2d; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#171514; --fg:#ece7e1; --muted:#a39a90; --line:#2f2b28; --accent:#e0606f; } }
+  body { background:var(--bg); color:var(--fg); font:15px/1.5 system-ui, sans-serif; margin:0; padding:24px 16px; }
+  main { max-width:1000px; margin:0 auto; }
+  h1 { margin:0 0 4px; } p.sub { color:var(--muted); margin:0 0 20px; }
+  button { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:8px 14px; font:inherit; cursor:pointer; margin-right:8px; }
+  button:disabled { opacity:.5; cursor:wait; }
+  .wrap { overflow-x:auto; margin:12px 0 28px; }
+  table { border-collapse:collapse; width:100%; font-size:14px; }
+  th, td { border-bottom:1px solid var(--line); padding:6px 8px; text-align:left; vertical-align:top; }
+  th { color:var(--muted); font-weight:600; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  #log { color:var(--muted); font-size:13px; white-space:pre-wrap; }
+</style>
+<main>
+  <h1>V Rising caster calculator</h1>
+  <p class="sub">Simulates a single-target boss fight and searches for the highest-damage loadout per game stage. DPS (mix) averages 90/180/300/600-second fights. Assumptions are in engine.js (ASSUME).</p>
+  <div>
+    <button data-stage="early">Optimise early</button>
+    <button data-stage="mid">Optimise mid</button>
+    <button data-stage="late-pre">Optimise late (before Dracula)</button>
+    <button data-stage="late">Optimise late</button>
+  </div>
+  <p class="sub">Each run takes several minutes (late game ~10). Served over http (e.g. <code>npx http-server calc</code>) it runs in a background worker; opened as a local file it runs on the page and the tab freezes until it finishes. Command line: <code>node calc/run.js late</code>. Top damage sources are from the 600 s fights.</p>
+  <div id="log"></div>
+  <div id="out"></div>
+</main>
+<script src="engine.js"></script>
+<script>
+  const out = document.getElementById('out'), logEl = document.getElementById('log');
+  const fmt = n => n.toFixed(1);
+  function render(res) {
+    const rows = res.final.map((r, i) => {
+      const c = r.cfg, sec = c.secondary ? `${c.secondary.blood} T${c.secondary.tier}` : '—';
+      const top = Object.entries(r.by).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => `${k} ${fmt(v)}`).join(', ');
+      const lens = Object.entries(r.byLen).map(([k, v]) => `${k}s ${fmt(v)}`).join('<br>');
+      return `<tr><td>${i + 1}</td><td class="num">${fmt(r.dps)}</td><td class="num">${lens}</td><td>${r.build.veil}<br>${r.build.s1} + ${r.build.s2}<br><b>${r.build.ult}</b></td>
+        <td>${c.primary} / ${sec}<br>${c.amulet}<br>${c.elixir}</td><td>${c.passives.join(', ') || '—'}<br>${c.weapon.join(', ') || ''}</td><td>${top}</td></tr>`;
+    }).join('');
+    out.insertAdjacentHTML('afterbegin', `<h2>${VRCalc.STAGES[res.stage].label}</h2><div class="wrap"><table>
+      <tr><th>#</th><th>DPS (mix)</th><th>By fight length</th><th>Veil / spells / ultimate</th><th>Blood / amulet / elixir</th><th>Passives / weapon rolls</th><th>Top damage sources (DPS)</th></tr>${rows}</table></div>`);
+  }
+  const setBusy = busy => document.querySelectorAll('button').forEach(x => x.disabled = busy);
+  function runOnPage(stage) {
+    setTimeout(() => {
+      const pre = stage === 'late-pre';
+      render(VRCalc.optimize(pre ? 'late' : stage, m => logEl.textContent += '\n' + m, pre ? { amulets: VRCalc.PRE_DRACULA } : {}));
+      setBusy(false);
+    }, 30);
+  }
+  document.querySelectorAll('button').forEach(b => b.onclick = () => {
+    setBusy(true);
+    logEl.textContent = 'Running…';
+    let worker = null;
+    if (location.protocol.startsWith('http')) { try { worker = new Worker('worker.js'); } catch { worker = null; } }
+    if (!worker) return runOnPage(b.dataset.stage);
+    worker.onmessage = e => {
+      if (e.data.log) logEl.textContent += '\n' + e.data.log;
+      if (e.data.done) { render(e.data.done); setBusy(false); worker.terminate(); }
+    };
+    worker.onerror = () => { worker.terminate(); runOnPage(b.dataset.stage); };
+    worker.postMessage({ stage: b.dataset.stage });
+  });
+</script>
