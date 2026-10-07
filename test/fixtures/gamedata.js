@@ -16,8 +16,14 @@
   //   kind: weapon | armor | jewelry | jewel | consumable | material | other
   //   cat: the in-game type (Crossbow, Chest, Magic Source, Elixir, Brew, Coating, Mineral, …)
   //   stats: [label, value, unit] with readable labels ("Spell Power", "Max Health"); unit is '%' or ''.
-  //   recipe: the station recipe the route uses; inputs are [name, qty]; unlock names the bosses/research that teach it.
-  //   drops: top sources by drop rate; kind npc | vblood | loot; layer names an entry in `layers` holding its spawn points.
+  //   recipe: the station recipe the route uses; inputs are [name, qty]; unlock names the bosses/research that teach it
+  //     (journal quests as "Journal: <quest>"); out: how many one craft makes (when not 1); byproduct: the recipe's main
+  //     output when this item is a side product (Ghost Shroom from sawing Cursed Wood). A jewel with no school uses
+  //     "Regular gem" / "Flawless gem" (one of the spell's school).
+  //   drops: top sources by drop rate; kind npc | vblood | loot; layer names an entry in `layers` holding its spawn points;
+  //     n: how many spawns/containers. Servant hunts are loot named "Servant hunt: <mission>" and listed last.
+  //   icon: the gaming.tools icon path (site/build-icons.js downloads icons for card-only names from it).
+  //   Names a card only lists (NPC drops, second-level recipe inputs) get a stub: id, kind, cat, rarity, icon.
   items: {
     'Iron Crossbow': {
       id: 'item_weapon_crossbow_t05_iron', kind: 'weapon', cat: 'Crossbow', rarity: 'Rare', gl: 15,
@@ -72,6 +78,7 @@
 
   // Abilities: spells, veils, ultimates, weapon skills, shapeshift forms.
   //   slot: Spell | Veil | Ultimate | Weapon | Form | Travel | Other. cd and cast in seconds; charges defaults to 1.
+  //   icon: the gaming.tools icon path, as for items.
   abilities: {
     'Chaos Volley': { id: 'ab_chaos_volley_abilitygroup', school: 'Chaos', slot: 'Spell', desc: 'Launch 2 Chaos Bolts in a sequence that deals 125% magic damage and inflicts Ignite.', cd: 8, cast: 0.6 },
     'Veil of Frost': { id: 'ab_frost_veiloffrost_abilitygroup', school: 'Frost', slot: 'Veil', desc: 'Dash forward leaving an illusion; your next primary attack is empowered and inflicts Chill.', cd: 8, cast: 0.5 },
@@ -84,6 +91,8 @@
   //   stats: physical/spell power, damage reduction and resistances (percent values as numbers).
   //   abilities: distinct attack names (their count feeds the difficulty score). drops: [item, rate].
   //   spawns: [[x, z], …]; empty for bosses with no fixed spawn (Nibbles is summoned at your castle).
+  //   Enemies are keyed by the name routes/shared.js CARRIERS uses ("Bandit Thug", "Militia Guard", "Slave Master (pistol)"),
+  //   else the in-game name (bandits get "Bandit "); same-named variants share one entry with merged spawns.
   npcs: {
     'Errol the Stonebreaker': {
       id: 'char_bandit_stonebreaker_vblood', lv: 20, vblood: true, unit: 'Human',
@@ -104,7 +113,7 @@
     'Bandit Thug': { id: 'char_bandit_thug', lv: 16, unit: 'Human', blood: 'Warrior', drops: [['Coarse Thread', 0.1]], spawns: [[-1500, -1400], [-1520, -1380]] },
   },
 
-  // Blood types: tier bonuses (tier, text) and the NPCs that carry them.
+  // Blood types: tier bonuses (tier, text; tier 5 is the general boost) and the NPCs that carry them (keys of npcs).
   blood: {
     Scholar: { tiers: [[1, 'Increased Spell Power and 10% Shield Efficiency.'], [2, 'Increased Spell Cooldown Rate.'], [3, 'Ultimate Power; using an Ultimate resets your spell cooldowns.'], [4, 'Increased Spell Charge Gain.']], carriers: ['Nun', 'Priest'] },
   },
@@ -136,12 +145,14 @@
     { text: 'Physical Critical Strike Chance', range: '8 - 16%' },
   ],
 
-  // Point layers for maps: resource nodes (by gaming.tools layer id) and NPC spawns ("npc:<id>").
+  // Point layers for maps: resource nodes (by gaming.tools layer id, all of them), NPC spawns ("npc:<id>") and loot
+  // containers ("loot:<prefab>"). Points within ~12 units are merged, at most ~60 per layer.
   layers: {
     copper_ore: { name: 'Copper Ore', pts: [[-1199, -1902], [-1241, -1898]] },
     'npc:char_bandit_thug': { name: 'Bandit Thug', pts: [[-1500, -1400], [-1520, -1380]] },
   },
   // Materials: the layers where they're gathered (nodes or the raw material's nodes) and their best drop sources.
+  //   via: the gathered material(s) a refined one is made from ("Sulphur Ore + Tech Scrap"). layers can be empty.
   mats: {
     'Copper Ingot': { layers: ['copper_ore'], via: 'Copper Ore' },
     'Coarse Thread': { layers: ['npc:char_bandit_thug'] },

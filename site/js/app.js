@@ -463,8 +463,7 @@
     document.addEventListener('beforematch', e => { const art = e.target.closest('.phase'); if (art) setOpen(art.id, true); }, true);
     document.addEventListener('click', e => {
       const t = e.target;
-      const map = t.closest('a[href^="#map="]');
-      if (map) { e.preventDefault(); BR.map.follow(map.getAttribute('href')); return; }
+      if (t.closest('a[href^="#map="]')) return;   // js/map.js opens in-app map links
       const d = t.closest('[data-done]'); if (d) { setDone(d.dataset.done, true); return; }
       const sb = t.closest('[data-delta]');
       if (sb) { const r = sb.dataset.res; setStock(r, (stock[r] || 0) + +sb.dataset.delta); return; }
@@ -567,8 +566,7 @@
     // Fonts can reflow the page once they arrive: place it again, unless the reader has moved since.
     const placedY = scrollY;
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!userScrolled && Math.abs(scrollY - placedY) < 2) place(); });
-    if (/^#map=/.test(location.hash)) BR.map.follow(location.hash);
-    addEventListener('hashchange', () => { if (/^#map=/.test(location.hash)) BR.map.follow(location.hash); });
+    if (/^#map=/.test(location.hash)) BR.map.follow(location.hash);   // js/map.js follows later hash changes itself
     activate(PHASES[cur0 - 1].id); spy();
   }
 })();

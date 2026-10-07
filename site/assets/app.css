@@ -485,3 +485,5 @@ a.arch:hover, a.arch:focus-visible { transform: translateY(-3px); border-color: 
 .rot-n { font-size: 11px; line-height: 1.2; }
 .rot-steps small { font-size: 10px; color: var(--muted); line-height: 1.2; }
 .rot-why { margin: 0; font-size: 13.5px; color: var(--muted); max-width: 90ch; }
+.enemy { text-decoration: underline dotted color-mix(in srgb, var(--muted) 70%, transparent); text-underline-offset: 3px; cursor: help; }
+.enemy:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }

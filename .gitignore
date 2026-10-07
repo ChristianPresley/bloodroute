@@ -4,6 +4,9 @@ data/
 # Generated icon bundle (Stunlock Studios artwork) — rebuild with: node site/build-icons.js
 site/icons.js
 
+# Map images (V Rising Wiki / Stunlock Studios artwork) — rebuild with: node site/build-map.js
+site/map/
+
 # Optimizer scratch output — the curated result is calc/optimizer_results.json
 calc/out_*
 
