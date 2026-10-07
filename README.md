@@ -34,7 +34,7 @@ The site works without the icon bundle; icons fall back to initials.
 node --test
 ```
 
-`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades; the full gear and station progression in the right phases; stockpile crafts that match the page; and an icon for everything shown. `test/store.test.js` covers saved progress and backups. The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
+`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades, and that each loadout wears the highest Gear Level weapon, magic source and armor crafted so far; every loadout item with a recipe crafted by that phase, and every consumable restocked in the phase that uses it; the full gear and station progression in the right phases; stockpile crafts that match the page, with Stygian Shards priced for every passive; no placeholder text; and an icon for everything shown. `test/store.test.js` covers saved progress and backups. The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
 
 ### Simulator
 
@@ -48,7 +48,7 @@ To run it in a browser, serve `calc/` over http and open `index.html`.
 
 ### Stockpile targets
 
-Each route's `needs.js` lists the materials each phase needs. They are generated from item recipes; the crafts per phase are listed in `site/build-needs.js`:
+Each route's `needs.js` lists the materials each phase needs. They are generated from item recipes; the crafts per phase are listed in `site/build-needs.js`, along with structures, jewels, the expected Stygian Shard cost of the Altar passives, and intermediates counted as their raw materials (hearts for the first Greater Blood Essence, Radium Alloy and batteries for Power Cores):
 
 ```bash
 node site/build-needs.js          # all routes; reads data/items.json

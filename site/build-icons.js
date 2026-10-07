@@ -133,7 +133,7 @@ const ITEMS = {
 const PAGES = ['Iron Whip', 'Dark Silver Pistols', 'Sanguine Pistols', 'Ring of the Warrior', 'Amulet of the Crimson Commander',
   'Amulet of the Blademaster', 'Lightning Typhoon', 'Regular Miststone', 'Flawless Miststone', 'Bleeding Heart', 'Venom Sap',
   'Grim Ranger Vest', 'Blood Hunter Chestguard', 'Dread Plate Chestguard', 'Marauder Vest', 'Crimson Templar Chestguard',
-  'Grim Knight Chestguard', 'Shadewalker Vest', 'Duskwatcher Chestguard', 'Shadowmoon Chestguard'];
+  'Grim Knight Chestguard', 'Shadewalker Vest', 'Duskwatcher Chestguard', 'Shadowmoon Chestguard', 'Charged Battery'];
 
 // Wiki page titles -> display names (portraits and structure images).
 const BOSSES = ['Alpha the White Wolf', 'Errol the Stonebreaker', 'Keely the Frost Archer', 'Rufus the Foreman', 'Grayson the Armourer',

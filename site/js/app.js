@@ -196,7 +196,7 @@
     function loadoutBlock(l) {
       const keys = ['Veil', 'Spell 1', 'Spell 2', 'Ultimate'];
       return `<div class="loadout">
-        ${l.dps ? `<div class="dps">${l.label ? l.label + ' · ' : ''}${l.dps}</div>` : ''}
+        ${l.label || l.dps ? `<div class="dps">${[l.label, l.dps].filter(Boolean).join(' · ')}</div>` : ''}
         <div class="slots">${l.slots.map((s, i) => `<div class="slot">${s === '—' ? ic('—', 56) : ic(slotIcon(s), 56)}<span class="k">${keys[i]}</span><span class="v">${s}</span></div>`).join('')}</div>
         ${l.gear ? `<div><div class="dps" style="color:var(--muted);margin-bottom:8px">Gear, blood and passives</div>${tiles(l.gear)}</div>` : ''}
         ${l.kv && l.kv.length ? `<dl class="kv">${l.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}

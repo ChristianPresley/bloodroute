@@ -54,12 +54,12 @@ This takes a fresh vampire to the endgame build in `pve_spellcaster_build.md`, i
 
 | Lv | Boss | Map | Take |
 |---|---|---|---|
-| 16 | Alpha the White Wolf | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178446) (any wolf den) | Wolf Form (fast travel). 25% chance of an Unsullied Heart |
+| 16 | Alpha the White Wolf | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178446) (roams a circuit of Farbane roads around the Wolf Den) | Wolf Form (fast travel). 25% chance of an Unsullied Heart |
 | 20 | ★ **Errol the Stonebreaker** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178451) | Chaos T1 point → **Chaos Volley**. Equip **Chaos Volley + Shadowbolt** |
 | 20 | ★ **Keely the Frost Archer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178445) | **Tannery, Leather**, **Empty Waterskin** (for Enchanted Brew). Frost T1 point → Cold Snap (defensive) |
 | 20 | ★ **Rufus the Foreman** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178449) | **Woodworking Bench** and the whole **crossbow line** (Bone → Copper → Iron → Dark Silver). Blood T1 point → Blood Rage |
 
-**Unsullied Hearts:** these early bosses (Alpha, Errol, Keely, Rufus) each have a 25% chance to drop one. Keep every heart: you'll need 4 for the ring in Phase 3.
+**Unsullied Hearts:** these early bosses (Alpha, Errol, Keely, Rufus) each have a 25% chance to drop one. Keep every heart: you'll need 4 for the ring in Phase 3 (and 1 more to summon Nibbles, if you want Rat Form).
 
 **Craft:**
 - **Bone Crossbow → Reinforced Bone Crossbow → Copper Crossbow.** Copper takes 16 Copper Ingot + 8 Plank at the Simple Workbench.
@@ -83,7 +83,8 @@ This takes a fresh vampire to the endgame build in `pve_spellcaster_build.md`, i
 
 **Craft:**
 - **Gravedigger Ring** (GL 9, +9.7 Spell Power): 12 Grave Dust + 32 [Mourning Lily](https://mapgenie.io/v-rising/maps/vardoran?catIds=6116). Wear it until Phase 3.
-- **Unsullied Hearts:** from Grayson on, almost every V Blood drops one guaranteed. The exceptions (25% chance) are Alpha, Errol, Keely, Rufus, Lidia, Kodia and Finn.
+- **Unsullied Hearts:** Grayson to Gaius (Lv 27–55) each drop one guaranteed, except Alpha, Errol, Keely, Rufus, Nibbles, Lidia, Kodia and Finn (25%). From Lv 53 on most V Bloods drop one 80% of the time and some none (game data drop tables), but by then Tristan's recipe makes Greater Blood Essence without hearts.
+- **Research Desk blueprints** are a random draw within a category: 60 Paper for a weapon or ring, 50 for armour or a brew. Each armour draw is one random piece out of 16 (four sets).
 - **Research Desk recipes:**
   - **Merciless Copper Crossbow** (GL 12): Copper Crossbow + 2 Crude Topaz + 12 Whetstone + 4 Leather.
   - **Warlock Vestment.** Each piece = a Nightstalker piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot. All 4 pieces give +7.2% Bonus Spell Power; the set bonus is 2-piece +4% cooldown, 4-piece +1 Gear Level.
@@ -101,15 +102,17 @@ This takes a fresh vampire to the endgame build in `pve_spellcaster_build.md`, i
 |---|---|---|---|
 | 30 | ★ **Clive the Firestarter** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178454) | **Alchemy Table**, **Minor Explosive Box** (needed to enter Quincey's stronghold). Chaos T2 point → **Rain of Chaos** |
 | 30 | ★ **Lidia the Chaos Archer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178452) (spawns along Farbane paths) | The Devourer, Leatherworking Station. Chaos T1 point → Aftershock. With Errol + Clive: **Chaos mastery T1**, +5% Veil cooldown |
-| 30 | Nibbles the Putrid Rat | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178456) (summoned with a Vermin Nest) | Rat Form |
+| 30 | Nibbles the Putrid Rat | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178456) (summoned at your Vermin Nest with a Putrid Rat: 4 Grave Dust + 1 Unsullied Heart) | Rat Form. Summoning him costs a heart you also need for the ring; he drops one back 25% of the time |
 | 32 | ★ **Finn the Fisherman** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=355625) | **Fishing Pole**: Fish Bone for brews, Corrupted Fish for prisoners later. Frost T1 point |
 | 35 | ★ **Polora the Feywalker** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178262) | Growing plots, Minor Garlic Resistance Brew. Illusion T1 point → **Wraith Spear** (Illusion point 2) |
-| 35 | Nicholaus the Fallen | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178450) | Paper Press. Unholy T3 point → **Volatile Arachnid** (backup ultimate) |
+| 35 | Nicholaus the Fallen | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178450) | Paper Press (crafts Paper, Scrolls and Schematics; optional while drops keep up). Unholy T3 point → **Volatile Arachnid** (backup ultimate) |
 | 35 | Kodia the Ferocious Bear | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178384) | Bear Form (its Crush also opens the stronghold) |
 | 37 | ★ **Quincey the Bandit King** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178444) in the [Bandit Stronghold](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178391) (enter with Minor Explosive Boxes or Bear Form) | **Smithy, Tailoring Bench, Iron Ingot**, Hollowfang recipes, an Unsullied Heart. Chaos T3 point → **Chaos Barrage**, your ultimate until Dracula |
 | 40 | ★ **Beatrice the Tailor** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178468) (Dunley Farmlands) | **Veil of Blood** (drop), **Loom** (Coarse Thread is now craftable), Cloth, **Cotton Yarn** |
 
 The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry that doesn't exist in game.
+
+**Research currency:** Paper, Scrolls and Schematics drop from humans (Paper in Farbane, Scrolls in Dunley, Schematics in Silverlight, the Cursed Forest, Oakveil and Gloomrot North) and chests, and the Devourer turns spare blueprints into them. Nicholaus's Paper Press also crafts all three (4 Scrolls from 4 Coarse Thread + 8 Paper; 12 Schematics from 40 Tech Scrap + 16 Scrolls), so kill him if drops run short.
 
 **Craft:**
 - **Ring of the Sorcerer** (GL 12, +12.8 Spell Power; Research Desk recipe):
@@ -122,7 +125,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
 **Early build, complete (≈33 DPS):**
 - **Abilities:** Veil of Blood · Chaos Volley + **Bone Explosion** or **Shadowbolt** · Chaos Barrage.
-- **Gear:** Warlock Vestment, Ring of the Sorcerer, Merciless Copper Crossbow.
+- **Gear:** Warlock Vestment, Ring of the Sorcerer, Iron Crossbow.
 - **Blood and potion:** Scholar 100%, Enchanted Brew.
 - **Spell 2:** Bone Explosion's lead (33.3 vs 32.7) comes only from short fights; at 10 minutes they tie.
 - **Rotation:** Volley → spell 2 → Veil; ultimate when both spells are on cooldown.
@@ -165,12 +168,13 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 - **Castle Heart level 3:** 8 Reinforced Plank + 24 Glass + 1 Greater Blood Essence.
   - Completing it ("Reign Supreme") gives the **Eye of Mortium**, which tracks Rift Incursions (needed for shards from Phase 5 on).
   - Build the Eye inside your territory: 4 Iron Ingot + 4 Scourgestone + 20 Scroll.
-- **Study:** queue **Dark Magus**, **Merciless Iron Crossbow** and **Pendant of the Sorcerer**. Their materials arrive in Phase 5.
+- **Study:** spend Scrolls on **Dark Magus**, **Merciless Iron Crossbow** and **Pendant of the Sorcerer** (90 for a weapon or pendant, 75 for armour, each a random draw within its category). Their materials arrive in Phase 5.
 
 **Loadout from Kriig on:** Veil of Blood · **Chaos Volley + Unholy Chains** · Chaos Barrage.
-- **Unholy Chains:** you can only move while channelling, and the tether breaks beyond 14 m. Don't start it if your Veil is back within ~2 s.
-- **Elixir:** Prowler once Meredith is down.
-- **DPS:** with Veil of Blood this loadout tops out around **102** even with full Lv 70 gear (less in this phase). It reaches ~115 once Veil of Chaos replaces Veil of Blood (Phase 5).
+- **Unholy Chains:** it channels for up to 1.7 s and the tether breaks if you get more than 14 m from the target. Don't start it if your Veil is back within ~2 s.
+- **Gear:** Warlock Vestment, **Scourgestone Pendant** (16.5 Spell Power, GL 15, over the ring's 12.8 and GL 12), Iron Crossbow.
+- **Elixir and potion:** Prowler once Meredith is down; keep drinking Enchanted Brew.
+- **DPS:** with Veil of Blood this loadout tops out around **102** even with full Lv 70 gear (less in this phase). With the same Lv 70 gear it reaches ~115 once Veil of Chaos replaces Veil of Blood (Phase 5).
 
 ---
 
@@ -189,10 +193,10 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 | 57 | ★ **Raziel the Shepherd** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178475) (Dunley) | **Jewelcrafting Table**. Blood T2 point → Carrion Swarm |
 | 58 | Octavian the Militia Captain | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178469) (Dunley) | **Ancestral Forge**, gear storage. Storm T3 point |
 | 60 | ★ **Domina the Blade Dancer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=283049) (Gloomrot South) | Storm T2 point → **Lightning Tendrils**, Elixir of the Blasphemous |
-| 60 | ★ **Ziva the Engineer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=282801) (Gloomrot South) | Also a Storm T2 point (Tendrils, if you haven't taken it), **Fabricator**, **Radium Alloy** (needed for Blood Merlot Amulet, Castle Heart 4, Ancestral weapons) |
+| 60 | ★ **Ziva the Engineer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=282801) (Gloomrot South) | Also a Storm T2 point (Tendrils, if you haven't taken it), **Fabricator**, **Radium Alloy** recipe (smelted at the Furnace: 60 Tech Scrap + 4 Sulphur + 1 Sludge-filled Canister → 4; needed for Blood Merlot Amulet, Castle Heart 4, Ancestral weapons and Power Cores) |
 
 **Craft:**
-- **Dark Magus Vestment** (Study): each piece = a Hollowfang piece + 4 Iron Ingot + 8 Thick Leather. All 4 pieces give +6% Bonus Spell Power; set bonus 2-piece +4% cooldown, 3-piece +1 Gear Level, 4-piece +3% leech. Swap from Warlock now.
+- **Dark Magus Vestment** (Study): each piece = a Hollowfang piece + 4 Iron Ingot + 8 Thick Leather. All 4 pieces give +6% Bonus Spell Power; set bonus 2-piece +4% cooldown, 3-piece +1 Gear Level, 4-piece +3% leech. Swap from Warlock now: slightly less Spell Power than Warlock's 7.2%, but the set is 8 Gear Levels higher (25 vs 17) and adds leech.
 - **Pendant of the Sorcerer** (GL 18): Scourgestone Pendant + 4 Regular Amethyst + 16 Glass.
 - **Merciless Iron Crossbow** (GL 18): Iron Crossbow + Regular Topaz + 4 Greater Blood Essence + 4 Reinforced Plank.
 - **Regular jewels** (Jewelcrafting Table; 4 Regular gem + 4 Iron Ingot, 2 mods each). Mods are random; craft until you hit these:
@@ -206,8 +210,8 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 **Stygian passives:**
 - **Stygian Shards** come from **Tier 1 Rift Incursions** (recommended Lv 57+; every 30 min, tracked with the Eye of Mortium) and Ruins of Mortium points of interest.
 - The Altar's **Discover** unlocks a **random** elemental passive for 400 Stygian Shards. Awakening Scrolls from Rift V Bloods unlock a chosen one.
-- Target **Enhanced Conductivity, Renewing Flames**, then **Chaos Kindling** when Cyril's third slot opens.
-- Expect several discovers.
+- Target **Enhanced Conductivity, Renewing Flames**, then **Chaos Kindling** when Cyril's third slot opens (and Cold Soul for Phase 7).
+- Each Discover gives a random passive you don't have yet, out of 12. Landing all four takes about 10.4 Discovers on average (k specific out of 12 take k·13/(k+1)), so ≈4,160 Stygian Shards. The Altar itself costs 1 Regular Ruby + 12 Iron Ingot + 4 Greater Blood Essence.
 
 **Mid build at Lv 60 (≈91 DPS):** two passive slots (Enhanced Conductivity + Renewing Flames), Regular jewels, Chaos mastery still T1.
 - **Abilities:** **Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage**.
@@ -223,7 +227,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
 **Region access:**
 - **Cursed Forest:** "Curse of the Forest" fogs your view. Kill **Ben** first and craft his **Shroud of the Forest**.
-- **Silverlight Hills:** silver hurts you. Bring Willfred's **Silver Resistance Potion**.
+- **Silverlight Hills:** silver hurts you. Bring Willfred's **Silver Resistance Potion** (Alchemy Table: 40 Plague Brier + Empty Glass Bottle; lasts 60 minutes).
 
 | Lv | Boss | Map | Take |
 |---|---|---|---|
@@ -273,18 +277,18 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 | 76 | ★ **Lucile the Venom Alchemist** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=450465) (Oakveil) | **Blood Homogenizer**. Blood T2 point |
 | 76 | Terrorclaw the Ogre | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178281) (Hallowed Mountains) | Advanced Tannery. Frost T3 point |
 | 79 | ★ **Azariel the Sunbringer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178466) (Silverlight Hills; holy radiation, so bring Mairwyn's Holy Resistance Flask) | **Gold Ingot** (Sanguine weapons). Chaos T3 point (8th) |
-| 79 | ★ **Voltatia the Power Master** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=284506) (Gloomrot North) | **Power Core** (GL 25 amulets, Castle Heart 5) |
+| 79 | ★ **Voltatia the Power Master** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=284506) (Gloomrot North) | **Power Core** (GL 25 amulets, Castle Heart 5, Onyx Tears). The Fabricator makes 2 from 8 Radium Alloy + 4 Charged Battery, so this phase's 48 cores take ~192 Radium Alloy and 96 Charged Batteries |
 | 80 | ★ **Simon Belmont the Vampire Hunter** | no fixed marker: patrols the roads of Farbane, Dunley and Silverlight, ending at the [Colosseum](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178286) | Passive slot 5, Sanguine Whip. He always matches your Gear Level, so you can't out-gear him |
 | 82 | ★ **Dantos the Forgebinder** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=450466) (Oakveil) | **Fusion Forge**, **Ember Glass**. Frost T2 point |
 | 84 | ★ **General Valencia the Depraved** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=356943) (Ruins of Mortium) | **Primal jewels** (4 mods), **Shadow Weave** (Dracula's armor) |
 | 84 | ★ **Gorecrusher the Behemoth** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178462) (Cursed Forest) | **Bat Leather** (Dracula's armor). Illusion T3 point |
 | 84 | ★ **Lord Styx the Night Champion** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=355626) (Dracula's Demise: circling a giant Blood Crystal on northern Dunley's border with Gloomrot South) | **Blood Key** and **Onyx Tear** recipes, Bat Form |
 
-**Craft (Athenaeum research):**
+**Craft (Athenaeum research):** each blueprint costs Schematics (120 for a weapon or amulet, 100 for armour or a potion) and is a random draw within its category.
 - **Maleficer Scholar Vestment.** Each piece = a Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence; set bonus 2-piece +5% cooldown, 3-piece +4% leech, 4-piece +1 Gear Level.
 - **Amulet of the Arch-Warlock** (GL 25): Blood Merlot Amulet + 4 Flawless Sapphire + 12 Power Core.
 - **Witch Potion** (+5 Spell Power): 60 Sacred Grapes + 60 Snow Flower + Fish Bone + Empty Glass Bottle. It can also be bought from the city Herbs & Potions vendor or the [Treasure Hunter](https://mapgenie.io/v-rising/maps/vardoran?locationIds=355898) (Goldsun Coins).
-- **Elixir of the Twisted:** 20 Corrupted Flower + 20 Plague Brier + Greater Blood Essence + bottle.
+- **Elixir of the Twisted:** 20 Corrupted Flower (Oakveil) + 20 Plague Brier (Gloomrot South) + Greater Blood Essence + bottle.
 - **Sanguine Crossbow** (GL 27, Anvil): Dark Silver Crossbow + 1 Flawless Topaz + 12 Gold Ingot.
 - **Castle Heart level 5:** 12 Dark Silver Ingot + 4 Power Core + 1 Primal Blood Essence. Unlocks the Eye of Twilight.
 - **Onyx Tear** (Anvil, recipe from Styx): 4 Gold Ingot + 4 Power Core + 4 Ember Glass.
@@ -316,7 +320,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 **Passives:** Enhanced Conductivity · **Wicked Power** · **Hunger for Blood** · Renewing Flames · Cold Soul.
 - Wicked Power and Hunger for Blood are Vampire Awakenings: Discover costs **600 Greater Stygian Shards** and the passive is random.
 - Greater Shards come from **Tier 2 Rift Incursions** (recommended Lv 80, ~65 per solo run) or 12:1 conversion at the Gem Cutting Table.
-- Landing both specific passives takes **about 5,000 Greater Shards on average**: dozens of Tier 2 runs.
+- Landing both specific passives takes **about 8.7 Discovers, ≈5,200 Greater Shards on average**: dozens of Tier 2 runs. Add 1,500 Greater if you buy the Epic Ancestral shard.
   - Awakening Scrolls shortcut it.
   - Scrolls for passives you already own salvage at the Devourer for 100 Greater each.
   - A server's shard drop multiplier helps.
@@ -347,6 +351,8 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 | 88 | ★ **Adam the Firstborn** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=284505) (Gloomrot North) | **Dracula's Maleficer Chestguard**, Soul Shard of the Monster |
 | 88 | ★ **Megara the Serpent Queen** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=508500) (Oakveil) | **Dracula's Maleficer Leggings**, Soul Shard of the Serpent |
 | 91 | ★ **Dracula the Immortal King** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=378284) (Ruins of Mortium; needs the Blood Key) | **Soul Shard of Dracula** → Blood Storm. Completes "Lord of the Night" |
+
+**Craft:** **Elixir of the Blasphemous** for build A (Alchemy Table, Domina's recipe): 20 Plague Brier + 20 Hell's Clarion + Greater Blood Essence + Empty Glass Bottle.
 
 **Choose your endgame build** (full detail in the build guide):
 1. **Wear the Soul Shard of Dracula.** It works with any ultimate.
@@ -425,6 +431,8 @@ Moving from setup B means re-rolling or fusing the weapon: swap Bonus Spell Powe
 | Chaos | T2 | Angram 61 | + Quincey, Angram |
 | Chaos | T3 | Stavros 75 | + Morian, Stavros |
 | Illusion | T1 | Christina 44 | Grayson, Polora, Christina |
+
+**Research costs:** each blueprint is a random draw within its category: 60 Paper / 90 Scrolls / 120 Schematics for a weapon or jewelry, 50 / 75 / 100 for armour or a consumable.
 
 **Spell picks:** Tendrils (Storm T2) is required. Leftover Frost, Storm and Blood points are free to spend on defensive picks like Cold Snap or Ice Block.
 

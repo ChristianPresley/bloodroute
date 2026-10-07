@@ -16,13 +16,13 @@ window.BR.ARCHETYPES = [
   },
   {
     id: 'rogue', name: 'Rogue', status: 'ready', patch: '1.1.13',
-    tagline: 'Axes, then Pistols: Veil often and spend your weapon skills while Rogue blood makes them crit.',
+    tagline: 'Axes, then Pistols: stack physical crit, Veil often and fire your weapon skills right after, while the post-Veil crit bonuses last.',
     icons: ['Sanguine Pistols', 'Veil of Chaos', "Dracula's Shadow Chestguard"], blood: 'Rogue', color: '#35d0e0',
     files: ['routes/shared.js', 'routes/rogue/needs.js', 'routes/rogue/route.js'],
   },
   {
     id: 'brute', name: 'Brute', status: 'ready', patch: '1.1.13',
-    tagline: 'Spear, then Twinblades: fast primary attacks that leech, with Blood Rage and Storm to heal through the fight.',
+    tagline: 'Spear, then Twinblades: fast primary attacks that leech, with Blood Rage and Veil of Storm to keep the hits coming.',
     icons: ['Sanguine Twinblade', 'Veil of Storm', "Dracula's Grim Chestguard"], blood: 'Brute', color: '#55c46a',
     files: ['routes/shared.js', 'routes/brute/needs.js', 'routes/brute/route.js'],
   },
