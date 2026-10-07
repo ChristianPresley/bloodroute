@@ -58,7 +58,7 @@ journal-quest data and build_data.json. W/Page = https://vrising.fandom.com/wiki
 | Shelter quest unlocks Furnace, Sawmill, Simple Workbench, Grinder, Blood Press | W/Shelter, W/Furnace |
 | Research Desk from "Thirst for Power": 3 more V Bloods + equip a spell (journal tag Lv 30) | W/Thirst_for_Power; quest data |
 | Dominate chain: "Waygate" → Stone Coffin; "Lord of the Manor" → Servant Coffin; "Servants" (Blood Press + Servant Coffin) → Dominate | quest data; W/Servants_(Quest) |
-| Unsullied Heart guaranteed from most V Bloods; 25% from Alpha, Errol, Keely, Rufus, Lidia, Kodia, Finn; Greater Blood Essence from hearts at the Blood Press (4 per W/Blood_Press) | W/Unsullied_Heart, W/Blood_Press, W/Greater_Blood_Essence |
+| Unsullied Heart guaranteed from Grayson to Gaius (Lv 27–55); 25% from Alpha, Errol, Keely, Rufus, Nibbles, Lidia, Kodia, Finn; 80% from most Lv 53+ V Bloods and none from some (the wiki says guaranteed from all but the 25% ones; the game data drop tables are used). Greater Blood Essence from 4 hearts at the Blood Press; summoning Nibbles costs 1 heart + 4 Grave Dust | W/Unsullied_Heart, W/Blood_Press, W/Greater_Blood_Essence, W/Vermin_Nest, `data/raw_full.json` drop tables |
 | Coarse Thread looted in bandit camps / Shady Goods Dealer (no Human Form); Wool Thread, Cotton Yarn looted or Rural merchant (Human Form) | W/Coarse_Thread, W/Wool_Thread, W/Cotton_Yarn, W/Human_Form |
 | Quincey's stronghold needs Minor Explosive Boxes or Bear Form's Crush | W/Quincey_the_Bandit_King |
 | Prison Cell 8 Iron Ingot + 2 Reinforced Plank; Corrupted Fish ±0–2% quality, caught in Oakveil (and Brighthaven Docks, which has every region's fish) | W/Prison_Cell, W/Corrupted_Fish, W/Silverlight_Hills |
@@ -74,7 +74,8 @@ journal-quest data and build_data.json. W/Page = https://vrising.fandom.com/wiki
 | Blood Key: 4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal (Artisan Table); item text: entry to Dracula's Castle | W/Blood_Key, 1.1 notes, items.json |
 | Fusion Forge: 12 Ember Glass per fusion; jewels (same spell) or Ancestral weapons (across types); result keeps the target's mod count | W/Fusion_Forge |
 | Mortium Vampire Merchants sell Rare (South, 750 Stygian) / Epic (North, 1,500 Greater) Ancestral shards; Human Form is only described for Rural/City vendors | W/Vendors |
-| Elixir of the Prowler: 20 Sunflower + 20 Fire Blossom + GBE + bottle; Witch Potion also sold by the city Herbs & Potions vendor and Treasure Hunter | W/Elixir_of_the_Prowler, W/Witch_Potion |
+| Elixir of the Prowler: 20 Sunflower + 20 Fire Blossom + GBE + bottle; Witch Potion also sold by the city Herbs & Potions vendor and Treasure Hunter; Elixir of the Blasphemous: 20 Plague Brier + 20 Hell's Clarion + GBE + bottle (Domina) | W/Elixir_of_the_Prowler, W/Witch_Potion, W/Elixir_of_the_Blasphemous |
+| Radium Alloy is smelted at the Furnace (60 Tech Scrap + 4 Sulphur + 1 Sludge-filled Canister → 4); the Fabricator makes Power Cores (8 Radium + 4 Charged Battery → 2). Plague Brier grows in Gloomrot South, Corrupted Flower in Oakveil | W/Radium_Alloy, W/Power_Core, W/Plague_Brier, W/Corrupted_Flower |
 | Lord Styx circles a giant Blood Crystal at Dracula's Demise (south of Gloomrot; Map Genie files it under Dunley) | W/Lord_Styx_the_Night_Champion |
 | Simon Belmont matches the opponent's Gear Level; patrols Farbane, Dunley and Silverlight roads, ending at the Colosseum | W/Simon_Belmont_the_Vampire_Hunter |
 | Cursed Forest fog cured by Ben's Shroud of the Forest; Silverlight needs silver resistance; Azariel needs holy resistance | W/Curse_of_the_Forest, W/Silverlight_Hills |

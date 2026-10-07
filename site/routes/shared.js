@@ -8,7 +8,7 @@
 
   // ---------- V Bloods: name → [level, Map Genie marker, where] ----------
   const VB = {
-    'Alpha the White Wolf': [16, 178446, 'any wolf den'],
+    'Alpha the White Wolf': [16, 178446, 'roams a circuit of Farbane roads around the Wolf Den'],
     'Errol the Stonebreaker': [20, 178451],
     'Keely the Frost Archer': [20, 178445],
     'Rufus the Foreman': [20, 178449],
@@ -16,7 +16,7 @@
     'Goreswine the Ravager': [27, 178447, 'roams the forest'],
     'Clive the Firestarter': [30, 178454],
     'Lidia the Chaos Archer': [30, 178452, 'spawns along Farbane paths'],
-    'Nibbles the Putrid Rat': [30, 178456, 'summoned with a Vermin Nest'],
+    'Nibbles the Putrid Rat': [30, 178456, 'summoned at your Vermin Nest with a Putrid Rat (4 Grave Dust + 1 Unsullied Heart)'],
     'Finn the Fisherman': [32, 355625],
     'Polora the Feywalker': [35, 178262],
     'Nicholaus the Fallen': [35, 178450],
@@ -80,10 +80,11 @@
     return { lv, name, must, map, where, gets, take };
   };
   const B = boss(true), O = boss(false);
+  const shortName = n => n.replace(/^(General|Sir|Lord) /, '').split(' the ')[0];
 
   // ---------- Steps and crafts every physical route shares ----------
   const STEP = {
-    boneguard: { ic: 'Boneguard Chestguard', t: 'Craft the Boneguard set from the inventory, then upgrade to Plated Boneguard at the Simple Workbench.' },
+    boneguard: { ic: 'Boneguard Chestguard', t: 'Craft the Boneguard set from the inventory. Once the Simple Workbench is up, you can upgrade it to Plated Boneguard until the Nightstalker set is ready.' },
     castle: { ic: 'Castle Heart', t: `Place a Castle Heart on a ${L(C(6117), 'castle plot')} with a coffin, chest and Mist Brazier. "Shelter" unlocks the Furnace, Sawmill, Simple Workbench, Grinder and Blood Press.` },
     copper: { ic: 'Copper Ingot', t: `Smelt Copper Ingot in the Furnace from ${L(C(6091), 'Copper Ore')}.` },
     workbench: { ic: 'Simple Workbench', t: 'Build a Sawmill and Simple Workbench and raise your Gear Level ("Getting Ready for the Hunt" unlocks Blood Tracking).' },
@@ -97,7 +98,7 @@
   };
   const CRAFT = {
     nightstalker: next => ({ ic: 'Nightstalker Vest', t: `<b>Nightstalker set</b> (vest: 8 Leather + 4 Coarse Thread), the base for ${next}. Coarse Thread drops in ${L(M(CAMPS), 'Farbane bandit camps')} or comes from the Shady Goods Dealer at the ${L(M('283054,284512'), 'Shady Merchants Camp')}.` }),
-    hearts: { ic: 'Unsullied Heart', t: 'Keep every Unsullied Heart. These four bosses drop one 25% of the time; you need 4 for the Phase 3 ring.' },
+    hearts: { ic: 'Unsullied Heart', t: 'Keep every Unsullied Heart. These four bosses drop one 25% of the time; you need 4 for the Phase 3 ring (and 1 more to summon Nibbles, if you want Rat Form).' },
     gravedigger: { ic: 'Gravedigger Ring', t: `<b>Gravedigger Ring</b> (GL 9): 12 Grave Dust + 32 ${L(C(6116), 'Mourning Lily')}. Wear it until Phase 3, then it becomes your ring.` },
     ring: (name, gem, stat) => ({ ic: name, t: `<b>${name}</b> (GL 12, ${stat}, Research Desk): make a Greater Blood Essence at the Blood Press from 4 Unsullied Hearts, then Gravedigger Ring + 4 ${gem} (${L(C(6098), 'gem nodes')}) + 1 Greater Blood Essence.` }),
     brew: { ic: 'Brew of Ferocity', t: `<b>Brew of Ferocity</b> (+3 Physical Power, Research Desk blueprint, Alchemy Table): 32 Hell's Clarion (${L(C(6106), 'map layer')}) + Fish Bone + Empty Waterskin. Herb & Potion merchants also sell it.` },
@@ -108,7 +109,7 @@
     rareAncestral: w => ({ ic: `Ancestral ${w} Shards`, t: `<b>Rare Ancestral ${w}</b> (optional, Ancestral Forge): Merciless Iron ${w} + a Rare Ancestral ${w} shard + 8 Radium Alloy + 1 Greater Blood Essence. Two random rolls. Shards: 25% from Lv 53+ V Bloods, 50% from Tier 1 Rifts, or 750 Stygian at the southern Mortium Vampire Merchant. A Dark Silver or Sanguine ${w} raises it to GL 24 and 27 later.` }),
     dawnthorn: next => ({ ic: 'Dawnthorn Chestguard', t: `<b>Dawnthorn Regalia</b> (chest 12 Pristine Leather + 8 Silk). Don't wear it; it's only the base for ${next}.` }),
     merlot: { ic: 'Blood Merlot', t: '<b>Blood Merlot</b> (drink, at a Prison Cell): Empty Glass Bottle + 60 Sacred Grapes (Brighthaven vineyards or Sacred Grape Seeds).' },
-    merlotAmulet: { ic: 'Blood Merlot Amulet', t: '<b>Blood Merlot Amulet</b> (GL 22, Artisan Table): 1 Blood Merlot + 4 Dark Silver Ingot + 12 Radium Alloy. Wear it for the Gear Level; it is also the base for your GL 25 amulet.' },
+    merlotAmulet: { ic: 'Blood Merlot Amulet', t: '<b>Blood Merlot Amulet</b> (GL 22, Artisan Table): 1 Blood Merlot + 4 Dark Silver Ingot + 12 Radium Alloy. Wear it for the Gear Level, though it drops your pendant\'s stat bonus until the GL 25 amulet; it is also that amulet\'s base.' },
     castle4: { ic: 'Castle Heart', t: 'Castle Heart level 4: 12 Radium Alloy + 1 Primal Blood Essence (unlocks Subdue).' },
     fish: blood => ({ ic: 'Corrupted Fish', t: `<b>Corrupted Fish</b>: fish at ${L(M(178412), 'Brighthaven Docks')} and feed your ${blood} prisoner up to 100% (Tier V: every blood bonus +20%).` }),
     rage: { ic: 'Potion of Rage', t: `<b>Potion of Rage</b> (+5 Physical Power, Athenaeum): 60 Plague Brier + 60 Hell's Clarion + Fish Bone + Empty Glass Bottle, or 60 Goldsun Coins at the City Herb & Potion Vendor or the ${L(M(355898), 'Treasure Hunter')}. Replaces the Brew.` },
@@ -117,17 +118,19 @@
     onyx: { ic: 'Onyx Tear', t: `<b>Onyx Tear</b> (Anvil): 4 Gold Ingot + 4 Power Core + 4 Ember Glass. Also drops from Lv 79+ bosses or from the ${L(M(355898), 'Treasure Hunter')}.` },
     key: { ic: 'Blood Key', t: "<b>Blood Key</b> (Artisan Table): 4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal (mined at Dracula's Demise with a GL 23+ weapon). Opens Dracula's castle." },
     epicAncestral: (w, rolls) => ({ ic: `Ancestral ${w} Shards`, t: `<b>Epic Ancestral ${w}</b> (3 rolls, Ancestral Forge): Sanguine ${w} + an Epic ${w} shard + 4 Onyx Tear. Epic shards: ~5% from Lv 79+ bosses and Tier 2 Rifts, or 1,500 Greater at the Northern Mortium Vampire Merchant (${L(M('400681,400682'), 'probable markers')}). ${rolls} Merge two at the Fusion Forge (12 Ember Glass) to keep the best rolls.` }),
-    shard: { ic: 'Soul Shard of Dracula', t: 'Wear the <b>Soul Shard of Dracula</b>: primary hits can trigger Bloodthirst (+15% damage for 6 s), and it unlocks Blood Storm, an invulnerable channel. Since 1.1 you can keep any ultimate with a Soul Shard.' },
+    shard: { ic: 'Soul Shard of Dracula', t: 'Wear the <b>Soul Shard of Dracula</b>: +16% Blood Efficiency (your blood\'s bonuses and their caps both grow 16%), primary hits can trigger Bloodthirst (+15% damage for 6 s), and it unlocks Blood Storm, an invulnerable channel. It takes the amulet slot, so you lose the GL 25 amulet\'s stat and proc. Since 1.1 you can keep any ultimate with a Soul Shard.' },
     repair: { ic: 'Greater Stygian Shard', t: 'Keep the shard repaired: feed on Primal Blood Souls in Tier 2 Rift Incursions (+750 each, shared across carried shards).' },
   };
-  const ACCESS = [['Shroud of the Forest', 'Cursed Forest fogs your view: kill Ben first and craft his Shroud of the Forest.'], ['Silver Resistance Potion', 'Silverlight Hills hurts with silver: bring Willfred\'s Silver Resistance Potion.']];
+  const ACCESS = [['Shroud of the Forest', 'Cursed Forest fogs your view: kill Ben first and craft his Shroud of the Forest.'], ['Silver Resistance Potion', 'Silverlight Hills hurts with silver: bring Willfred\'s Silver Resistance Potion (Alchemy Table: 40 Plague Brier + Empty Glass Bottle; lasts 60 minutes).']];
   const NOTE = {
-    hearts: 'From Grayson on, almost every V Blood drops an Unsullied Heart guaranteed (25% only from Alpha, Errol, Keely, Rufus, Lidia, Kodia and Finn).',
-    blueprints: 'Research Desk blueprints are random within a category (60 Paper for a weapon, 50 for armour). Clive always drops a weapon blueprint and Grayson an armour one; the Shady Merchants Camp sells them too.',
+    hearts: 'Grayson to Gaius (Lv 27–55) each drop an Unsullied Heart guaranteed, except Alpha, Errol, Keely, Rufus, Nibbles, Lidia, Kodia and Finn (25%). From Lv 53 on most V Bloods drop one 80% of the time and some none, but by then Tristan\'s recipe makes Greater Blood Essence without hearts.',
+    blueprints: 'Research Desk blueprints are a random draw within a category: 60 Paper for a weapon or ring, 50 for armour or a brew. Each armour draw is one random piece out of 16 (four sets), so a full set can take many draws. Clive always drops a weapon blueprint and Grayson an armour one; the Shady Merchants Camp sells them too.',
+    paper: 'Paper, Scrolls and Schematics pay for research. They drop from humans (Paper in Farbane, Scrolls in Dunley, Schematics in Silverlight, the Cursed Forest, Oakveil and Gloomrot North) and chests, and the Devourer turns spare blueprints into them. Nicholaus\'s Paper Press also crafts all three (4 Scrolls from 4 Coarse Thread + 8 Paper; 12 Schematics from 40 Tech Scrap + 16 Scrolls), so kill him if drops run short.',
+    athenaeum: 'Athenaeum blueprints cost Schematics: 120 for a weapon or amulet, 100 for armour or a potion, each a random draw within its category. Building the Athenaeum takes 20 more.',
     quincey: 'The game data also lists a "Lv 30 Quincey the Marauder". It\'s a duplicate entry; the real fight is the Lv 37 Bandit King.',
     horizons: 'The journal\'s "Broaden Horizons" (Lv 40) sends you on to Dunley Farmlands.',
     fish: 'Corrupted Fish (raises prisoner quality ±2% per feed) is only caught in Oakveil or at Brighthaven Docks, so catch a high-quality prisoner for now.',
-    study: 'Study blueprints cost Scrolls. Meredith and Jade always drop a weapon blueprint, Raziel a magic one, and Bane, Octavian and Angram an armour one.',
+    study: 'Study blueprints cost Scrolls (90 for a weapon or pendant, 75 for armour) and are random within a category. Meredith and Jade always drop a weapon blueprint, Raziel a magic one, and Bane, Octavian and Angram an armour one.',
     gl: 'Gear Level is worth chasing: you deal about 4% less damage per level under a boss.',
   };
 
@@ -138,7 +141,7 @@
     'Bone': [1, 'Skeletons and beasts all over Farbane'], 'Plank': [1, 'Sawmill (from wood)'], 'Stone': [1, 'Rocks everywhere'],
     'Copper Ingot': [1, `Furnace, from ${L(C(6091), 'Copper Ore')}`], 'Leather': [1, 'Tannery (Keely), from animal hides'],
     'Coarse Thread': [1, `Loot ${L(M(CAMPS), 'bandit camps')} or the ${L(M('283054,284512'), 'Shady Goods Dealer')}; Loom from Lv 40`],
-    'Unsullied Heart': [1, 'V Blood drops (25% early, guaranteed from Grayson on)'], 'Mourning Lily': [1, L(C(6116), 'Mourning Lily map layer')],
+    'Unsullied Heart': [1, 'V Blood drops (25% from the first few, guaranteed from Grayson to Gaius)'], 'Mourning Lily': [1, L(C(6116), 'Mourning Lily map layer')],
     'Snow Flower': [1, L(C(6090), 'Snow Flower map layer')], "Hell's Clarion": [1, `${L(C(6106), "Hell's Clarion map layer")}: caves and underground areas; Mantraps drop it`],
     ...gems('Crude', GEMS, 1, L(C(6098), 'Gem nodes')),
     'Gem Dust': [1, 'Grinder (from gems)'], 'Empty waterskin': [1, 'Recipe from Keely'], 'Grave Dust': [2, 'Recipe from Goreswine'],
@@ -146,15 +149,19 @@
     'Fish Bone': [3, `Fish with Finn's pole at ${L(C(6104), 'fishing spots')}`], 'Iron Ingot': [3, `Furnace (Quincey), from ${L(C(6093), 'Iron Ore')} (GL 12+ weapon)`],
     'Cotton Yarn': [3, `Loot in Dunley; ${L(M('432218,432220,432221,432222'), 'cotton patches')}; Loom recipe from Beatrice`],
     'Sunflower': [3, L(M('179518,179681,432219'), 'Dunley sunflower patches')], 'Fire Blossom': [3, L(C(6089), 'Fire Blossom map layer')],
-    'Wool Thread': [4, 'Recipe from Christina; loot in Dunley'], 'Scourgestone': [4, 'Recipe from Leandra'], 'Scroll': [4, 'Paper Press / recipe from Maja'],
+    'Wool Thread': [4, 'Recipe from Christina; loot in Dunley'], 'Scourgestone': [4, 'Recipe from Leandra'], 'Scroll': [4, 'Drops from Dunley humans and chests; Paper Press (Nicholaus) with the recipe from Maja'],
     'Glass': [4, 'Recipe from Grethel'], 'Empty Glass Bottle': [4, 'Recipe from Grethel'], 'Reinforced Plank': [4, 'Recipe from Vincent'],
     'Thick Leather': [5, 'Recipe from Frostmaw'], ...gems('Regular', GEMS, 5, 'Gem Cutting Table (Terah)'),
-    'Primal Blood Essence': [5, 'Advanced Blood Press (Jade)'], 'Radium Alloy': [5, 'Fabricator (Ziva)'],
+    'Primal Blood Essence': [5, 'Advanced Blood Press (Jade)'],
+    'Radium Alloy': [5, 'Smelt 4 at the Furnace from 60 Tech Scrap + 4 Sulphur + 1 Sludge-filled Canister (recipe from Ziva); also looted in Gloomrot. Each Power Core takes 4'],
+    'Charged Battery': [5, 'Depleted Batteries drop from Gloomrot machines and Tech Scrap piles; charge 10 at a time at a Lightning Harvester (Thunderstrike Peak, Stormdrain Hills), or buy charged ones from the Treasure Hunter. Each Power Core takes 2'],
+    'Stygian Shard': [5, 'Tier 1 Rift Incursions (Lv 57+, tracked with the Eye of Mortium) and Ruins of Mortium points of interest'],
+    'Greater Stygian Shard': [5, 'Convert 12 Stygian → 1 at the Gem Cutting Table (Terah); Tier 2 Rift Incursions (Lv 80, ~65 per solo run) later'],
     'Bleeding Heart': [5, 'Grows across the Ruins of Mortium'], 'Plague Brier': [5, 'Brier plants in Gloomrot South (cut with an Iron or better weapon)'],
     'Pristine Leather': [6, 'Recipe from Ben'], 'Silk': [6, 'Recipe from Ungora'], 'Dark Silver Ingot': [6, `Advanced Furnace (Cyril), from ${L(C(6094), 'Silver Ore')} (GL 18+)`],
     'Sacred Grapes': [6, 'Brighthaven vineyards (Silverlight) or Sacred Grape Seeds'], ...gems('Flawless', GEMS, 6, 'Recipe from Morian'),
     'Ghost Shroom': [6, 'Grows in the Cursed Forest; also comes from Cursed Wood at the Sawmill'],
-    'Blood Crystal': [6, 'Mine at Dracula\'s Demise with a GL 23+ weapon'], 'Ghost Yarn': [7, 'Advanced Loom (Matka)'], 'Power Core': [7, 'Recipe from Voltatia'],
+    'Blood Crystal': [6, 'Mine at Dracula\'s Demise with a GL 23+ weapon'], 'Ghost Yarn': [7, 'Advanced Loom (Matka)'],
     'Gold Ingot': [7, 'Recipe from Azariel'], 'Ember Glass': [7, 'Recipe from Dantos'], 'Shadow Weave': [7, 'Recipe from Valencia'], 'Bat Leather': [7, 'Recipe from Gorecrusher'],
     'Corrupted Flower': [7, 'Grows in the Oakveil Woodlands'], 'Venom Sap': [7, 'Looted across Oakveil; also from Corrupted Oak (Advanced Sawmill) or Corrupted Fish (Blood Press)'],
   };
@@ -162,10 +169,10 @@
   // ---------- Where each physical blood type lives (V Rising wiki, Enemies page) ----------
   const CARRIERS = {
     Warrior: [['Farbane Woods', 'Bandit Rascal 10 · Thug 16 · Thief 18 · Bomber 32'], ['Dunley Farmlands', 'Militia Torchbearer 36 · Guard 40 · Demolisher 47'],
-      ['Gloomrot', 'Batoon 58 · Sentry Officer 60'], ['Silverlight Hills', 'Slave Master (morningstar) 65 · Knight 71 · Paladin 76'],
+      ['Gloomrot', 'Batoon 58 · Sentry Officer 60'], ['Silverlight Hills', 'Slave Master (morningstar) 65 · Harpy Scratcher 66 · Knight 71 · Paladin 76'],
       ['Oakveil Woodlands', 'Lurker 73 · Dreadcleaver 74 · Sentinel 81 (these also carry Corrupted blood)']],
     Rogue: [['Farbane Woods', 'Bandit Scout 10 · Poacher 16 · Trapper 20 · Deadeye 26'], ['Dunley Farmlands', 'Militia Crossbowman 36 · Archer 42'],
-      ['Gloomrot', 'Railgunner 58 · Tazer 58'], ['Silverlight Hills', 'Rifleman 65 · Slave Master (pistol) 65'],
+      ['Gloomrot', 'Railgunner 58 · Tazer 58'], ['Silverlight Hills', 'Rifleman 65 · Slave Master (pistol) 65 · Harpy Dasher 66'],
       ['Oakveil Woodlands', 'Dartflinger 73 · Viper 74–82 (these also carry Corrupted blood)']],
     Brute: [['Farbane Woods', 'Bandit Mugger 22 · Stalker 30'], ['Dunley Farmlands', 'Militia Skirmisher 36 · Veteran 54'],
       ['Gloomrot', 'Tractor Beamer 58'], ['Silverlight Hills', 'Church Archer 56 · Footman 65 · Cleric 68'],
@@ -213,7 +220,7 @@
     return `
       <div class="grid2">
         <div class="card"><h2>Research tiers</h2>${table(null, cfg.research.map(([st, by, what]) => [`<span class="cell">${ic(st, 36)}<span><b>${st}</b><br><span style="font-size:12px;color:var(--muted)">${by}</span></span></span>`, what]))}
-          <p>${NOTE.study}</p></div>
+          <p>${NOTE.study} ${NOTE.athenaeum}</p></div>
         <div class="card"><h2 class="cell">${ic(cfg.blood, 40)}Where to find ${cfg.blood} blood</h2>${table(['Region', 'Carriers and level'], CARRIERS[cfg.blood])}
           <p>Blood tiers unlock at 1 / 30 / 60 / 90% quality and Tier V at 100%. Tristan's Blood Hunger shows type and quality over every head.</p></div>
         <div class="card"><h2 class="cell">${ic('Castle Heart', 40)}Castle Heart</h2>${table(['Level', 'Materials', 'Unlocks'], [
@@ -221,7 +228,7 @@
           ['<span class="mono">4</span>', '12 Radium Alloy + 1 Primal Blood Essence', 'Subdue'], ['<span class="mono">5</span>', '12 Dark Silver Ingot + 4 Power Core + 1 Primal Blood Essence', 'Eye of Twilight']])}</div>
         <div class="card"><h2>Spell School Mastery</h2>${table(null, cfg.mastery.rows.map(([n, tier, bonus, from]) => [`<span class="cell">${ic(n, 36)}${tier}</span>`, bonus, from]))}
           <p>${cfg.mastery.text}</p></div>
-        <div class="card"><h2>Stygian passive slots</h2><div class="tiles">${slots.map(([n, lv, id]) => `<span class="tile" style="width:84px">${id ? `<a href="${M(id)}" target="_blank" rel="noopener">${ic(n, 56)}</a>` : ic(n, 56)}<em>${n.split(' ').slice(-3).join(' ').replace(/^the /, '')}<br><span class="mono">Lv ${lv}</span></em></span>`).join('')}</div><p>Simon Belmont has no fixed marker; he roams. Elemental passives cost 400 Stygian Shards and vampire passives 600 Greater; each Discover is random.</p></div>
+        <div class="card"><h2>Stygian passive slots</h2><div class="tiles">${slots.map(([n, lv, id]) => `<span class="tile" style="width:84px">${id ? `<a href="${M(id)}" target="_blank" rel="noopener">${ic(n, 56)}</a>` : ic(n, 56)}<em>${shortName(n)}<br><span class="mono">Lv ${lv}</span></em></span>`).join('')}</div><p>Simon Belmont has no fixed marker; he roams. Elemental passives cost 400 Stygian Shards and vampire passives 600 Greater; each Discover is random.</p></div>
         <div class="card"><h2>Mining gates</h2>${tiles(['Iron Ore', 'Silver Ore', 'Blood Crystal'])}<p>Iron Ore needs a GL 12+ weapon, Silver Ore GL 18+, Blood Crystals GL 23+ (only at Dracula's Demise).</p></div>
       </div>
       ${weaponCard(cfg.picks)}
@@ -250,9 +257,9 @@
       <div class="grid2">
         <div class="card"><h3 class="cell">${ic(cfg.rotation.icon, 36)}${cfg.rotation.title}</h3><p>${cfg.rotation.text}</p></div>
         <div class="card"><h3>Stat caps to watch</h3>${table(['Stat', 'Cap', 'In this build'], cfg.caps.map(([s, c, n]) => [s, `<span class="mono">${c}</span>`, n]))}
-          <p>Caps apply to permanent sources; temporary buffs (Veils, Blood Rage, procs) can go past them. Tier V blood and Spell School Mastery raise some caps. The attributes screen shows a red bar when you're over.</p></div>
+          <p>Caps apply to permanent sources; temporary buffs (Veils, Blood Rage, procs) can go past them. Blood Efficiency (Tier V, Sanguine Mastery, the Soul Shard) grows a blood bonus and its cap by the same amount, so the sums above use each blood's base values; Spell School Mastery also raises some caps. The attributes screen shows a red bar when you're over.</p></div>
       </div>`;
   }
 
-  BR.shared = { VB, B, O, STEP, CRAFT, ACCESS, NOTE, RES, CARRIERS, WEAPONS, renderRef, renderEndgame };
+  BR.shared = { VB, B, O, shortName, STEP, CRAFT, ACCESS, NOTE, RES, CARRIERS, WEAPONS, renderRef, renderEndgame };
 })();

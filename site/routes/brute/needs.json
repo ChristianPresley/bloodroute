@@ -129,36 +129,11 @@
    ]
   }
  },
- "Greater Blood Essence": {
+ "Unsullied Heart": {
   "3": {
-   "qty": 1,
+   "qty": 4,
    "for": [
-    "Ring of the Duskwatcher"
-   ]
-  },
-  "4": {
-   "qty": 1,
-   "for": [
-    "Castle Heart level 3"
-   ]
-  },
-  "5": {
-   "qty": 6,
-   "for": [
-    "Merciless Iron Twinblade",
-    "Elixir of the Beast"
-   ]
-  },
-  "6": {
-   "qty": 2,
-   "for": [
-    "Elixir of the Werewolf"
-   ]
-  },
-  "7": {
-   "qty": 2,
-   "for": [
-    "Elixir of the Werewolf"
+    "Ring of the Duskwatcher (Greater Blood Essence)"
    ]
   }
  },
@@ -185,13 +160,14 @@
    ]
   },
   "5": {
-   "qty": 36,
+   "qty": 48,
    "for": [
     "Crimson Templar Chestguard",
     "Crimson Templar Leggings",
     "Crimson Templar Gloves",
     "Crimson Templar Boots",
     "Iron Twinblade",
+    "Altar of Stygian Awakening",
     "Regular jewels ×2"
    ]
   }
@@ -203,13 +179,32 @@
     "Brew of Ferocity"
    ]
   },
-  "5": {
-   "qty": 40,
+  "4": {
+   "qty": 64,
    "for": [
-    "Elixir of the Beast"
+    "Brew of Ferocity"
+   ]
+  },
+  "5": {
+   "qty": 104,
+   "for": [
+    "Elixir of the Beast",
+    "Brew of Ferocity"
+   ]
+  },
+  "6": {
+   "qty": 64,
+   "for": [
+    "Brew of Ferocity"
    ]
   },
   "7": {
+   "qty": 120,
+   "for": [
+    "Potion of Rage"
+   ]
+  },
+  "8": {
    "qty": 120,
    "for": [
     "Potion of Rage"
@@ -223,7 +218,31 @@
     "Brew of Ferocity"
    ]
   },
+  "4": {
+   "qty": 2,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "5": {
+   "qty": 2,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "6": {
+   "qty": 2,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
   "7": {
+   "qty": 2,
+   "for": [
+    "Potion of Rage"
+   ]
+  },
+  "8": {
    "qty": 2,
    "for": [
     "Potion of Rage"
@@ -233,6 +252,24 @@
  "Empty waterskin": {
   "3": {
    "qty": 3,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "4": {
+   "qty": 2,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "5": {
+   "qty": 2,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "6": {
+   "qty": 2,
    "for": [
     "Brew of Ferocity"
    ]
@@ -319,6 +356,40 @@
    ]
   }
  },
+ "Greater Blood Essence": {
+  "4": {
+   "qty": 1,
+   "for": [
+    "Castle Heart level 3"
+   ]
+  },
+  "5": {
+   "qty": 10,
+   "for": [
+    "Merciless Iron Twinblade",
+    "Elixir of the Beast",
+    "Altar of Stygian Awakening"
+   ]
+  },
+  "6": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "8": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
  "Reinforced Plank": {
   "4": {
    "qty": 10,
@@ -337,36 +408,6 @@
    "qty": 8,
    "for": [
     "Dark Silver Twinblade"
-   ]
-  }
- },
- "Snow Flower": {
-  "5": {
-   "qty": 40,
-   "for": [
-    "Elixir of the Beast"
-   ]
-  }
- },
- "Empty Glass Bottle": {
-  "5": {
-   "qty": 2,
-   "for": [
-    "Elixir of the Beast"
-   ]
-  },
-  "6": {
-   "qty": 3,
-   "for": [
-    "Blood Merlot",
-    "Elixir of the Werewolf"
-   ]
-  },
-  "7": {
-   "qty": 4,
-   "for": [
-    "Potion of Rage",
-    "Elixir of the Werewolf"
    ]
   }
  },
@@ -428,6 +469,36 @@
    ]
   }
  },
+ "Empty Glass Bottle": {
+  "5": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Beast"
+   ]
+  },
+  "6": {
+   "qty": 5,
+   "for": [
+    "Blood Merlot",
+    "Silver Resistance Potion",
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 4,
+   "for": [
+    "Elixir of the Werewolf",
+    "Potion of Rage"
+   ]
+  },
+  "8": {
+   "qty": 4,
+   "for": [
+    "Elixir of the Werewolf",
+    "Potion of Rage"
+   ]
+  }
+ },
  "Sacred Grapes": {
   "6": {
    "qty": 60,
@@ -443,33 +514,33 @@
     "Blood Merlot Amulet",
     "Castle Heart level 4"
    ]
-  }
- },
- "Ghost Shroom": {
-  "6": {
-   "qty": 40,
-   "for": [
-    "Elixir of the Werewolf"
-   ]
   },
   "7": {
-   "qty": 40,
+   "qty": 192,
    "for": [
-    "Elixir of the Werewolf"
+    "Amulet of the Blademaster (Power Core)",
+    "Castle Heart level 5 (Power Core)",
+    "Onyx Tear ×8 (Blood Key + Epic Ancestral) (Power Core)"
    ]
   }
  },
- "Fire Blossom": {
+ "Plague Brier": {
   "6": {
-   "qty": 40,
+   "qty": 80,
    "for": [
-    "Elixir of the Werewolf"
+    "Silver Resistance Potion"
    ]
   },
   "7": {
-   "qty": 40,
+   "qty": 120,
    "for": [
-    "Elixir of the Werewolf"
+    "Potion of Rage"
+   ]
+  },
+  "8": {
+   "qty": 120,
+   "for": [
+    "Potion of Rage"
    ]
   }
  },
@@ -498,13 +569,13 @@
    ]
   }
  },
- "Power Core": {
+ "Charged Battery": {
   "7": {
-   "qty": 48,
+   "qty": 96,
    "for": [
-    "Amulet of the Blademaster",
-    "Castle Heart level 5",
-    "Onyx Tear ×8 (Blood Key + Epic Ancestral)"
+    "Amulet of the Blademaster (Power Core)",
+    "Castle Heart level 5 (Power Core)",
+    "Onyx Tear ×8 (Blood Key + Epic Ancestral) (Power Core)"
    ]
   }
  },
@@ -522,30 +593,6 @@
    "for": [
     "Sanguine Twinblade",
     "Onyx Tear ×8 (Blood Key + Epic Ancestral)"
-   ]
-  }
- },
- "Plague Brier": {
-  "7": {
-   "qty": 120,
-   "for": [
-    "Potion of Rage"
-   ]
-  }
- },
- "Corrupted Flower": {
-  "7": {
-   "qty": 32,
-   "for": [
-    "Blood Coating"
-   ]
-  }
- },
- "Venom Sap": {
-  "7": {
-   "qty": 32,
-   "for": [
-    "Blood Coating"
    ]
   }
  },
@@ -571,11 +618,79 @@
    ]
   }
  },
- "Unsullied Heart": {
-  "3": {
-   "qty": 4,
+ "Snow Flower": {
+  "5": {
+   "qty": 40,
    "for": [
-    "Greater Blood Essence (for the ring)"
+    "Elixir of the Beast"
+   ]
+  }
+ },
+ "Ghost Shroom": {
+  "6": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "8": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
+ "Fire Blossom": {
+  "6": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "8": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
+ "Corrupted Flower": {
+  "7": {
+   "qty": 32,
+   "for": [
+    "Blood Coating"
+   ]
+  },
+  "8": {
+   "qty": 32,
+   "for": [
+    "Blood Coating"
+   ]
+  }
+ },
+ "Venom Sap": {
+  "7": {
+   "qty": 32,
+   "for": [
+    "Blood Coating"
+   ]
+  },
+  "8": {
+   "qty": 32,
+   "for": [
+    "Blood Coating"
    ]
   }
  },
@@ -589,8 +704,9 @@
  },
  "Regular Ruby": {
   "5": {
-   "qty": 4,
+   "qty": 5,
    "for": [
+    "Altar of Stygian Awakening",
     "Regular jewels ×2"
    ]
   }
@@ -616,6 +732,23 @@
    "qty": 200,
    "for": [
     "Blood Key"
+   ]
+  }
+ },
+ "Greater Stygian Shard": {
+  "7": {
+   "qty": 7350,
+   "for": [
+    "Epic shard (Northern Mortium merchant)",
+    "Vampire passives ×3 (≈9.8 Discovers)"
+   ]
+  }
+ },
+ "Stygian Shard": {
+  "5": {
+   "qty": 3900,
+   "for": [
+    "Elemental passives ×3 (≈9.8 Discovers)"
    ]
   }
  }

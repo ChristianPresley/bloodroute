@@ -22,20 +22,20 @@
         O('Alpha the White Wolf', ['Wolf Form', 'Unsullied Heart'], 'Wolf Form for fast travel. 25% chance of an Unsullied Heart.'),
         O('Errol the Stonebreaker', ['Chaos Volley'], 'Large Chest and gem storage. Chaos T1 point → Chaos Volley, a ranged backup for fights you can\'t stay in melee.'),
         B('Keely the Frost Archer', ['Tannery', 'Leather', 'Empty Waterskin', 'Cold Snap'], 'Tannery, Leather and the Empty Waterskin (for Brew of Ferocity). Frost T1 point → Cold Snap, a counter that shields you.'),
-        B('Rufus the Foreman', ['Woodworking Bench', 'Blood Rage'], 'Woodworking Bench and the crossbow line (a ranged backup). Blood T1 point → <b>Blood Rage</b>: a heal and +25% attack speed, and it puts Leech on nearby enemies.'),
+        B('Rufus the Foreman', ['Woodworking Bench', 'Blood Rage'], 'Woodworking Bench and the crossbow line (a ranged backup). Blood T1 point → <b>Blood Rage</b>: +25% attack speed for 3 s and Leech on nearby enemies. Its heal is 65% of your Spell Power, which is small on this build.'),
       ],
       craft: [
         { ic: 'Copper Sword', t: 'Reinforced Bone Sword (Bone Sword + 4 Plank + 128 Stone) → <b>Copper Sword</b> (16 Copper Ingot + 8 Plank, Simple Workbench). Copper adds the first weapon skill, Whirlwind (175% over 1.1 s).' },
         CRAFT.nightstalker('Grim Ranger'), CRAFT.hearts,
       ],
-      loadout: { slots: ['Starting dash', 'Shadowbolt', 'Blood Rage', '—'], gear: ['Bone Ring', 'Plated Boneguard Chestguard', 'Copper Sword', 'Warrior'], kv: [['Blood', 'Warrior (Bandit Rascals, Thugs, Thieves)'], ['Combo', 'Blood Rage → Whirlwind → primary attacks; Shadowbolt on cooldown']] },
+      loadout: { slots: ['Starting dash', 'Shadowbolt', 'Blood Rage', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Sword', 'Warrior'], kv: [['Blood', 'Warrior (Bandit Rascals, Thugs, Thieves)'], ['Combo', 'Blood Rage → Whirlwind → primary attacks; Shadowbolt on cooldown']] },
     },
     {
       id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', regions: ['Farbane Woods'],
       goal: 'Research, Grim Ranger armor and the Merciless Copper Sword.',
       steps: [STEP.desk, STEP.heart2],
       bosses: [
-        B('Grayson the Armourer', ['Whetstone', 'Phantom Aegis'], 'Whetstone (for every Merciless weapon), target dummies and a guaranteed Research Desk armour blueprint. Illusion T1 point → Phantom Aegis.'),
+        B('Grayson the Armourer', ['Whetstone', 'Phantom Aegis'], 'Whetstone (for the Merciless Copper weapons), target dummies and a guaranteed Research Desk armour blueprint. Illusion T1 point → Phantom Aegis.'),
         B('Goreswine the Ravager', ['Gravedigger Ring', 'Grave Dust'], 'Gravedigger Ring and Grave Dust. Unholy T1 point → Ward of the Damned, a counter that raises skeletons.'),
       ],
       craft: [
@@ -52,10 +52,10 @@
       bosses: [
         B('Clive the Firestarter', ['Alchemy Table', 'Minor Explosive Box'], 'Alchemy Table and Minor Explosive Box (opens Quincey\'s stronghold), plus a guaranteed Research Desk weapon blueprint. Chaos T2 point.'),
         O('Lidia the Chaos Archer', ['Power Surge'], 'The Devourer, Leatherworking Station and the longbow line. Chaos T1 point → Power Surge.'),
-        O('Nibbles the Putrid Rat', ['Rat Form'], 'Rat Form.'),
+        O('Nibbles the Putrid Rat', ['Rat Form'], 'Rat Form. Summoning him costs an Unsullied Heart you also need for the ring; he drops one back 25% of the time.'),
         B('Finn the Fisherman', ['Fishing Pole', 'Fish Bone'], 'Fishing Pole: Fish Bone for Brew of Ferocity and later Potion of Rage. Frost T1 point.'),
         O('Polora the Feywalker', ['Wraith Spear'], 'Growing plots. Illusion T1 point.'),
-        O('Nicholaus the Fallen', ['Volatile Arachnid'], 'Paper Press, and a 16.6% chance to drop the Ring of the Warrior blueprint. Unholy T3 point → Volatile Arachnid.'),
+        O('Nicholaus the Fallen', ['Volatile Arachnid'], 'Paper Press (crafts Paper, Scrolls and Schematics; optional while drops keep up), and a 16.6% chance to drop the Ring of the Warrior blueprint. Unholy T3 point → Volatile Arachnid.'),
         O('Kodia the Ferocious Bear', ['Bear Form'], 'Bear Form; its Crush also opens the stronghold.'),
         B('Quincey the Bandit King', ['Iron Sword', 'Smithy', 'Tailoring Bench', 'Iron Ingot', 'Hollowfang Chestguard', 'Chaos Barrage'], 'Smithy, Tailoring Bench, Iron Ingot, the Iron weapons and Hollowfang recipes. Chaos T3 point → <b>Chaos Barrage</b>, your ultimate until Dracula.'),
         B('Beatrice the Tailor', ['Veil of Blood', 'Loom', 'Cotton Yarn'], '<b>Veil of Blood</b> (drop): the Veil attack heals you, bursts a nova and applies Leech, and Warrior blood adds 40% to it. Loom (Coarse Thread now craftable), Cloth, Cotton Yarn.'),
@@ -65,7 +65,7 @@
         { ic: 'Iron Sword', t: `<b>Iron Sword</b> (GL 15, Smithy): 12 Iron Ingot + 8 Plank. Iron adds Shockwave (100%, recast to teleport in for 3 × 20%). Mining ${L(C(6093), 'Iron Ore')} needs a GL 12+ weapon.` },
         CRAFT.brew, CRAFT.heal,
       ],
-      notes: [NOTE.quincey, NOTE.horizons],
+      notes: [NOTE.quincey, NOTE.horizons, NOTE.paper],
       loadout: {
         label: 'Early build',
         slots: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Chaos Barrage'],
@@ -86,7 +86,7 @@
         B('Christina the Sun Priestess', ['Wool Thread', 'Curse'], 'Wool Thread. Illusion T2 point.'),
         B('Vincent the Frostbringer', ['Prison Cell', 'Reinforced Plank', 'Veil of Frost'], 'Prison Cell (8 Iron Ingot + 2 Reinforced Plank) and Reinforced Plank. Veil of Frost (drop).'),
         O('Sir Erwin the Gallant Cavalier', ['Discharge'], 'Stables. Storm T1 point.'),
-        B('Kriig the Undead General', ['Iron Reaper', 'Unholy Chains'], '<b>The Reaper line</b> (Iron and Dark Silver). Its two skills deal the most damage of any melee weapon (Reference tab). Unholy T2 point.'),
+        B('Kriig the Undead General', ['Iron Reaper', 'Unholy Chains'], '<b>The Reaper line</b> (Iron and Dark Silver). On paper its two skills deal the most damage of any melee weapon (Reference tab), if every hit lands. Unholy T2 point.'),
         B('Maja the Dark Savant', ['Study', 'Scroll'], '<b>Study</b> (research tier 2) and Scroll. Illusion T1 point.'),
         B('Leandra the Shadow Priestess', ['Artisan Table', 'Scourgestone Pendant', 'Scourgestone'], 'Artisan Table, Scourgestone Pendant, Scourgestone. Unholy T1 point.'),
         B('Meredith the Bright Archer', ['Elixir of the Prowler', 'Veil of Storm'], 'Elixir of the Prowler and a guaranteed Study weapon blueprint. Veil of Storm (drop).'),
@@ -96,9 +96,9 @@
       craft: [
         { ic: 'Iron Reaper', t: '<b>Iron Reaper</b> (GL 15, Smithy): 12 Iron Ingot + 8 Plank. Switch to it: Tendon Swing (130%) and Howling Reaper (230%), both on 8 s. Keep the sword for bosses that never stand still.' },
         CRAFT.hollowfang('Blood Hunter'), CRAFT.scourgestone, CRAFT.prowler,
-        { ic: 'Study', t: 'Research at the Study: the <b>Blood Hunter</b> set, <b>Merciless Iron Reaper</b> and <b>Pendant of the Warrior</b>. Their materials arrive in Phase 5.' },
+        { ic: 'Study', t: 'Spend Scrolls at the Study on the <b>Blood Hunter</b> set, <b>Merciless Iron Reaper</b> and <b>Pendant of the Warrior</b>; each draw is random within its category. Their materials arrive in Phase 5.' },
       ],
-      notes: ['Howling Reaper spins where it lands for 2.2 s: throw it under a boss that is standing still and close with Tendon Swing.', NOTE.fish],
+      notes: ['Howling Reaper spins where it lands for 2.2 s: throw it under a boss that is standing still and close with Tendon Swing.', 'Wear the Scourgestone Pendant (GL 15) over the Ring of the Warrior (GL 12) for the Gear Level. You give up the ring\'s +9% Weapon Skill Power until the Pendant of the Warrior in Phase 5.', NOTE.fish],
       loadout: { label: 'From Kriig on', slots: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Grim Ranger Vest', 'Iron Reaper', 'Elixir of the Prowler', 'Brew of Ferocity', 'Warrior'], kv: [['Rotation', 'Veil → Veil attack → Howling Reaper → Tendon Swing → primary attacks; Blood Rage and Shadowbolt on cooldown']] },
     },
     {
@@ -106,7 +106,7 @@
       goal: 'The mid-game build: Blood Hunter, Pendant of the Warrior, Merciless Iron Reaper, jewels and the first passives.',
       steps: [
         STEP.shards,
-        { ic: 'Sanguine Mastery', t: 'Discover passives at the Altar (400 Stygian Shards each; random). Target <b>Sanguine Mastery</b> (+8% physical damage to Leeched enemies, +8% to your blood) and <b>Blood Spray</b> (+8% Physical Critical Chance).' },
+        { ic: 'Sanguine Mastery', t: 'Discover elemental passives at the Altar (400 Stygian Shards each, random). Target <b>Sanguine Mastery</b> (+8% physical damage to Leeched enemies, +8% to your blood) and <b>Blood Spray</b> (+8% Physical Critical Chance), then Lightning Fast Strikes for Cyril\'s slot. All three take about 10 Discovers, ≈3,900 Stygian Shards on average; Awakening Scrolls from Rift V Bloods unlock one directly.' },
       ],
       bosses: [
         B('Terah the Geomancer', ['Gem Cutting Table', 'Regular Ruby', 'Spectral Guardian'], 'Gem Cutting Table (also converts 12 Stygian → 1 Greater Stygian Shard) and Regular gems. Illusion T3 point.'),
@@ -162,8 +162,8 @@
       goal: 'Dread Plate, the Crimson Commander, a Sanguine then Ancestral Reaper, and the Blood Key.',
       steps: [
         STEP.greater,
-        { ic: 'Ravenous Strikes', t: 'Discover vampire passives (600 Greater each, random): <b>Ravenous Strikes</b> (+8% Weapon Skill Power, +5% Weapon Skill Leech), <b>Overpower</b> (+7% Weapon Cooldown Rate, +8 Weapon Charge Gain) and <b>Hunger for Blood</b> (+8% damage to V Bloods). They replace Lightning Fast Strikes. Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
-        { ic: 'Rogue', t: 'Blood: keep Warrior at 100%, then use Lucile\'s Blood Homogenizer to add Rogue Tier I (Physical Critical Chance and Power) from a 90%+ Rogue potion. That also brings Rogue Tier IV: crits expose armor (+15% damage taken).' },
+        { ic: 'Ravenous Strikes', t: 'Discover vampire passives (600 Greater each, random): <b>Ravenous Strikes</b> (+8% Weapon Skill Power, +5% Weapon Skill Leech), <b>Overpower</b> (+7% Weapon Cooldown Rate, +8 Weapon Charge Gain) and <b>Hunger for Blood</b> (+5% Primary Attack Leech, +8% damage to V Bloods), about 10 Discovers (≈5,850 Greater) on average for all three. They replace Lightning Fast Strikes. Weapon Skill Power caps at 145%, 45 points over its base: in this phase Warrior blood (18), Dread Plate (7), the Crimson Commander (9) and the Werewolf elixir (9) already reach 43, so Ravenous Strikes mostly adds its leech until the Soul Shard replaces the amulet in Phase 8. Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
+        { ic: 'Rogue', t: 'Blood: keep Warrior at 100%, then use Lucile\'s Blood Homogenizer to add Rogue Tier I (Physical Critical Chance and Power) from a 90%+ Rogue Blood Potion. Lock up a Rogue carrier for it too (Militia Crossbowmen in Dunley, Riflemen and Harpy Dashers in Silverlight) and feed it Corrupted Fish. A 90%+ potion also brings Rogue Tier IV: crits have a 50% chance to expose armor (+15% damage taken for 4 s).' },
       ],
       bosses: [
         B('Henry Blackbrew the Doctor', ['Athenaeum'], '<b>Athenaeum</b> (research tier 3). Storm T3 point.'),
@@ -187,8 +187,9 @@
         CRAFT.rage,
         CRAFT.coating('Blood Coating', 'Your next primary applies Leech and Vampiric Curse: one more Leech source for Sanguine Mastery.'),
         CRAFT.castle5, CRAFT.onyx, CRAFT.key,
-        CRAFT.epicAncestral('Reaper', 'Target rolls Weapon Skill Power · Physical Critical Chance · Physical Critical Power. Skip Weapon Skill Cooldown Rate: Warrior blood, Dread Plate and Overpower already approach its 35% cap.'),
+        CRAFT.epicAncestral('Reaper', 'Target rolls Physical Critical Chance · Bonus Physical Power · Physical Critical Power. Skip Weapon Skill Power: Warrior blood, the armour, the Werewolf elixir and Ravenous Strikes already fill its cap, so a roll (up to 18%) is wasted. Weapon Cooldown Rate only has about 7 points of room.'),
       ],
+      notes: [NOTE.athenaeum],
       loadout: { label: 'Late build', slots: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Chaos Barrage'], gear: ['Amulet of the Crimson Commander', 'Dread Plate Chestguard', 'Ancestral Reaper Shards', 'Greater Blood jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Warrior', 'Rogue', 'Sanguine Mastery', 'Ravenous Strikes', 'Overpower', 'Hunger for Blood', 'Blood Spray'], kv: [['Rotation', 'Shadowbolt → Veil → Veil attack → Blood Rage → Howling Reaper → Tendon Swing → primaries; Chaos Barrage when both skills are down']] },
     },
     {
@@ -205,7 +206,7 @@
         { ic: "Dracula's Dread Chestguard", t: 'Upgrade each Dread Plate piece to <b>Dracula\'s Dread</b> (+ 12 Shadow Weave + 12 Bat Leather) as its boss unlocks the recipe. 2-piece +9% Weapon Skill Power, 3-piece +7% Weapon Cooldown Rate, 4-piece: Veil attacks deal 30% bonus damage.' },
         CRAFT.shard, CRAFT.repair,
       ],
-      loadout: { label: 'Endgame', slots: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Dread Chestguard", 'Ancestral Reaper Shards', 'Greater Blood jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Warrior', 'Rogue'], kv: [['Choose', 'Compare the options on the Endgame builds tab']] },
+      loadout: { label: 'Endgame', slots: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Dread Chestguard", 'Ancestral Reaper Shards', 'Greater Blood jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Warrior', 'Rogue', 'Sanguine Mastery', 'Ravenous Strikes', 'Overpower', 'Hunger for Blood', 'Blood Spray'], kv: [['Choose', 'Compare the options on the Endgame builds tab']] },
     },
   ];
 
@@ -213,18 +214,24 @@
   const renderEndgame = () => BR.shared.renderEndgame({
     intro: 'All warrior builds share Dracula\'s Dread, the Soul Shard of Dracula and Warrior blood. What changes is the weapon and the Veil, and that depends on how the boss moves.',
     steps: [
-      'Wear the full Phase 8 setup and fight a Grayson target dummy for a minute with the Reaper, then with the sword. Howling Reaper only hits if the target stays inside its spin.',
-      'Against bosses that hold still (most of Dracula\'s court), stay on the <b>Reaper</b>. Against bosses that dash or teleport, use the <b>Sword</b>: Whirlwind moves with you and Shockwave\'s recast teleports to the target.',
+      'Wear the full Phase 8 setup and fight a Grayson target dummy, then your bosses, with the Reaper. Howling Reaper only hits while the target stays inside its spin: if a boss escapes more than about a tenth of it, the sword\'s skills (within 7% of the Reaper\'s when every hit lands) come out ahead.',
+      'Against bosses that hold still (most of Dracula\'s court), stay on the <b>Reaper</b>. Against bosses that dash or teleport, use the <b>Sword</b> (W2): Whirlwind moves with you and Shockwave\'s recast teleports to the target. The route doesn\'t build a late sword, so W2 needs its own line: Merciless Iron Sword (Study; Iron Sword + 1 Regular Sapphire + 4 Greater Blood Essence + 4 Reinforced Plank) → Dark Silver Sword (12 Dark Silver Ingot + 8 Reinforced Plank + 1 Primal Blood Essence) → Sanguine Sword (Athenaeum; + 1 Flawless Sapphire + 12 Gold Ingot) → Epic Ancestral Sword (+ an Epic sword shard + 4 Onyx Tear).',
       'Try <b>Veil of Chaos</b> once: if its recast counts as a second Veil attack, Warrior blood (+40%) and Dracula\'s Dread (+30%) apply twice. You lose Veil of Blood\'s Leech, so Sanguine Mastery needs Shadowbolt, Blood Rage and the coating.',
     ],
     builds: [
-      { k: 'W', top: true, label: 'Reaper', spells: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], weapon: 'Ancestral Reaper Shards', blood: ['Warrior', 'Rogue'], bloodText: 'Warrior + Rogue I/IV', elixir: 'Elixir of the Werewolf', rolls: 'Weapon Skill Power · Crit Chance · Crit Power', when: 'Default. The boss stands in Howling Reaper\'s spin.' },
-      { k: 'W2', label: 'Sword', spells: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], weapon: 'Ancestral Sword Shards', blood: ['Warrior', 'Rogue'], bloodText: 'Warrior + Rogue I/IV', elixir: 'Elixir of the Werewolf', rolls: 'Weapon Skill Power · Crit Chance · Crit Power', when: 'Bosses that move a lot. Base skill damage is within 7% of the Reaper.' },
-      { k: 'W3', label: 'Veil of Chaos', spells: ['Veil of Chaos', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], weapon: 'Ancestral Reaper Shards', blood: ['Warrior', 'Rogue'], bloodText: 'Warrior + Rogue I/IV', elixir: 'Elixir of the Werewolf', rolls: 'Weapon Skill Power · Crit Chance · Crit Power', when: 'The recast\'s attack gets the Veil bonuses (test step 3).' },
+      { k: 'W', top: true, label: 'Reaper', spells: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], weapon: 'Ancestral Reaper Shards', blood: ['Warrior', 'Rogue'], bloodText: 'Warrior + Rogue I/IV', elixir: 'Elixir of the Werewolf', rolls: 'Crit Chance · Physical Power · Crit Power', when: 'Default. The boss stands in Howling Reaper\'s spin.' },
+      { k: 'W2', label: 'Sword', spells: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], weapon: 'Ancestral Sword Shards', blood: ['Warrior', 'Rogue'], bloodText: 'Warrior + Rogue I/IV', elixir: 'Elixir of the Werewolf', rolls: 'Crit Chance · Physical Power · Crit Power', when: 'Bosses that move a lot. Base skill damage is within 7% of the Reaper, but it needs its own sword line (step 2).' },
+      { k: 'W3', label: 'Veil of Chaos', spells: ['Veil of Chaos', 'Shadowbolt', 'Blood Rage', 'Blood Storm'], weapon: 'Ancestral Reaper Shards', blood: ['Warrior', 'Rogue'], bloodText: 'Warrior + Rogue I/IV', elixir: 'Elixir of the Werewolf', rolls: 'Crit Chance · Physical Power · Crit Power', when: 'The recast\'s attack gets the Veil bonuses (test step 3).' },
     ],
     common: { text: 'All three use Dracula\'s Dread (4 pieces), the Soul Shard of Dracula, Potion of Rage, Blood Coating and the passives Sanguine Mastery · Ravenous Strikes · Overpower · Hunger for Blood · Blood Spray.', tiles: ["Dracula's Dread Chestguard", 'Soul Shard of Dracula', 'Potion of Rage', 'Blood Coating', 'Sanguine Mastery', 'Ravenous Strikes', 'Overpower', 'Hunger for Blood', 'Blood Spray'] },
     rotation: { icon: 'Veil of Blood', title: 'Rotation', text: 'Shadowbolt to open (it applies Leech) → Veil of Blood → Veil attack right away (Warrior blood +40%, Dracula\'s Dread +30%) → Blood Rage → Howling Reaper under the boss → Tendon Swing → primary attacks until the skills are back. Cast Blood Storm when both weapon skills are on cooldown; you\'re invulnerable while it channels.' },
-    caps: [['Weapon Skill Cooldown Rate', '35%', 'Warrior blood II, Dracula\'s Dread 3-piece and Overpower: near the cap, so no cooldown roll'], ['Physical Critical Chance', '45%', 'Rogue blood I, Blood Spray and a crit roll: under'], ['Bonus Physical Power', '25%', 'Warrior blood I and the Dread pieces'], ['Weapon Skill Power', '145%', 'Amulet, set, blood III, Werewolf, Ravenous Strikes, rolls: far under']],
+    caps: [
+      ['Weapon Skill Power', '145% (base 100%)', 'Warrior blood III 18 + Dracula\'s Dread 2-piece 9 + Werewolf 9 + Ravenous Strikes 8 = 44 of 45: at the cap before any roll, so don\'t roll it. In Phase 7 the Crimson Commander\'s +9 puts you over.'],
+      ['Weapon Cooldown Rate', '35%', 'Warrior blood II 14 + Dracula\'s Dread 3-piece 7 + Overpower 7 = 28: a cooldown roll (up to 14) only adds about 7'],
+      ['Physical Critical Chance', '45%', 'Base 5 + Rogue blood I ≈16 + Blood Spray 8 ≈ 29: a full crit roll (16) lands on the cap'],
+      ['Bonus Physical Power', '25%', 'Warrior blood I 10 + Dracula\'s Dread ≈4.8 ≈ 15: a roll (up to 10) fits'],
+      ['Physical Critical Power', '180% (base 140%)', 'Rogue blood I 8 = 148: a roll (up to 16) fits'],
+    ],
   });
   const renderRef = () => BR.shared.renderRef({
     blood: 'Warrior', picks: ['Sword', 'Reaper'],

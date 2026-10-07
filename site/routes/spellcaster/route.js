@@ -12,14 +12,14 @@
       goal: 'A castle, bone gear, Chaos Volley and the crossbow line.',
       steps: [
         { ic: 'Bone Ring', t: 'Leave the crypt and collect bones: you get the Bone Sword and Bone Ring (GL 3, +5.3 Spell Power).' },
-        { ic: 'Boneguard Chestguard', t: 'Craft the Boneguard set from the inventory, then upgrade to Plated Boneguard at the Simple Workbench.' },
+        { ic: 'Boneguard Chestguard', t: 'Craft the Boneguard set from the inventory. Once the Simple Workbench is up, you can upgrade it to Plated Boneguard until the Nightstalker set is ready.' },
         { ic: 'Castle Heart', t: `Place a Castle Heart on a ${L(C(6117), 'castle plot')} with a coffin, chest and Mist Brazier. "Shelter" unlocks the Furnace, Sawmill, Simple Workbench, Grinder and Blood Press.` },
         { ic: 'Copper Ingot', t: `Smelt Copper Ingot in the Furnace from ${L(C(6091), 'Copper Ore')}.` },
         { ic: 'Simple Workbench', t: 'Build a Sawmill and Simple Workbench and raise your Gear Level ("Getting Ready for the Hunt" unlocks Blood Tracking).' },
         { ic: 'Shadowbolt', t: 'Equip Shadowbolt + Blood Rite (known from the start). Your starting dash is the Veil for now.' },
       ],
       bosses: [
-        { lv: 16, name: 'Alpha the White Wolf', map: 178446, where: 'any wolf den', gets: ['Wolf Form', 'Unsullied Heart'], take: 'Wolf Form for fast travel. 25% chance of an Unsullied Heart.' },
+        { lv: 16, name: 'Alpha the White Wolf', map: 178446, where: 'roams a circuit of Farbane roads around the Wolf Den', gets: ['Wolf Form', 'Unsullied Heart'], take: 'Wolf Form for fast travel. 25% chance of an Unsullied Heart.' },
         { lv: 20, name: 'Errol the Stonebreaker', must: true, map: 178451, gets: ['Chaos Volley'], take: 'Chaos T1 point → <b>Chaos Volley</b>. Equip Chaos Volley + Shadowbolt from here on.' },
         { lv: 20, name: 'Keely the Frost Archer', must: true, map: 178445, gets: ['Tannery', 'Leather', 'Empty Waterskin', 'Cold Snap'], take: 'Tannery, Leather and the Empty Waterskin (for Enchanted Brew). Frost T1 point → Cold Snap.' },
         { lv: 20, name: 'Rufus the Foreman', must: true, map: 178449, gets: ['Woodworking Bench', 'Copper Crossbow', 'Blood Rage'], take: 'Woodworking Bench and the whole crossbow line (Bone → Copper → Iron → Dark Silver). Blood T1 point → Blood Rage.' },
@@ -27,9 +27,9 @@
       craft: [
         { ic: 'Copper Crossbow', t: 'Bone Crossbow → Reinforced Bone Crossbow → <b>Copper Crossbow</b> (16 Copper Ingot + 8 Plank, Simple Workbench).' },
         { ic: 'Nightstalker Vest', t: `<b>Nightstalker set</b> (vest: 8 Leather + 4 Coarse Thread), the base for Warlock. Coarse Thread drops in ${L(M(CAMPS), 'Farbane bandit camps')} or comes from the Shady Goods Dealer at the ${L(M('283054,284512'), 'Shady Merchants Camp')}.` },
-        { ic: 'Unsullied Heart', t: 'Keep every Unsullied Heart. These four bosses drop one 25% of the time; you need 4 for the Phase 3 ring.' },
+        { ic: 'Unsullied Heart', t: 'Keep every Unsullied Heart. These four bosses drop one 25% of the time; you need 4 for the Phase 3 ring (and 1 more to summon Nibbles, if you want Rat Form).' },
       ],
-      loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Bone Ring', 'Plated Boneguard Chestguard', 'Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar (Nuns, Priests, Villagers, Alchemists, Witches, Devoted)']] },
+      loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar (Nuns, Priests, Villagers, Alchemists, Witches, Devoted)']] },
     },
     {
       id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', regions: ['Farbane Woods'],
@@ -47,7 +47,7 @@
         { ic: 'Merciless Copper Crossbow', t: '<b>Merciless Copper Crossbow</b> (GL 12, Research Desk): Copper Crossbow + 2 Crude Topaz + 12 Whetstone + 4 Leather.' },
         { ic: 'Warlock Vest', t: '<b>Warlock Vestment</b> (Research Desk): each piece = Nightstalker piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot. 4 pieces: +7.2% Bonus Spell Power, 2-piece +4% cooldown, 4-piece +1 Gear Level.' },
       ],
-      notes: ['From Grayson on, almost every V Blood drops an Unsullied Heart guaranteed (25% only from Alpha, Errol, Keely, Rufus, Lidia, Kodia and Finn).'],
+      notes: ['Grayson to Gaius (Lv 27–55) each drop an Unsullied Heart guaranteed, except Alpha, Errol, Keely, Rufus, Nibbles, Lidia, Kodia and Finn (25%). From Lv 53 on most V Bloods drop one 80% of the time and some none, but by then Tristan\'s recipe makes Greater Blood Essence without hearts.', 'Research Desk blueprints are a random draw within a category: 60 Paper for a weapon or ring, 50 for armour or a brew. Each armour draw is one random piece out of 16 (four sets), so a full set can take many draws.'],
       loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt or Bone Explosion', '—'], gear: ['Gravedigger Ring', 'Warlock Vest', 'Merciless Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar']] },
     },
     {
@@ -56,10 +56,10 @@
       bosses: [
         { lv: 30, name: 'Clive the Firestarter', must: true, map: 178454, gets: ['Alchemy Table', 'Minor Explosive Box', 'Rain of Chaos'], take: 'Alchemy Table and Minor Explosive Box (opens Quincey\'s stronghold). Chaos T2 point → Rain of Chaos.' },
         { lv: 30, name: 'Lidia the Chaos Archer', must: true, map: 178452, where: 'spawns along Farbane paths', gets: ['Aftershock'], take: 'The Devourer, Leatherworking Station. Chaos T1 point → Aftershock. With Errol and Clive: <b>Chaos mastery T1</b> (+5% Veil cooldown).' },
-        { lv: 30, name: 'Nibbles the Putrid Rat', map: 178456, where: 'summoned with a Vermin Nest', gets: ['Rat Form'], take: 'Rat Form.' },
+        { lv: 30, name: 'Nibbles the Putrid Rat', map: 178456, where: 'summoned at your Vermin Nest with a Putrid Rat (4 Grave Dust + 1 Unsullied Heart)', gets: ['Rat Form'], take: 'Rat Form. Summoning him costs an Unsullied Heart you also need for the ring; he drops one back 25% of the time.' },
         { lv: 32, name: 'Finn the Fisherman', must: true, map: 355625, gets: ['Fishing Pole', 'Fish Bone'], take: 'Fishing Pole: Fish Bone for brews. Frost T1 point.' },
         { lv: 35, name: 'Polora the Feywalker', must: true, map: 178262, gets: ['Wraith Spear'], take: 'Growing plots. Illusion T1 point → Wraith Spear (Illusion point 2).' },
-        { lv: 35, name: 'Nicholaus the Fallen', map: 178450, gets: ['Volatile Arachnid'], take: 'Paper Press. Unholy T3 point → Volatile Arachnid (backup ultimate).' },
+        { lv: 35, name: 'Nicholaus the Fallen', map: 178450, gets: ['Volatile Arachnid'], take: 'Paper Press (crafts Paper, Scrolls and Schematics; optional while drops keep up). Unholy T3 point → Volatile Arachnid (backup ultimate).' },
         { lv: 35, name: 'Kodia the Ferocious Bear', map: 178384, gets: ['Bear Form'], take: 'Bear Form; its Crush also opens the stronghold.' },
         { lv: 37, name: 'Quincey the Bandit King', must: true, map: 178444, where: `in the ${L(M(178391), 'Bandit Stronghold')}; enter with Minor Explosive Boxes or Bear Form`, gets: ['Chaos Barrage', 'Smithy', 'Tailoring Bench', 'Iron Ingot', 'Hollowfang Chestguard'], take: 'Smithy, Tailoring Bench, Iron Ingot, Hollowfang recipes. Chaos T3 point → <b>Chaos Barrage</b>, your ultimate until Dracula.' },
         { lv: 40, name: 'Beatrice the Tailor', must: true, map: 178468, where: 'Dunley Farmlands', gets: ['Veil of Blood', 'Loom', 'Cotton Yarn'], take: '<b>Veil of Blood</b> (drop), Loom (Coarse Thread now craftable), Cloth, Cotton Yarn.' },
@@ -70,11 +70,11 @@
         { ic: 'Vermin Salve', t: `Healing: Vermin Salve and Blood Rose Brew (${L(C(6088), 'Blood Rose')}).` },
         { ic: 'Iron Crossbow', t: `<b>Iron Crossbow</b> (Smithy): 12 Iron Ingot + 8 Plank. Mining ${L(C(6093), 'Iron Ore')} needs a GL 12+ weapon.` },
       ],
-      notes: ['The game data also lists a "Lv 30 Quincey the Marauder". It\'s a duplicate entry; the real fight is the Lv 37 Bandit King.', 'The journal\'s "Broaden Horizons" (Lv 40) sends you on to Dunley Farmlands.'],
+      notes: ['The game data also lists a "Lv 30 Quincey the Marauder". It\'s a duplicate entry; the real fight is the Lv 37 Bandit King.', 'The journal\'s "Broaden Horizons" (Lv 40) sends you on to Dunley Farmlands.', 'Paper, Scrolls and Schematics pay for research. They drop from humans (Paper in Farbane, Scrolls in Dunley, Schematics in Silverlight, the Cursed Forest, Oakveil and Gloomrot North) and chests, and the Devourer turns spare blueprints into them. Nicholaus\'s Paper Press also crafts all three (4 Scrolls from 4 Coarse Thread + 8 Paper; 12 Schematics from 40 Tech Scrap + 16 Scrolls), so kill him if drops run short.'],
       loadout: {
         dps: '≈33 DPS', label: 'Early build',
         slots: ['Veil of Blood', 'Chaos Volley', 'Bone Explosion or Shadowbolt', 'Chaos Barrage'],
-        gear: ['Ring of the Sorcerer', 'Warlock Vest', 'Merciless Copper Crossbow', 'Enchanted Brew', 'Scholar'],
+        gear: ['Ring of the Sorcerer', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'],
         kv: [['Rotation', 'Volley → spell 2 → Veil; ultimate when both spells are on cooldown'], ['Spell 2', 'Bone Explosion 33.4 vs Shadowbolt 32.7; the gap comes mostly from short fights']],
       },
     },
@@ -102,17 +102,17 @@
       craft: [
         { ic: 'Hollowfang Chestguard', t: `<b>Hollowfang Battlegear</b> (Tailoring Bench; chest 12 Cotton Yarn + 8 Wool Thread). Keep wearing Warlock: Hollowfang is only the base for Dark Magus. Loot thread in Dunley; ${L(M('432218,432220,432221,432222'), 'cotton patches')} are there too.` },
         { ic: 'Scourgestone Pendant', t: '<b>Scourgestone Pendant</b> (GL 15, Artisan Table): 8 Scourgestone + 24 Gem Dust.' },
-        { ic: 'Study', t: 'Queue <b>Dark Magus</b>, <b>Merciless Iron Crossbow</b> and <b>Pendant of the Sorcerer</b> at the Study; their materials arrive in Phase 5.' },
+        { ic: 'Study', t: 'Spend Scrolls at the Study on <b>Dark Magus</b>, <b>Merciless Iron Crossbow</b> and <b>Pendant of the Sorcerer</b>: 90 for a weapon or pendant, 75 for armour, each a random draw within its category. Their materials arrive in Phase 5.' },
       ],
-      notes: ['Unholy Chains: you can only move while channelling and the tether breaks beyond 14 m. Don\'t start it if your Veil is back within ~2 s.', 'Corrupted Fish (raises prisoner quality ±2% per feed) is only caught in Oakveil or at Brighthaven Docks, so catch a high-quality prisoner for now.'],
-      loadout: { dps: '≈102 DPS max with Veil of Blood', label: 'From Kriig on', slots: ['Veil of Blood', 'Chaos Volley', 'Unholy Chains', 'Chaos Barrage'], gear: ['Ring of the Sorcerer', 'Warlock Vest', 'Iron Crossbow', 'Elixir of the Prowler', 'Scholar'], kv: [['Later', 'Reaches ~115 once Veil of Chaos replaces Veil of Blood (Phase 5)']] },
+      notes: ['Unholy Chains channels for up to 1.7 s and the tether breaks if you get more than 14 m from the target. Don\'t start it if your Veil is back within ~2 s.', 'Wear the Scourgestone Pendant from Leandra on: 16.5 Spell Power and GL 15 against the ring\'s 12.8 and GL 12.', 'Corrupted Fish (raises prisoner quality ±2% per feed) is only caught in Oakveil or at Brighthaven Docks, so catch a high-quality prisoner for now.'],
+      loadout: { dps: '≈102 DPS at most, with full Lv 70 gear (less in this phase)', label: 'From Kriig on', slots: ['Veil of Blood', 'Chaos Volley', 'Unholy Chains', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Warlock Vest', 'Iron Crossbow', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar'], kv: [['Later', 'With the same Lv 70 gear, Veil of Chaos instead of Veil of Blood reaches ~115 (Phase 5)']] },
     },
     {
       id: 'p5', title: 'Gems, jewels, passives', levels: '50 – 60', sig: 'Lightning Tendrils', regions: ['Dunley Farmlands', 'Hallowed Mountains', 'Ruins of Mortium', 'Gloomrot South'],
       goal: 'The mid-game build: Veil of Chaos, Lightning Tendrils, jewels and Stygian passives.',
       steps: [
         { ic: 'Stygian Shard', t: 'Farm Stygian Shards in Tier 1 Rift Incursions (recommended Lv 57+, every 30 minutes, tracked with the Eye of Mortium) and at Ruins of Mortium points of interest.' },
-        { ic: 'Enhanced Conductivity', t: 'Discover passives at the Altar (400 Stygian Shards each; random). Target Enhanced Conductivity and Renewing Flames, then Chaos Kindling when the third slot opens.' },
+        { ic: 'Enhanced Conductivity', t: 'Discover elemental passives at the Altar (400 Stygian Shards each, random). Target Enhanced Conductivity and Renewing Flames, then Chaos Kindling when the third slot opens (and Cold Soul for Phase 7). All four take about 10.4 Discovers, ≈4,160 Stygian Shards on average; Awakening Scrolls from Rift V Bloods unlock one directly.' },
       ],
       bosses: [
         { lv: 53, name: 'Terah the Geomancer', must: true, map: 178471, gets: ['Gem Cutting Table', 'Regular Topaz', 'Spectral Guardian'], take: 'Gem Cutting Table (also converts 12 Stygian → 1 Greater Stygian Shard) and Regular gems. Illusion T3 point.' },
@@ -127,17 +127,17 @@
         { lv: 60, name: 'Ziva the Engineer', must: true, map: 282801, where: 'Gloomrot South', gets: ['Fabricator', 'Radium Alloy'], take: 'Storm T2 point, Fabricator, Radium Alloy (Blood Merlot Amulet, Castle Heart 4, Ancestral weapons).' },
       ],
       craft: [
-        { ic: 'Dark Magus Chestguard', t: '<b>Dark Magus Vestment</b> (Study): each piece = Hollowfang piece + 4 Iron Ingot + 8 Thick Leather. +6% Bonus Spell Power; 2-piece +4% cooldown, 3-piece +1 Gear Level, 4-piece +3% leech. Swap from Warlock now.' },
+        { ic: 'Dark Magus Chestguard', t: '<b>Dark Magus Vestment</b> (Study): each piece = Hollowfang piece + 4 Iron Ingot + 8 Thick Leather. +6% Bonus Spell Power; 2-piece +4% cooldown, 3-piece +1 Gear Level, 4-piece +3% leech. Swap from Warlock now: slightly less Spell Power than Warlock\'s 7.2%, but the set is 8 Gear Levels higher (25 vs 17) and adds leech.' },
         { ic: 'Pendant of the Sorcerer', t: '<b>Pendant of the Sorcerer</b> (GL 18): Scourgestone Pendant + 4 Regular Amethyst + 16 Glass.' },
         { ic: 'Merciless Iron Crossbow', t: '<b>Merciless Iron Crossbow</b> (GL 18): Iron Crossbow + Regular Topaz + 4 Greater Blood Essence + 4 Reinforced Plank.' },
         { ic: 'Regular jewel', t: '<b>Regular jewels</b> (4 Regular gem + 4 Iron Ingot, 2 random mods): Tendrils (Topaz) +1 bolt / +12% bolt damage · Chains (Emerald) +60% damage · Veil of Chaos (Amethyst) explosion +24% / second illusion.' },
       ],
-      loadout: { dps: '≈91 DPS at Lv 60', label: 'Mid build', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], gear: ['Pendant of the Sorcerer', 'Dark Magus Chestguard', 'Merciless Iron Crossbow', 'Regular jewel', 'Elixir of the Prowler', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames'], kv: [['Rotation', 'Tendrils → Veil → Chains; Veil → primary attack → recast']] },
+      loadout: { dps: '≈91 DPS at Lv 60', label: 'Mid build', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], gear: ['Pendant of the Sorcerer', 'Dark Magus Chestguard', 'Merciless Iron Crossbow', 'Regular jewel', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames'], kv: [['Rotation', 'Tendrils → Veil → Chains; Veil → primary attack → recast']] },
     },
     {
       id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Blood Merlot Amulet', regions: ['Gloomrot South', 'Cursed Forest', 'Dunley Farmlands', 'Silverlight Hills'],
       goal: 'Finish the mid build and stockpile late-game materials.',
-      access: [['Shroud of the Forest', 'Cursed Forest fogs your view: kill Ben first and craft his Shroud of the Forest.'], ['Silver Resistance Potion', 'Silverlight Hills hurts with silver: bring Willfred\'s Silver Resistance Potion.']],
+      access: [['Shroud of the Forest', 'Cursed Forest fogs your view: kill Ben first and craft his Shroud of the Forest.'], ['Silver Resistance Potion', 'Silverlight Hills hurts with silver: bring Willfred\'s Silver Resistance Potion (Alchemy Table: 40 Plague Brier + Empty Glass Bottle; lasts 60 minutes).']],
       bosses: [
         { lv: 61, name: 'Angram the Purifier', must: true, map: 283050, where: 'Gloomrot South', gets: ['Dawnthorn Chestguard', 'Void'], take: 'Dawnthorn recipes and Irradiant Gruel. Chaos T2 point → Void. <b>Chaos mastery T2</b> (+5% Ultimate Power).' },
         { lv: 63, name: 'Ben the Old Wanderer', must: true, map: 348111, where: 'Cursed Forest', gets: ['Shroud of the Forest', 'Pristine Leather'], take: 'Shroud of the Forest and Pristine Leather. Frost T2 point.' },
@@ -167,7 +167,7 @@
       goal: 'Setup B, the late-game build before Dracula, plus the Blood Key.',
       steps: [
         { ic: 'Greater Stygian Shard', t: 'Farm Greater Stygian Shards in Tier 2 Rift Incursions (Lv 80, ~65 per solo run) or convert 12:1 at the Gem Cutting Table.' },
-        { ic: 'Wicked Power', t: 'Discover Wicked Power and Hunger for Blood (600 Greater each, random; about 5,000 Greater on average for both), and swap Chaos Kindling for Cold Soul (400 Stygian; +8% Spell Critical Power). Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
+        { ic: 'Wicked Power', t: 'Discover vampire passives Wicked Power and Hunger for Blood (600 Greater each, random; about 8.7 Discovers, ≈5,200 Greater on average for both), and swap Chaos Kindling for Cold Soul (+8% Spell Critical Power). Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
         { ic: 'Draculin', t: 'Switch blood: Draculin 100% primary (Vampire Cultists, Blood Prophets, Night Maidens), then homogenize Scholar T2 from a 90%+ Scholar potion.' },
       ],
       bosses: [
@@ -197,6 +197,7 @@
         { ic: 'Ancestral Crossbow Shards', t: `<b>Epic Ancestral Crossbow</b> (3 rolls): Sanguine Crossbow + Epic shard + 4 Onyx Tear. Epic shards: ~5% from Lv 79+ bosses and Tier 2 Rifts, or 1,500 Greater at the Northern Mortium Vampire Merchant (${L(M('400681,400682'), 'probable markers')}). Target rolls Bonus Spell Power · Spell Cooldown · Crit Power.` },
         { ic: 'Primal jewel', t: '<b>Primal jewels</b> (4 Flawless gem + 320 Greater Stygian Shards) for Tendrils, Chains and Veil of Chaos. Merge duplicates at the Fusion Forge (12 Ember Glass).' },
       ],
+      notes: ['Athenaeum blueprints cost Schematics: 120 for a weapon or amulet, 100 for armour or a potion, each a random draw within its category. Building the Athenaeum takes 20 more.'],
       loadout: { dps: '≈249 DPS (≈258 with Dracula\'s Maleficer)', label: 'Setup B', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], gear: ['Amulet of the Arch-Warlock', 'Maleficer Scholar Chestguard', 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Rotation', 'Tendrils → Chains → Veil; ultimate when both spells are down']] },
     },
     {
@@ -211,10 +212,12 @@
       ],
       craft: [
         { ic: "Dracula's Maleficer Chestguard", t: 'Upgrade each Maleficer Scholar piece to <b>Dracula\'s Maleficer</b> (+ 12 Shadow Weave + 12 Bat Leather) as its boss unlocks the recipe. Setup B reaches ≈258.' },
-        { ic: 'Soul Shard of Dracula', t: 'Wear the Soul Shard of Dracula and run the endgame test (Endgame builds tab).' },
+        { ic: 'Elixir of the Blasphemous', t: '<b>Elixir of the Blasphemous</b> for build A (+14% Ultimate Cooldown Rate, +10% Ultimate Power; Alchemy Table, Domina\'s recipe): 20 Plague Brier + 20 Hell\'s Clarion + Greater Blood Essence + Empty Glass Bottle. The other builds keep the Twisted elixir.' },
+        { ic: 'Soul Shard of Dracula', t: 'Wear the Soul Shard of Dracula (+16% Blood Efficiency; it takes the Arch-Warlock\'s slot) and run the endgame test (Endgame builds tab).' },
+        { ic: 'Fusion Forge', t: 'Once you\'ve picked a build, fuse or re-craft the Ancestral Crossbow toward its rolls at the Fusion Forge (12 Ember Glass): swap Bonus Spell Power for Crit, and for build A Spell Cooldown for Veil Cooldown.' },
         { ic: 'Greater Stygian Shard', t: 'Keep the shard repaired: feed on Primal Blood Souls in Tier 2 Rift Incursions (+750 each, shared across carried shards).' },
       ],
-      loadout: { dps: '265 – 276 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Blasphemous', 'Witch Potion', 'Mutant', 'Draculin'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
+      loadout: { dps: '265 – 276 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Blasphemous', 'Witch Potion', 'Mutant', 'Draculin', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
     },
   ];
 
@@ -223,24 +226,30 @@
     'Bone': [1, 'Skeletons and beasts all over Farbane'], 'Plank': [1, 'Sawmill (from wood)'], 'Stone': [1, 'Rocks everywhere'],
     'Copper Ingot': [1, `Furnace, from ${L(C(6091), 'Copper Ore')}`], 'Leather': [1, 'Tannery (Keely), from animal hides'],
     'Coarse Thread': [1, `Loot ${L(M(CAMPS), 'bandit camps')} or the ${L(M('283054,284512'), 'Shady Goods Dealer')}; Loom from Lv 40`],
-    'Unsullied Heart': [1, 'V Blood drops (25% early, guaranteed from Grayson on)'], 'Mourning Lily': [1, L(C(6116), 'Mourning Lily map layer')],
-    'Snow Flower': [1, L(C(6090), 'Snow Flower map layer')], 'Crude Topaz': [1, L(C(6098), 'Gem nodes')], 'Crude Amethyst': [1, L(C(6098), 'Gem nodes')],
+    'Unsullied Heart': [1, 'V Blood drops (25% from the first few, guaranteed from Grayson to Gaius)'], 'Mourning Lily': [1, L(C(6116), 'Mourning Lily map layer')],
+    'Snow Flower': [1, L(C(6090), 'Snow Flower map layer')], "Hell's Clarion": [1, `${L(C(6106), "Hell's Clarion map layer")}: caves and underground areas; Mantraps drop it`],
+    'Crude Topaz': [1, L(C(6098), 'Gem nodes')], 'Crude Amethyst': [1, L(C(6098), 'Gem nodes')],
     'Gem Dust': [1, 'Grinder (from gems)'], 'Empty waterskin': [1, 'Recipe from Keely'], 'Grave Dust': [2, 'Recipe from Goreswine'],
     'Whetstone': [2, 'Recipe from Grayson'], 'Greater Blood Essence': [2, 'Blood Press, from 4 Unsullied Hearts (from Tristan, also from Blood Essence)'],
     'Fish Bone': [3, `Fish with Finn's pole at ${L(C(6104), 'fishing spots')}`], 'Iron Ingot': [3, `Furnace (Quincey), from ${L(C(6093), 'Iron Ore')} (GL 12+ weapon)`],
     'Cotton Yarn': [3, `Loot in Dunley; ${L(M('432218,432220,432221,432222'), 'cotton patches')}; Loom recipe from Beatrice`],
     'Sunflower': [3, L(M('179518,179681,432219'), 'Dunley sunflower patches')], 'Fire Blossom': [3, L(C(6089), 'Fire Blossom map layer')],
-    'Wool Thread': [4, 'Recipe from Christina; loot in Dunley'], 'Scourgestone': [4, 'Recipe from Leandra'], 'Scroll': [4, 'Paper Press / recipe from Maja'],
+    'Wool Thread': [4, 'Recipe from Christina; loot in Dunley'], 'Scourgestone': [4, 'Recipe from Leandra'],
+    'Scroll': [4, 'Drops from Dunley humans and chests; Paper Press (Nicholaus) with the recipe from Maja'],
     'Glass': [4, 'Recipe from Grethel'], 'Empty Glass Bottle': [4, 'Recipe from Grethel'], 'Reinforced Plank': [4, 'Recipe from Vincent'],
     'Thick Leather': [5, 'Recipe from Frostmaw'], 'Regular Amethyst': [5, 'Gem Cutting Table (Terah)'], 'Regular Topaz': [5, 'Gem Cutting Table (Terah)'],
-    'Regular gem': [5, 'Gem Cutting Table (Terah); match the spell school'], 'Primal Blood Essence': [5, 'Advanced Blood Press (Jade)'],
-    'Radium Alloy': [5, 'Fabricator (Ziva)'], 'Greater Stygian Shard': [5, 'Convert 12 Stygian → 1 at the Gem Cutting Table; Tier 2 Rifts later'],
+    'Regular Emerald': [5, 'Gem Cutting Table (Terah)'], 'Regular Ruby': [5, 'Gem Cutting Table (Terah)'], 'Primal Blood Essence': [5, 'Advanced Blood Press (Jade)'],
+    'Radium Alloy': [5, 'Smelt 4 at the Furnace from 60 Tech Scrap + 4 Sulphur + 1 Sludge-filled Canister (recipe from Ziva); also looted in Gloomrot. Each Power Core takes 4'],
+    'Charged Battery': [5, 'Depleted Batteries drop from Gloomrot machines and Tech Scrap piles; charge 10 at a time at a Lightning Harvester (Thunderstrike Peak, Stormdrain Hills), or buy charged ones from the Treasure Hunter. Each Power Core takes 2'],
+    'Plague Brier': [5, 'Brier plants in Gloomrot South (cut with an Iron or better weapon)'],
+    'Stygian Shard': [5, 'Tier 1 Rift Incursions (Lv 57+, tracked with the Eye of Mortium) and Ruins of Mortium points of interest'],
+    'Greater Stygian Shard': [5, 'Convert 12 Stygian → 1 at the Gem Cutting Table (Terah); Tier 2 Rift Incursions (Lv 80, ~65 per solo run) later'],
     'Pristine Leather': [6, 'Recipe from Ben'], 'Silk': [6, 'Recipe from Ungora'], 'Dark Silver Ingot': [6, `Advanced Furnace (Cyril), from ${L(C(6094), 'Silver Ore')} (GL 18+)`],
-    'Sacred Grapes': [6, 'Brighthaven vineyards (Silverlight) or Sacred Grape Seeds'], 'Flawless gem': [6, 'Recipe from Morian'],
-    'Flawless Sapphire': [6, 'Recipe from Morian'], 'Flawless Topaz': [6, 'Recipe from Morian'],
-    'Corrupted Flower': [6, 'Grows in late-game regions; check the item tooltip in game'], 'Plague Brier': [6, 'Grows in late-game regions; check the item tooltip in game'],
-    'Blood Crystal': [6, 'Mine at Dracula\'s Demise with a GL 23+ weapon'], 'Ghost Yarn': [7, 'Advanced Loom (Matka)'], 'Power Core': [7, 'Recipe from Voltatia'],
+    'Sacred Grapes': [6, 'Brighthaven vineyards (Silverlight) or Sacred Grape Seeds'],
+    'Flawless Sapphire': [6, 'Recipe from Morian'], 'Flawless Topaz': [6, 'Recipe from Morian'], 'Flawless Emerald': [6, 'Recipe from Morian'], 'Flawless Amethyst': [6, 'Recipe from Morian'],
+    'Blood Crystal': [6, 'Mine at Dracula\'s Demise with a GL 23+ weapon'], 'Ghost Yarn': [7, 'Advanced Loom (Matka)'],
     'Gold Ingot': [7, 'Recipe from Azariel'], 'Ember Glass': [7, 'Recipe from Dantos'], 'Shadow Weave': [7, 'Recipe from Valencia'], 'Bat Leather': [7, 'Recipe from Gorecrusher'],
+    'Corrupted Flower': [7, 'Grows in the Oakveil Woodlands'],
   };
 
   // ---------- Endgame + reference views ----------
@@ -297,13 +306,14 @@
 
   function renderRef() {
     const slots = [['General Elena the Hollow', 53, 355624], ['General Cassius the Betrayer', 57, 396636], ['Cyril the Cursed Smith', 65, 283052], ['Jakira the Shadow Huntress', 75, 474543], ['Simon Belmont the Vampire Hunter', 80, null]];
-    const layers = [['V Bloods', 6066], ['Waygates', 6047], ['Castle plots', 6117], ['Merchants', 6114], ['Fishing spots', 6104, 'Fish Bone'], ['Mourning Lily', 6116, 'Mourning Lily'], ['Snow Flower', 6090, 'Snow Flower'], ['Blood Rose', 6088, 'Blood Rose Brew'], ['Fire Blossom', 6089, 'Fire Blossom'], ["Hell's Clarion", 6106], ['Copper Ore', 6091, 'Copper Ore'], ['Iron Ore', 6093, 'Iron Ore'], ['Silver Ore', 6094, 'Silver Ore'], ['Gem Stone', 6098, 'Crude Amethyst']];
+    const layers = [['V Bloods', 6066], ['Waygates', 6047], ['Castle plots', 6117], ['Merchants', 6114], ['Fishing spots', 6104, 'Fish Bone'], ['Mourning Lily', 6116, 'Mourning Lily'], ['Snow Flower', 6090, 'Snow Flower'], ['Blood Rose', 6088, 'Blood Rose Brew'], ['Fire Blossom', 6089, 'Fire Blossom'], ["Hell's Clarion", 6106, "Hell's Clarion"], ['Copper Ore', 6091, 'Copper Ore'], ['Iron Ore', 6093, 'Iron Ore'], ['Silver Ore', 6094, 'Silver Ore'], ['Gem Stone', 6098, 'Crude Amethyst']];
     return `
       <div class="grid2">
         <div class="card"><h2>Research tiers</h2><div class="scroll"><table><tbody>
           <tr><td><span class="cell">${ic('Research Desk', 36)}<b>Research Desk</b></span></td><td>"Thirst for Power" (Phase 2)</td><td>Ring of the Sorcerer, Warlock, Merciless Copper, Enchanted Brew</td></tr>
           <tr><td><span class="cell">${ic('Study', 36)}<b>Study</b></span></td><td>Maja (47)</td><td>Dark Magus, Pendants, Merciless Iron</td></tr>
-          <tr><td><span class="cell">${ic('Athenaeum', 36)}<b>Athenaeum</b></span></td><td>Henry Blackbrew (74)</td><td>Maleficer Scholar, GL 25 amulets, Witch Potion, Sanguine weapons</td></tr></tbody></table></div></div>
+          <tr><td><span class="cell">${ic('Athenaeum', 36)}<b>Athenaeum</b></span></td><td>Henry Blackbrew (74)</td><td>Maleficer Scholar, GL 25 amulets, Witch Potion, Sanguine weapons</td></tr></tbody></table></div>
+          <p>Each blueprint is a random draw within its category: 60 Paper / 90 Scrolls / 120 Schematics for a weapon or jewelry, 50 / 75 / 100 for armour or a consumable. They drop from humans (Paper in Farbane, Scrolls in Dunley, Schematics from Silverlight on), and Nicholaus\'s Paper Press crafts all three.</p></div>
         <div class="card"><h2 class="cell">${ic('Castle Heart', 40)}Castle Heart</h2><div class="scroll"><table><thead><tr><th>Level</th><th>Materials</th><th>Unlocks</th></tr></thead><tbody>
           <tr><td class="num">2</td><td>12 Leather + 12 Copper Ingot</td><td></td></tr>
           <tr><td class="num">3</td><td>8 Reinforced Plank + 24 Glass + 1 Greater Blood Essence</td><td>Eye of Mortium</td></tr>
@@ -315,7 +325,7 @@
           <tr><td><span class="cell">${ic('Chaos Kindling', 36)}Chaos T3</span></td><td>Ignite +1 tick</td><td>Stavros 75</td></tr>
           <tr><td><span class="cell">${ic('Phantom Aegis', 36)}Illusion T1</span></td><td>Cooldown rate +5%</td><td>Christina 44 (Grayson, Polora, Christina)</td></tr></tbody></table></div>
           <p>Traits unlock as you spend 3 / 5 / 7 points in a school. Tendrils (Storm T2) is required; leftover Frost, Storm and Blood points are free.</p></div>
-        <div class="card"><h2>Stygian passive slots</h2><div class="tiles">${slots.map(([n, lv, id]) => `<span class="tile" style="width:84px">${id ? `<a href="${M(id)}" target="_blank" rel="noopener">${ic(n, 56)}</a>` : ic(n, 56)}<em>${n.split(' ').slice(-3).join(' ').replace(/^the /, '')}<br><span class="mono">Lv ${lv}</span></em></span>`).join('')}</div><p>Simon Belmont has no fixed marker; he roams.</p></div>
+        <div class="card"><h2>Stygian passive slots</h2><div class="tiles">${slots.map(([n, lv, id]) => `<span class="tile" style="width:84px">${id ? `<a href="${M(id)}" target="_blank" rel="noopener">${ic(n, 56)}</a>` : ic(n, 56)}<em>${n.replace(/^(General|Sir|Lord) /, '').split(' the ')[0]}<br><span class="mono">Lv ${lv}</span></em></span>`).join('')}</div><p>Simon Belmont has no fixed marker; he roams. Elemental passives cost 400 Stygian Shards and vampire passives 600 Greater; each Discover is random.</p></div>
         <div class="card"><h2>Mining gates</h2><div class="tiles">${tiles(['Iron Ore', 'Silver Ore', 'Blood Crystal']).replace(/^<div class="tiles">|<\/div>$/g, '')}</div><p>Iron Ore needs a GL 12+ weapon, Silver Ore GL 18+, Blood Crystals GL 23+ (only at Dracula's Demise).</p></div>
         <div class="card"><h2>Map layers</h2><div style="display:flex;flex-wrap:wrap;gap:8px">${layers.map(([n, id, i]) => `<a class="btn small" href="${C(id)}" target="_blank" rel="noopener">${i && srcOf(i) ? `<img src="${srcOf(i)}" alt="" width="18" height="18" style="border-radius:4px">` : '📍'} ${n}</a>`).join('')}</div></div>
       </div>`;

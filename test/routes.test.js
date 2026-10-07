@@ -50,6 +50,23 @@ const magicTier = n => (MAGIC_TIERS.find(([k]) => n.startsWith(k)) || [])[1];
 const armorTier = n => ARMOR_TIERS[longest(n, Object.keys(ARMOR_TIERS))];
 const isMagic = n => magicTier(n) !== undefined;
 const isChest = n => /(Chestguard|Vest)$/.test(n);
+// Gear Level of a full armor set (W/Gear_Level: the sum of worn item levels): four pieces at the chest's tier, +1 for the
+// T4, T6 and T8 class sets' set bonus. Hollowfang and Dawnthorn are crafted only as the base for the next set.
+const setLevel = n => 4 * armorTier(n) + ([4, 6, 8].includes(armorTier(n)) ? 1 : 0);
+const BASE_ONLY = ['Hollowfang', 'Dawnthorn'];
+
+// Loadout items that are used up (restocked every phase) and jewels (crafted from the stockpile's "… jewels" rows).
+const CONSUMABLE = /^(Elixir of the |Brew of |Potion of )|^(Enchanted Brew|Witch Potion)$| Coating$/;
+const JEWEL = /^(Regular|Greater|Primal) (\w+ )?jewel$/;
+// Items with a crafting recipe: from data/items.json when it's downloaded; otherwise anything any route crafts, plus
+// anything shaped like crafted gear or a consumable. The Soul Shard drops from Dracula, and Ancestral weapons are
+// forged from a Sanguine weapon and a shard (the data has no recipe for them).
+const ITEMS_JSON = path.join(ROOT, 'data', 'items.json');
+const RECIPES = fs.existsSync(ITEMS_JSON) ? new Set(Object.keys(needsBuild.recipesByName(require(ITEMS_JSON)))) : null;
+const ANY_CRAFT = new Set(Object.values(needsBuild.ROUTES).flatMap(r => r.crafts.map(([, n]) => n)));
+const hasRecipe = g => RECIPES ? RECIPES.has(g)
+  : ANY_CRAFT.has(g) || ((CONSUMABLE.test(g) || WEAPON.test(g) || isMagic(g) || isChest(g)) && !/^Soul Shard of |^Ancestral .* Shards$/.test(g));
+const PLACEHOLDER = /check the (item )?tooltip|\bTODO\b|\bTBD\b|\bFIXME\b|placeholder|lorem ipsum/i;
 
 // Text helpers. A phase's text is everything it tells you except its loadout.
 const strip = h => String(h).replace(/<[^>]+>/g, '');
@@ -241,6 +258,70 @@ for (const { arch, def, icons, endgame, ref } of ROUTES) describe(`${arch.name} 
       tiers.forEach((t, i) => assert.ok(t !== undefined && t >= 0, `${def.phases[i].id} ${what} ${pick(L[i])} has a tier`));
       for (let i = 1; i < tiers.length; i++) assert.ok(tiers[i] >= tiers[i - 1], `${what}: ${pick(L[i])} (p${i + 1}) is not below ${pick(L[i - 1])}`);
     }
+  });
+
+  it('crafts every loadout item that has a recipe in that phase or earlier', () => {
+    const { crafts, extra } = needsBuild.ROUTES[arch.id];
+    def.phases.forEach((p, i) => {
+      const n = i + 1;
+      for (const g of p.loadout.gear) {
+        if (JEWEL.test(g)) {
+          const tier = g.split(' ')[0];
+          assert.ok(extra.some(([ph, what]) => ph <= n && what.startsWith(`${tier} jewels`)), `${p.id}: ${g} is crafted by phase ${n}`);
+        } else if (hasRecipe(g)) assert.ok(crafts.some(([ph, name]) => ph <= n && name === g), `${p.id}: ${g} is crafted by phase ${n}`);
+      }
+    });
+  });
+
+  it('restocks each consumable in every phase whose loadout uses it', () => {
+    const { crafts } = needsBuild.ROUTES[arch.id];
+    def.phases.forEach((p, i) => {
+      for (const g of p.loadout.gear.filter(x => CONSUMABLE.test(x))) {
+        assert.ok(crafts.some(([ph, name]) => ph === i + 1 && name === g), `${p.id}: the stockpile makes ${g} in phase ${i + 1}`);
+      }
+    });
+  });
+
+  it('wears the highest Gear Level weapon, magic source and armor crafted so far', () => {
+    const { crafts } = needsBuild.ROUTES[arch.id];
+    const wearable = g => isChest(g) && !BASE_ONLY.some(b => g.startsWith(b));
+    const slots = [['weapon', g => WEAPON.test(g), weaponTier], ['magic source', isMagic, magicTier], ['armor', wearable, setLevel]];
+    def.phases.forEach((p, i) => {
+      const made = crafts.filter(([ph]) => ph <= i + 1).map(([, name]) => name);
+      for (const [what, is, level] of slots) {
+        const worn = p.loadout.gear.find(is), best = made.filter(is).sort((a, b) => level(b) - level(a))[0];
+        if (best) assert.ok(level(worn) >= level(best), `${p.id} ${what}: wears ${worn}, but ${best} is crafted by now`);
+      }
+    });
+    // The sets skipped above must be presented as bases, not armor to wear.
+    const craftText = def.phases.flatMap(p => p.craft || []);
+    for (const b of BASE_ONLY) {
+      const c = craftText.find(x => x.ic === `${b} Chestguard`);
+      assert.ok(c && /only the base/.test(strip(c.t)), `${b} is crafted as a base only`);
+    }
+  });
+
+  it('stockpiles Stygian Shards for every passive its loadouts use', () => {
+    const used = new Set(def.phases.flatMap(p => p.loadout.gear.filter(g => PASSIVES.includes(g))));
+    const { extra } = needsBuild.ROUTES[arch.id];
+    for (const [kind, pool, shard, price] of [['Elemental', PASSIVES.slice(0, 12), 'Stygian Shard', 400], ['Vampire', PASSIVES.slice(12), 'Greater Stygian Shard', 600]]) {
+      const k = [...used].filter(x => pool.includes(x)).length;
+      const row = extra.find(([, what]) => what.startsWith(`${kind} passives ×`));
+      assert.ok(row, `${kind} passives are in the stockpile`);
+      assert.equal(+row[1].match(/×(\d+)/)[1], k, `${kind} passives: the loadouts use ${k}`);
+      // Discover gives a random passive you don't have yet: k specific ones out of 12 take k·13/(k+1) Discovers on average.
+      assert.equal(row[2][shard], Math.round(k * 13 / (k + 1) * price), `${kind} passives: expected ${shard} cost`);
+    }
+    assert.ok(extra.some(([ph, what]) => ph === 5 && what === 'Altar of Stygian Awakening'), 'the Altar itself is stockpiled');
+  });
+
+  it('names real materials and has no placeholder text', () => {
+    for (const [res, [, how]] of Object.entries(def.resources)) {
+      assert.doesNotMatch(strip(how), PLACEHOLDER, `${res}: how to get it`);
+      if (def.needs[res]) assert.doesNotMatch(res, / gem$/i, `${res}: stockpile a specific gem`);
+    }
+    for (const p of def.phases) assert.doesNotMatch(phaseText(p), PLACEHOLDER, `${p.id} text`);
+    for (const [name, html] of [['endgame', endgame], ['reference', ref]]) assert.doesNotMatch(strip(html), PLACEHOLDER, name);
   });
 
   it('covers the whole gear and station progression in the right phases', () => {
