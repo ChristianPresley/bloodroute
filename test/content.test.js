@@ -59,7 +59,14 @@ for (const { arch, def } of ROUTES) describe(`${arch.name} route content`, () =>
       if (['elixir', 'consumable', 'coating'].includes(LEX.kindOf(n))) assert.ok(strip(i.use).length >= 20, `${p.id}: when to use ${n}`);
       for (const c of (i && i.combo) || []) assert.notEqual(LEX.kindOf(c), 'unknown', `${n} combo: ${c}`);
     }
-    for (const [n, i] of Object.entries(info)) for (const v of [i.why, i.use, i.upgrade]) if (v) assert.doesNotMatch(strip(v), BAD, `info ${n}`);
+    for (const [n, i] of Object.entries(info)) {
+      for (const v of [i.why, i.use, i.upgrade]) if (v) assert.doesNotMatch(strip(v), BAD, `info ${n}`);
+      // Per-phase wording: { p7: { why, use, upgrade } }.
+      for (const [ph, o] of Object.entries(i.phases || {})) {
+        assert.ok(def.phases.some(p => p.id === ph), `info ${n}: phase ${ph}`);
+        for (const v of [o.why, o.use, o.upgrade]) if (v) assert.doesNotMatch(strip(v), BAD, `info ${n} ${ph}`);
+      }
+    }
   });
 
   it('gives every loadout a rotation with its abilities in order', () => {

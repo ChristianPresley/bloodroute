@@ -11,7 +11,8 @@
   // steps / craft entries: { t: html, ic: icon name }. Bosses: gets = icons of what they unlock.
   const PHASES = [
     {
-      id: 'p1', title: 'Wake up', levels: 'Start – 20', sig: 'Copper Axes', regions: ['Farbane Woods'],
+      id: 'p1', title: 'Wake up', levels: 'Start – 20', sig: 'Copper Axes', stage: 'Beginning',
+      regions: ['Farbane Woods (bandit camps and copper mines)'],
       goal: 'A castle, bone gear, Copper Axes and Chaos Volley.',
       steps: [
         { ic: 'Bone Axes', t: 'Leave the crypt and collect bones: craft the <b>Bone Axes</b> (16 Bone) and Bone Ring from the inventory. Axes are your weapon until Jade in Phase 5.' },
@@ -29,10 +30,20 @@
         { ic: 'Copper Axes', t: 'Reinforced Bone Axes (Bone Axes + 4 Plank + 128 Stone) → <b>Copper Axes</b> (16 Copper Ingot + 8 Plank, Simple Workbench). Copper adds Frenzy: a dash strike that gives +50% attack speed for 1.5 s.' },
         CRAFT.nightstalker('Shadewalker'), CRAFT.hearts,
       ],
-      loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Axes', 'Rogue'], kv: [['Blood', 'Rogue (Bandit Scouts, Poachers, Trappers, Deadeyes)'], ['Combo', 'Chaos Volley → Frenzy → primary attacks during the attack-speed burst']] },
+      loadout: {
+        slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Axes', 'Rogue'],
+        kv: [['Blood', 'Rogue (Bandit Scouts, Poachers, Trappers, Deadeyes)']],
+        rot: {
+          pre: [],
+          order: ['Shadowbolt', 'Chaos Volley', 'Frenzy', 'Primary attacks', { n: 'Starting dash', when: 'to dodge a telegraphed hit' }],
+          fill: [],
+          why: 'Open from range: Shadowbolt\'s 1 s cast and Chaos Volley\'s two Igniting bolts land before you close in. Frenzy then dashes you onto the target and gives +50% attack speed for 1.5 s, so spend that burst on primary attacks. Keep the starting dash for dodging: Rogue blood\'s post-Veil crit bonus needs 60% quality, which comes later.',
+        },
+      },
     },
     {
-      id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', regions: ['Farbane Woods'],
+      id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', stage: 'Beginning',
+      regions: ['Farbane Woods (Grayson\'s armoury, Goreswine\'s graveyards)'],
       goal: 'Research, Shadewalker armor and Merciless Copper Axes.',
       steps: [STEP.desk, STEP.heart2],
       bosses: [
@@ -45,10 +56,19 @@
         { ic: 'Shadewalker Vest', t: '<b>Shadewalker Vestment</b> (Research Desk): each piece = Nightstalker piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot. Physical Critical Chance on every piece; 2-piece +3% Movement Speed, 4-piece +1 Gear Level.' },
       ],
       notes: [NOTE.hearts, NOTE.blueprints],
-      loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Gravedigger Ring', 'Shadewalker Vest', 'Merciless Copper Axes', 'Rogue'] },
+      loadout: {
+        slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Gravedigger Ring', 'Shadewalker Vest', 'Merciless Copper Axes', 'Rogue'],
+        rot: {
+          pre: [],
+          order: ['Shadowbolt', 'Chaos Volley', 'Frenzy', 'Primary attacks', { n: 'Starting dash', when: 'to dodge a telegraphed hit' }],
+          fill: [],
+          why: 'The Phase 1 loop with harder-hitting axes: both spells first, from range, since they cost nothing to open with and come back every 8 s. Frenzy closes the gap and its 1.5 s attack-speed burst goes into primary attacks; recast the spells as they come back while you keep hitting. The dash stays your dodge until Veil of Blood in Phase 3.',
+        },
+      },
     },
     {
-      id: 'p3', title: 'Chaos foundation', levels: '30 – 40', sig: 'Power Surge', regions: ['Farbane Woods', 'Dunley Farmlands'],
+      id: 'p3', title: 'Chaos foundation', levels: '30 – 40', sig: 'Power Surge', stage: 'Early',
+      regions: ['Farbane Woods (Bandit Stronghold, Forgotten Cemetery, Fishing Lake)', 'Dunley Farmlands (Beatrice in Dawnbreak; Iron Ore, cotton, sunflowers)'],
       goal: 'The early build: Power Surge, Chaos mastery for a faster Veil, Iron Axes, Ring of the Warrior and Veil of Blood.',
       bosses: [
         B('Clive the Firestarter', ['Alchemy Table', 'Minor Explosive Box', 'Rain of Chaos'], 'Alchemy Table and Minor Explosive Box (opens Quincey\'s stronghold), plus a guaranteed Research Desk weapon blueprint. Chaos T2 point.'),
@@ -71,11 +91,18 @@
         label: 'Early build',
         slots: ['Veil of Blood', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'],
         gear: ['Ring of the Warrior', 'Shadewalker Vest', 'Iron Axes', 'Brew of Ferocity', 'Rogue'],
-        kv: [['Rotation', 'Power Surge → Veil → Veil attack → Frenzy → X-Strike → primary attacks; Chaos Volley whenever it\'s up'], ['Ring', 'Weapon Skill Power: your weapon skills are your burst, fired right after each Veil']],
+        kv: [['Ring', 'Weapon Skill Power: your weapon skills are your burst, fired right after each Veil']],
+        rot: {
+          pre: ['Brew of Ferocity'],
+          order: ['Power Surge', 'Veil of Blood', 'Veil attack', 'Frenzy', 'X-Strike', 'Primary attacks', { n: 'Chaos Barrage', when: 'both axe skills on cooldown' }],
+          fill: ['Chaos Volley'],
+          why: 'Power Surge goes first: it\'s instant, and its +20% attack speed and Ignite cover everything after it. The Veil starts Rogue blood Tier III\'s crit bonus, so the Veil attack, Frenzy and X-Strike follow at once while it lasts; X-Strike\'s 1 s incapacitate holds the boss for the primary attacks in Frenzy\'s burst. Chaos Barrage fills the gap when both axe skills are down, and Chaos Volley goes out whenever it\'s up.',
+        },
       },
     },
     {
-      id: 'p4', title: 'Into the Study', levels: '40 – 50', sig: 'Elixir of the Prowler', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
+      id: 'p4', title: 'Into the Study', levels: '40 – 50', sig: 'Elixir of the Prowler', stage: 'Early',
+      regions: ['Dunley Farmlands (Haunted Iron Mine, Dawnbreak, Mosswick)', 'Farbane Woods (Tristan on the northern roads)'],
       goal: 'The Study, a Rogue prisoner, the Prowler elixir and the materials for every mid-game recipe.',
       steps: [
         STEP.dominate,
@@ -99,10 +126,20 @@
         { ic: 'Study', t: 'Spend Scrolls at the Study on the <b>Duskwatcher</b> set, <b>Pendant of the Warrior</b> and <b>Merciless Iron Pistols</b> (for Phase 5); each draw is random within its category.' },
       ],
       notes: ['Wear the Scourgestone Pendant (GL 15) over the Ring of the Warrior (GL 12) for the Gear Level. You give up the ring\'s +9% Weapon Skill Power until the Pendant of the Warrior in Phase 5.', 'Hollowfang is 3 Gear Levels above Shadewalker (20 vs 17 for the full set) but has no crit, so the route keeps Shadewalker and uses Hollowfang only as the Duskwatcher base. If bosses here are above your Gear Level, wearing Hollowfang for this phase is a fair trade.', NOTE.fish],
-      loadout: { label: 'From Meredith on', slots: ['Veil of Blood', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Shadewalker Vest', 'Iron Axes', 'Elixir of the Prowler', 'Brew of Ferocity', 'Rogue'] },
+      loadout: {
+        label: 'From Meredith on', slots: ['Veil of Blood', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Shadewalker Vest', 'Iron Axes', 'Elixir of the Prowler', 'Brew of Ferocity', 'Rogue'],
+        rot: {
+          pre: ['Elixir of the Prowler', 'Brew of Ferocity'],
+          order: ['Power Surge', 'Veil of Blood', 'Veil attack', 'Frenzy', 'X-Strike', 'Primary attacks', { n: 'Chaos Barrage', when: 'both axe skills on cooldown' }],
+          fill: ['Chaos Volley'],
+          why: 'The Phase 3 order: Power Surge, then the Veil, with the Veil attack, Frenzy and X-Strike right behind it while the post-Veil crit bonus applies. The Prowler\'s +7% Veil Cooldown Rate brings Veil of Blood back a little before the 8 s axe skills, so every burst can open with a Veil instead of waiting for one. Chaos Volley and Chaos Barrage still fill the gaps between bursts.',
+        },
+      },
     },
     {
-      id: 'p5', title: 'Pistols', levels: '50 – 60', sig: 'Merciless Iron Pistols', regions: ['Dunley Farmlands', 'Hallowed Mountains', 'Ruins of Mortium', 'Gloomrot South'],
+      id: 'p5', title: 'Pistols', levels: '50 – 60', sig: 'Merciless Iron Pistols', stage: 'Mid',
+      regions: ['Dunley Farmlands (Bedrock Pass, Colosseum, Bastion of Dunley; Jade on the roads)', 'Hallowed Mountains (Frostmaw on the mountain roads)',
+        'Ruins of Mortium (Elena and Cassius; Rift Incursions for Stygian Shards)', 'Gloomrot South (Rustlock Village; Tech Scrap, Plague Brier)'],
       goal: 'The mid-game build: Jade\'s Pistols and Veil of Chaos, Duskwatcher armor, the Raven elixir, jewels and the first passives.',
       steps: [
         STEP.shards,
@@ -129,10 +166,22 @@
         CRAFT.rareAncestral('Pistols'),
       ],
       notes: ['Explosive Bullet starts with a dodge roll: use it to step out of a boss attack, and the bullet still explodes 3 s later. Fire it before Fan the Hammer so the blast lands soon after your Veil.'],
-      loadout: { label: 'Mid build', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'], gear: ['Pendant of the Warrior', 'Duskwatcher Chestguard', 'Merciless Iron Pistols', 'Regular Chaos jewel', 'Elixir of the Raven', 'Brew of Ferocity', 'Rogue', 'Blood Spray', 'Lightning Fast Strikes'], kv: [['Rotation', 'Power Surge → Veil → Veil attack → Explosive Bullet → Fan the Hammer → recast the Veil → primary attacks; Chaos Volley on cooldown']] },
+      loadout: {
+        label: 'Mid build', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'],
+        gear: ['Pendant of the Warrior', 'Duskwatcher Chestguard', 'Merciless Iron Pistols', 'Regular Chaos jewel', 'Elixir of the Raven', 'Brew of Ferocity', 'Rogue', 'Blood Spray', 'Lightning Fast Strikes'],
+        rot: {
+          pre: ['Elixir of the Raven', 'Brew of Ferocity'],
+          order: ['Power Surge', 'Veil of Chaos', 'Veil attack', 'Explosive Bullet', 'Fan the Hammer', 'Recast', 'Primary attacks', { n: 'Chaos Barrage', when: 'both pistol skills on cooldown' }],
+          fill: ['Chaos Volley'],
+          why: 'Power Surge first: it\'s instant, and its +20% attack speed and Ignite cover the whole burst. The Veil opens the post-Veil crit window, so the Veil attack, Explosive Bullet and Fan the Hammer go out at once; Explosive Bullet comes first because it explodes 3 s after it lands, so the blast still falls soon after your Veil, and its dodge roll can take you out of a boss attack. Recast the Veil for the second dash and illusion, then primary attacks until it\'s back; Chaos Volley on cooldown, Chaos Barrage when both pistol skills are down.',
+        },
+        jewels: { 'Veil of Chaos': ['damage of next primary attack', 'second illusion'], 'Power Surge': ['attack speed', 'physical damage output'] },
+      },
     },
     {
-      id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Dark Silver Pistols', regions: ['Gloomrot South', 'Cursed Forest', 'Dunley Farmlands', 'Silverlight Hills'],
+      id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Dark Silver Pistols', stage: 'Mid',
+      regions: ['Gloomrot South (Angram at the Pools of Rebirth)', 'Cursed Forest (kill Ben first, then wear his Shroud)', 'Dunley Farmlands (Willfred at night in Gracefall Village)',
+        'Silverlight Hills (bring a Silver Resistance Potion; Silver Ore, vineyards, Brighthaven Docks)'],
       goal: 'Dark Silver Pistols, a 100% Rogue prisoner and the late-game materials.',
       access: ACCESS,
       bosses: [
@@ -155,10 +204,23 @@
         CRAFT.castle4, CRAFT.fish('Rogue'),
       ],
       notes: [NOTE.gl],
-      loadout: { label: 'Mid build, complete', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'], gear: ['Blood Merlot Amulet', 'Duskwatcher Chestguard', 'Dark Silver Pistols', 'Greater Chaos jewel', 'Elixir of the Raven', 'Brew of Ferocity', 'Rogue', 'Blood Spray', 'Lightning Fast Strikes', 'Sanguine Mastery'] },
+      loadout: {
+        label: 'Mid build, complete', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'],
+        gear: ['Blood Merlot Amulet', 'Duskwatcher Chestguard', 'Dark Silver Pistols', 'Greater Chaos jewel', 'Elixir of the Raven', 'Brew of Ferocity', 'Rogue', 'Blood Spray', 'Lightning Fast Strikes', 'Sanguine Mastery'],
+        rot: {
+          pre: ['Elixir of the Raven', 'Brew of Ferocity'],
+          order: ['Power Surge', 'Veil of Chaos', 'Veil attack', 'Explosive Bullet', 'Fan the Hammer', 'Recast', 'Primary attacks', { n: 'Chaos Barrage', when: 'both pistol skills on cooldown' }],
+          fill: ['Chaos Volley'],
+          why: 'The Phase 5 burst with Dark Silver Pistols: Power Surge, the Veil and its Veil attack, then Explosive Bullet before Fan the Hammer so the blast lands soon after your Veil. The Greater jewel\'s Agonizing Flames needs an Ignited boss when the Veil attack lands: Power Surge\'s Ignite on your earlier hits and Chaos Volley keep one on it. Chaos Barrage still fills the gap when both pistol skills are down.',
+        },
+        jewels: { 'Veil of Chaos': ['damage of next primary attack', 'second illusion', 'Agonizing Flames'], 'Power Surge': ['attack speed', 'physical damage output', 'duration of the effect'] },
+      },
     },
     {
-      id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Shadowmoon Chestguard', regions: ['Gloomrot North', 'Oakveil Woodlands', 'Cursed Forest', 'Silverlight Hills', 'Hallowed Mountains', 'Dunley (Dracula\'s Demise)', 'Ruins of Mortium'],
+      id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Shadowmoon Chestguard', stage: 'Late',
+      regions: ['Gloomrot North (Henry Blackbrew, Voltatia, the Treasure Hunter)', 'Oakveil Woodlands (Jakira, Stavros, Lucile, Dantos; Corrupted Flower, Venom Sap)',
+        'Cursed Forest (Matka, Gorecrusher)', 'Silverlight Hills (Azariel; bring a Holy Resistance Flask)', 'Hallowed Mountains (Terrorclaw in the Frozen Cave)',
+        'Dunley Farmlands (Lord Styx at Dracula\'s Demise)', 'Ruins of Mortium (Valencia; Tier 2 Rift Incursions)'],
       goal: 'Shadowmoon, the Crimson Commander, Sanguine then Ancestral Pistols, and the Blood Key.',
       steps: [
         STEP.greater,
@@ -190,10 +252,23 @@
         CRAFT.epicAncestral('Pistols', 'Target rolls Weapon Skill Power · Physical Critical Power · Bonus Physical Power. Critical Chance is already at its cap; Veil Cooldown Rate has about 9 points of room if you want more Veils.'),
       ],
       notes: [NOTE.athenaeum],
-      loadout: { label: 'Late build', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'], gear: ['Amulet of the Crimson Commander', 'Shadowmoon Chestguard', 'Ancestral Pistols Shards', 'Greater Chaos jewel', 'Elixir of the Raven', 'Potion of Rage', 'Unholy Coating', 'Rogue', 'Warrior', 'Rampage', 'Lethal Strikes', 'Hunger for Blood', 'Lightning Fast Strikes', 'Ravenous Strikes'], kv: [['Rotation', 'Power Surge → Veil → Veil attack → Explosive Bullet → Fan the Hammer → recast → primaries; Chaos Barrage when both pistol skills are down']] },
+      loadout: {
+        label: 'Late build', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Chaos Barrage'],
+        gear: ['Amulet of the Crimson Commander', 'Shadowmoon Chestguard', 'Ancestral Pistols Shards', 'Greater Chaos jewel', 'Elixir of the Raven', 'Potion of Rage', 'Unholy Coating', 'Rogue', 'Warrior', 'Rampage', 'Lethal Strikes', 'Hunger for Blood', 'Lightning Fast Strikes', 'Ravenous Strikes'],
+        rot: {
+          pre: ['Elixir of the Raven', 'Potion of Rage', 'Unholy Coating'],
+          order: ['Power Surge', 'Veil of Chaos', 'Veil attack', 'Explosive Bullet', 'Fan the Hammer', 'Recast', 'Primary attacks', { n: 'Chaos Barrage', when: 'both pistol skills on cooldown' }],
+          fill: ['Chaos Volley'],
+          why: 'The same burst as Phase 5, now with Warrior blood\'s +40% on the Veil attack and the Ancestral rolls and Ravenous Strikes behind both pistol skills. When the Unholy Coating\'s charge (every 12 s) lands on the Veil attack, its Condemn (+15% damage taken for 5 s) covers Explosive Bullet, Fan the Hammer and the blast after them. Between bursts, Rampage\'s attack speed after crits and the amulet\'s Lesser Blood Rage speed up the primary attacks.',
+        },
+        jewels: { 'Veil of Chaos': ['damage of next primary attack', 'second illusion', 'Agonizing Flames'], 'Power Surge': ['attack speed', 'physical damage output', 'duration of the effect'] },
+        rolls: ['Weapon Skill Power', 'Physical Critical Power', 'Bonus Physical Power'],
+      },
     },
     {
-      id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', regions: ['Farbane (Dreaded Peak)', 'Silverlight Hills', 'Gloomrot North', 'Oakveil Woodlands', 'Ruins of Mortium'],
+      id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', stage: 'End',
+      regions: ['Farbane Woods (The Dreaded Peak, in Bat Form)', 'Silverlight Hills (Solarus)', 'Gloomrot North (Adam)', 'Oakveil Woodlands (Megara)',
+        'Ruins of Mortium (Dracula\'s Castle; bring the Blood Key)'],
       goal: 'Dracula\'s Shadow, the Soul Shard of Dracula, then your final build.',
       bosses: [
         B('Talzur the Winged Horror', ["Dracula's Shadow Gloves", 'Soul Shard of the Winged Horror'], 'Dracula\'s Shadow Gloves and Soul Shard of the Winged Horror.'),
@@ -206,9 +281,244 @@
         { ic: "Dracula's Shadow Chestguard", t: 'Upgrade each Shadowmoon piece to <b>Dracula\'s Shadow</b> (+ 12 Shadow Weave + 12 Bat Leather) as its boss unlocks the recipe. 2-piece +4% Movement Speed, 3-piece +7% Veil Cooldown Rate, 4-piece: +12% Physical Critical Chance and 6 movement speed for 4 s after a Veil.' },
         CRAFT.shard, CRAFT.repair,
       ],
-      loadout: { label: 'Endgame', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Shadow Chestguard", 'Ancestral Pistols Shards', 'Greater Chaos jewel', 'Elixir of the Raven', 'Potion of Rage', 'Unholy Coating', 'Rogue', 'Warrior', 'Rampage', 'Lethal Strikes', 'Hunger for Blood', 'Lightning Fast Strikes', 'Ravenous Strikes'], kv: [['Choose', 'Compare the options on the Endgame builds tab']] },
+      loadout: {
+        label: 'Endgame', slots: ['Veil of Chaos', 'Chaos Volley', 'Power Surge', 'Blood Storm'],
+        gear: ['Soul Shard of Dracula', "Dracula's Shadow Chestguard", 'Ancestral Pistols Shards', 'Greater Chaos jewel', 'Elixir of the Raven', 'Potion of Rage', 'Unholy Coating', 'Rogue', 'Warrior', 'Rampage', 'Lethal Strikes', 'Hunger for Blood', 'Lightning Fast Strikes', 'Ravenous Strikes'],
+        kv: [['Choose', 'Compare the options on the Endgame builds tab']],
+        rot: {
+          pre: ['Elixir of the Raven', 'Potion of Rage', 'Unholy Coating'],
+          order: ['Power Surge', 'Veil of Chaos', 'Veil attack', 'Explosive Bullet', 'Fan the Hammer', 'Recast', 'Primary attacks', { n: 'Blood Storm', when: 'both pistol skills on cooldown' }],
+          fill: ['Chaos Volley'],
+          why: 'Power Surge first (attack speed, and your physical hits Ignite), then Veil of Chaos and the Veil attack right away. Explosive Bullet goes off 3 s after it lands: fired first, the blast still falls inside Dracula\'s Shadow\'s 4 s; fired after the recast, it doesn\'t. Fan the Hammer follows inside the same window, then recast the Veil and keep up primary attacks; Chaos Volley fills gaps and Blood Storm goes out when both pistol skills are down.',
+        },
+        jewels: { 'Veil of Chaos': ['damage of next primary attack', 'second illusion', 'Agonizing Flames'], 'Power Surge': ['attack speed', 'physical damage output', 'duration of the effect'] },
+        rolls: ['Weapon Skill Power', 'Physical Critical Power', 'Bonus Physical Power'],
+      },
     },
   ];
+
+  // ---------- Hover-card notes: why each loadout item is there, how to use consumables, what replaces it ----------
+  // { why, use? (consumables: when, where from, what it powers), combo?: [names], upgrade? }
+  const INFO = {
+    // Abilities
+    'Starting dash': {
+      why: 'The dash every vampire starts with: a short dash that eludes attacks. Until Veil of Blood it is your dodge; Rogue blood\'s post-Veil crit bonus needs 60% quality, so spend it on telegraphed hits rather than damage.',
+      upgrade: 'Veil of Blood replaces it in Phase 3 (Beatrice, Lv 40).',
+    },
+    'Shadowbolt': {
+      why: 'Known from the start: one bolt for 200% magic damage that inflicts Leech, on an 8 s cooldown. Its 1 s cast is slow, so throw it from range as you close in; until Lidia it is your only other damage spell.',
+      upgrade: 'Power Surge replaces it in Phase 3 (Lidia, Lv 30): +20% attack speed and Ignite on every physical hit are worth more to a weapon build than one more bolt.',
+    },
+    'Chaos Volley': {
+      why: 'Errol\'s Chaos spell, kept all game: two bolts for 125% magic damage each that Ignite, on an 8 s cooldown with a 0.6 s cast. It is damage while the weapon skills recharge, and its Ignite keeps the boss burning for the Greater jewel\'s Agonizing Flames.',
+      upgrade: 'Never replaced: every endgame build keeps it next to Power Surge.',
+      combo: ['Veil of Chaos'],
+    },
+    'Power Surge': {
+      why: 'Lidia\'s Chaos spell: an instant self-buff that gives +20% attack speed and movement speed and makes your physical hits Ignite for 3 s, on a 10 s cooldown. Cast it first in every burst so the Veil attack, the weapon skills and the primary attacks after it all land faster and burn; its jewel adds attack speed and physical damage while it lasts.',
+      upgrade: 'Kept to the end: all three endgame builds use it.',
+      combo: ['Veil of Chaos', 'Explosive Bullet', 'Fan the Hammer'],
+    },
+    'Chaos Barrage': {
+      why: 'Quincey\'s Chaos ultimate: four projectiles for 200% magic damage on a direct hit plus 100% in an area, all Igniting, on a 120 s cooldown. Fire it in the gap when both weapon skills are on cooldown, so it never delays a post-Veil burst.',
+      upgrade: 'Blood Storm replaces it when Dracula drops the Soul Shard of Dracula in Phase 8.',
+    },
+    'Blood Storm': {
+      why: 'Unlocked by the Soul Shard of Dracula: you are invulnerable while you channel up to 25 homing bolts (100% each, Leech) over 3 s, then a 300% nova. Cast it when both pistol skills are on cooldown, or to sit out a boss\'s big attack.',
+      upgrade: 'Your final ultimate.',
+    },
+    'Veil of Blood': {
+      why: 'Beatrice\'s drop and your Veil until Jade: a dash that eludes for 2.2 s, and the next primary heals 5% and sets off a blood nova (20%, Leech). Each Veil also starts Rogue blood Tier III\'s crit bonus, so Veil often and fire Frenzy and X-Strike right after it.',
+      upgrade: 'Veil of Chaos replaces it in Phase 5 (Jade, Lv 57): a second dash on recast, and an illusion that explodes.',
+    },
+    'Veil of Chaos': {
+      why: 'Jade\'s drop and the build\'s Veil to the end: a dash that eludes for 2.2 s; the next primary heals 5%, Ignites and lets you recast for a second dash, and the illusion you leave explodes for 50% and Ignites. Every Veil opens the post-Veil crit window (Rogue blood Tier III, plus Dracula\'s Shadow\'s +12% for 4 s in Phase 8), so the pistol skills go straight after it.',
+      upgrade: 'Kept to the end, unless the recast doesn\'t bring the crits back (Endgame tab, step 2): then Veil of Storm (build R2) takes its place.',
+      combo: ['Power Surge', 'Explosive Bullet', 'Fan the Hammer'],
+    },
+    'Veil of Storm': {
+      why: 'Meredith\'s drop and the R2 endgame Veil: casting it gives +20% attack speed for 4 s, the same length as Dracula\'s Shadow\'s crit bonus, so more primary hits land inside the window.',
+      upgrade: 'Swap it in for Veil of Chaos only if the recast doesn\'t refresh the post-Veil crits (Endgame tab, step 3).',
+    },
+    // Weapon skills
+    'Frenzy': {
+      why: 'The axes\' first skill (Copper Axes on): dash to the first enemy for 100% and, on a hit, +50% attack speed and 25 movement speed for 1.5 s, every 8 s. Use it straight after the Veil attack so its hit lands in the post-Veil crit window, then spend the burst on primary attacks.',
+      upgrade: 'The pistols replace the axes in Phase 5: Explosive Bullet and Fan the Hammer take its place in the rotation.',
+    },
+    'X-Strike': {
+      why: 'The axes\' second skill (Iron Axes on): two thrown axes for 80% each that slow, and a 1 s incapacitate where they cross, every 8 s. Throw it right after Frenzy, close enough that both axes hit, while the post-Veil crit bonus still applies.',
+      upgrade: 'Gone with the axes in Phase 5, when the Merciless Iron Pistols take over.',
+    },
+    'Explosive Bullet': {
+      why: 'A dodge roll and a 25% shot; the bullet explodes 3 s later for 115% in an area, on a 10 s cooldown. Fire it first after the Veil attack so the blast still lands inside the post-Veil window, and use the roll to step out of a boss attack.',
+      upgrade: 'Kept to the end with the pistols; Weapon Skill Power (the Warrior jewelry, Ravenous Strikes, the Ancestral roll) grows it.',
+    },
+    'Fan the Hammer': {
+      why: 'Ten bullets for 25% each over 1.3 s (250% in all, 8 s cooldown): the build\'s biggest hit, and every bullet rolls its own crit. Fire it right after Explosive Bullet, while the post-Veil crit bonuses apply.',
+      upgrade: 'Kept to the end with the pistols; Weapon Skill Power grows every bullet.',
+    },
+    // Magic sources
+    'Bone Ring': {
+      why: 'The first magic source (GL 3), crafted from the inventory with bone. It is there for the Gear Level until Goreswine.',
+      upgrade: 'Gravedigger Ring (GL 9) in Phase 2, once Goreswine unlocks Grave Dust.',
+    },
+    'Gravedigger Ring': {
+      why: 'GL 9 from 12 Grave Dust + 32 Mourning Lily: six Gear Levels over the Bone Ring for Phase 2\'s bosses, and the base of the Ring of the Warrior.',
+      upgrade: 'Ring of the Warrior (GL 12, +9% Weapon Skill Power) in Phase 3: Gravedigger Ring + 4 Crude Ruby + 1 Greater Blood Essence.',
+    },
+    'Ring of the Warrior': {
+      why: 'GL 12 and +9% Weapon Skill Power. Your weapon skills are your burst, fired right after each Veil, so the ring\'s stat goes straight into Frenzy and X-Strike.',
+      upgrade: 'The Scourgestone Pendant (GL 15) takes the slot in Phase 4 for the Gear Level; the Pendant of the Warrior brings the +9% back at GL 18 in Phase 5.',
+    },
+    'Scourgestone Pendant': {
+      why: 'GL 15 against the ring\'s 12 (Artisan Table: 8 Scourgestone + 24 Gem Dust). Worn for the Gear Level, since you deal about 4% less damage per level under a boss; you give up the ring\'s +9% Weapon Skill Power until Phase 5. It is also the base of the Pendant of the Warrior.',
+      upgrade: 'Pendant of the Warrior (GL 18, +9% Weapon Skill Power) in Phase 5: Scourgestone Pendant + 4 Regular Ruby + 16 Glass.',
+    },
+    'Pendant of the Warrior': {
+      why: 'GL 18 with the ring\'s +9% Weapon Skill Power back, so every Explosive Bullet and Fan the Hammer hits harder. A Study blueprint: Scourgestone Pendant + 4 Regular Ruby + 16 Glass.',
+      upgrade: 'The Blood Merlot Amulet (GL 22) takes the slot in Phase 6 for the Gear Level; the Amulet of the Crimson Commander restores the +9% in Phase 7.',
+    },
+    'Blood Merlot Amulet': {
+      why: 'GL 22, four levels over the pendant: worn for the Gear Level, though it drops the pendant\'s +9% Weapon Skill Power for a phase. It is also the base of the Amulet of the Crimson Commander.',
+      upgrade: 'Amulet of the Crimson Commander (GL 25) in Phase 7: Blood Merlot Amulet + 4 Flawless Ruby + 12 Power Core.',
+    },
+    'Amulet of the Crimson Commander': {
+      why: 'GL 25 and +9% Weapon Skill Power for the pistol skills, and primary hits can trigger Lesser Blood Rage (+25% attack speed for 3 s; 10% chance, once every 10 s) between bursts.',
+      upgrade: 'The Soul Shard of Dracula takes the slot in Phase 8: you trade this +9% and the proc for +16% Blood Efficiency and Blood Storm.',
+    },
+    'Soul Shard of Dracula': {
+      why: 'Dracula\'s drop: +16% Blood Efficiency (Rogue blood\'s crit bonuses and their caps grow 16%), primary hits can trigger Bloodthirst (+15% damage for 6 s), and it unlocks Blood Storm. It takes the amulet slot.',
+      upgrade: 'Final. It loses durability over time: feed on Primal Blood Souls in Tier 2 Rift Incursions to repair it.',
+    },
+    // Armor
+    'Nightstalker Vest': {
+      why: 'The first leather set (vest: 8 Leather + 4 Coarse Thread). You wear it only until Shadewalker, and every Shadewalker piece is built on a Nightstalker piece.',
+      upgrade: 'Shadewalker Vestment in Phase 2 (Research Desk): each piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot.',
+    },
+    'Shadewalker Vest': {
+      why: 'The first crit armor: Physical Critical Chance on every piece, 2-piece +3% Movement Speed, 4-piece +1 Gear Level. The route keeps it through Phase 4 over Hollowfang, which is 3 Gear Levels higher but has no crit.',
+      upgrade: 'Duskwatcher Vestment in Phase 5 (Study): each Hollowfang piece + 4 Iron Ingot + 8 Thick Leather.',
+    },
+    'Duskwatcher Chestguard': {
+      why: 'Physical Critical Chance on every piece at a higher tier; 2-piece +3% Movement Speed, 3-piece +1 Gear Level, and 4-piece +4% Veil Cooldown Rate, which means more Veils and more post-Veil crit windows.',
+      upgrade: 'Shadowmoon Vestment in Phase 7 (Athenaeum): each Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence.',
+    },
+    'Shadowmoon Chestguard': {
+      why: '8% Physical Critical Chance across the set, one of the five sources that reach the 45% cap; 3-piece +6% Veil Cooldown Rate and 4-piece +1 Gear Level.',
+      upgrade: 'Dracula\'s Shadow in Phase 8, one piece at a time as each boss unlocks its recipe (+ 12 Shadow Weave + 12 Bat Leather).',
+    },
+    "Dracula's Shadow Chestguard": {
+      why: 'Keeps the set\'s 8% Physical Critical Chance; 3-piece +7% Veil Cooldown Rate, and the 4-piece gives +12% Physical Critical Chance and 6 movement speed for 4 s after a Veil: the window the Explosive Bullet and Fan the Hammer burst is timed for.',
+      upgrade: 'Final armor.',
+    },
+    // Weapons
+    'Copper Axes': {
+      why: 'Copper adds Frenzy, a dash strike that gives +50% attack speed for 1.5 s. Axes have a fast primary combo (68.7% per second), so Frenzy\'s burst is worth spending on primary attacks.',
+      upgrade: 'Merciless Copper Axes (GL 12) in Phase 2: Copper Axes + 2 Crude Ruby + 12 Whetstone + 4 Leather.',
+    },
+    'Merciless Copper Axes': {
+      why: 'GL 12 and more Physical Power on the same Frenzy loop; GL 12 is also the weapon level Iron Ore needs in Phase 3.',
+      upgrade: 'Iron Axes (GL 15) in Phase 3, after Quincey: they add X-Strike.',
+    },
+    'Iron Axes': {
+      why: 'GL 15, and Iron adds X-Strike: two axes for 80% each and a 1 s incapacitate where they cross. With Frenzy, that is two weapon skills to fire after every Veil.',
+      upgrade: 'Merciless Iron Pistols (GL 18) in Phase 5, after Jade: their skills deal about 45% per second against the axes\' 33%.',
+    },
+    'Merciless Iron Pistols': {
+      why: 'Jade\'s weapon line at GL 18: Fan the Hammer (10 × 25%) and Explosive Bullet (25% + 115%) are the strongest skill pair in the weapon table, about 45% per second against the axes\' 33%, and both fit inside a post-Veil window.',
+      upgrade: 'Dark Silver Pistols (GL 24) in Phase 6; a Rare Ancestral Pistols built on these is an optional step in between.',
+    },
+    'Dark Silver Pistols': {
+      why: 'GL 24 from Jade\'s recipe at Cyril\'s Anvil (12 Dark Silver Ingot + 8 Reinforced Plank + 1 Primal Blood Essence): six Gear Levels and more Physical Power on the same two skills.',
+      upgrade: 'Sanguine Pistols (GL 27) in Phase 7, then the Epic Ancestral Pistols built on them.',
+    },
+    'Ancestral Pistols Shards': {
+      why: 'The Epic Ancestral Pistols (Sanguine Pistols + an Epic pistols shard + 4 Onyx Tear): the top weapon tier, with 3 random rolls. Aim for Weapon Skill Power, Physical Critical Power and Bonus Physical Power: crit chance is already capped, and those three have room.',
+      upgrade: 'Final weapon: merge two at the Fusion Forge (12 Ember Glass) to keep the best rolls.',
+    },
+    'Ancestral Axes Shards': {
+      why: 'Build R3\'s weapon if you\'d rather fight in melee: the same rotation, with Frenzy\'s +50% attack speed inside the post-Veil window, but about 28% less base skill damage than the pistols.',
+      upgrade: 'It needs its own axes line (Merciless Iron, Dark Silver, Sanguine, then Epic Ancestral); the Endgame tab lists the cost.',
+    },
+    // Jewels
+    'Regular Chaos jewel': {
+      why: 'Regular jewels (Raziel\'s Jewelcrafting Table: 4 Regular Amethyst + 4 Iron Ingot) carry 2 random mods for one Chaos spell. Put them in Veil of Chaos (more Veil attack damage, a second illusion on recast) and Power Surge (attack speed and physical damage while it lasts).',
+      upgrade: 'Greater Chaos jewels (3 mods) replace them in Phase 6, after Mairwyn.',
+    },
+    'Greater Chaos jewel': {
+      why: 'Greater jewels (4 Flawless Amethyst + 4 Dark Silver Ingot) carry 3 mods: Veil of Chaos adds Agonizing Flames on an Ignited target (damage and healing), and Power Surge a longer effect.',
+      upgrade: 'Kept to the end; Valencia\'s Primal jewels (4 mods) are optional for this build.',
+    },
+    // Consumables
+    'Brew of Ferocity': {
+      why: '+3 Physical Power for 60 minutes. Every hit in this build is physical (axes, then pistols), so it raises the whole rotation, the post-Veil burst included.',
+      use: 'Drink it before you head out to a boss and again when it runs out: it lasts 60 minutes and persists through death. Make it at the Alchemy Table (Research Desk blueprint) from 32 Hell\'s Clarion + Fish Bone + Empty Waterskin, or buy it from Herb & Potion merchants. It adds to Frenzy and X-Strike, later Explosive Bullet and Fan the Hammer, and every primary; it doesn\'t stack with the Potion of Rage.',
+      combo: ['Frenzy', 'X-Strike', 'Explosive Bullet', 'Fan the Hammer'],
+      upgrade: 'Potion of Rage (+5 Physical Power, Athenaeum) replaces it in Phase 7.',
+    },
+    'Elixir of the Prowler': {
+      why: '+7% Veil Cooldown Rate and +4% Movement Speed for 60 minutes: more Veils, so more Veil attacks and more post-Veil crit windows for Frenzy and X-Strike.',
+      use: 'Drink it before a boss hunt: it lasts 60 minutes, persists through death, and only one elixir works at a time. Alchemy Table, Meredith\'s recipe: 20 Sunflower (Dunley farms) + 20 Fire Blossom + Greater Blood Essence + Empty Glass Bottle. It brings Veil of Blood back sooner, so each Frenzy and X-Strike burst can start inside Rogue blood Tier III\'s crit bonus.',
+      combo: ['Veil of Blood', 'Frenzy', 'X-Strike'],
+      upgrade: 'Elixir of the Raven replaces it in Phase 5 (General Elena): +8% Physical Critical Chance and Power.',
+    },
+    'Elixir of the Raven': {
+      why: '+8% Physical Critical Chance and +8% Physical Critical Power for 60 minutes: one of the five sources that bring crit to the 45% cap, and part of the crit power stack.',
+      use: 'Drink it before every boss trip: it lasts 60 minutes and persists through death, and since only one elixir works at a time it replaces the Prowler. Alchemy Table, Elena\'s recipe: 20 Mourning Lily + 20 Snow Flower + Greater Blood Essence + Empty Glass Bottle. Each of Fan the Hammer\'s 10 bullets rolls its own crit, so the 8% shows most there; more crits also mean more Rogue blood Tier IV armor breaks and, from Phase 7, more Rampage attack speed.',
+      combo: ['Fan the Hammer', 'Rampage', 'Rogue'],
+      upgrade: 'Kept to the end: every endgame build drinks it.',
+    },
+    'Potion of Rage': {
+      why: '+5 Physical Power for 60 minutes, two more than the Brew of Ferocity, on every pistol hit.',
+      use: 'Drink it before each boss trip: it lasts 60 minutes, persists through death and doesn\'t stack with the Brew. Alchemy Table, Athenaeum blueprint: 60 Plague Brier + 60 Hell\'s Clarion + Fish Bone + Empty Glass Bottle, or 60 Goldsun Coins at the City Herb & Potion Vendor or the Treasure Hunter. It raises the Veil attack, Explosive Bullet, Fan the Hammer and every primary between bursts.',
+      combo: ['Veil attack', 'Explosive Bullet', 'Fan the Hammer'],
+      upgrade: 'Kept to the end.',
+    },
+    'Unholy Coating': {
+      why: 'Every 12 s your next primary deals 40% bonus magic damage, sends a bone spirit around the target (50%) and Condemns it (+15% damage taken for 5 s).',
+      use: 'Coat the pistols before a boss: it lasts 60 minutes and persists through death. Stavros\'s recipe at the Alchemy Table: 16 Corrupted Flower + 16 Venom Sap, both from Oakveil. The charge comes back every 12 s and goes on your next primary; when that is the Veil attack, the 5 s Condemn covers Explosive Bullet, Fan the Hammer and the blast 3 s later.',
+      combo: ['Veil attack', 'Explosive Bullet', 'Fan the Hammer'],
+      upgrade: 'Kept to the end.',
+    },
+    // Blood
+    'Rogue': {
+      why: 'The build\'s blood all game. Tier I adds Physical Critical Chance and 8% Critical Power; Tier III (60%+) adds Veil Cooldown Rate and +100% Physical Critical Chance after a Veil, which is why every burst starts with a Veil; Tier IV (90%+) gives crits a 50% chance to expose armor (+15% damage taken for 4 s).',
+      upgrade: 'Never replaced: raise it to 100% (Tier V, every bonus +20%) with Corrupted Fish in Phase 6, and add Warrior Tier I with the Blood Homogenizer in Phase 7.',
+    },
+    'Warrior': {
+      why: 'Added on top of Rogue with Lucile\'s Blood Homogenizer from a 90%+ Warrior Blood Potion: Tier I adds Physical Power and makes Veil attacks deal 40% more, and the 90% potion brings Tier IV\'s Weapon Charge Gain too.',
+      upgrade: 'Kept to the end as the second blood.',
+    },
+    // Passives
+    'Blood Spray': {
+      why: 'Elemental passive: +8% Physical Critical Chance, and crits leech 5%. Crit is still under its cap in Phases 5 and 6, so all 8% counts, and the leech is your healing.',
+      upgrade: 'Hunger for Blood replaces it in Phase 7: Shadowmoon, the Raven elixir and Rampage reach the 45% crit cap without it.',
+    },
+    'Lightning Fast Strikes': {
+      why: 'Elemental passive: +7% Primary Attack Speed. More primary hits between bursts mean more crits for Rogue blood Tier IV and Rampage, and more chances at the amulet and Soul Shard procs.',
+      upgrade: 'Kept to the end.',
+    },
+    'Sanguine Mastery': {
+      why: 'Cyril\'s slot: +8% to your Rogue blood bonuses (crit chance, crit power, Veil Cooldown Rate). Its other half, +8% physical damage to Leeched enemies, does nothing here: this kit applies no Leech.',
+      upgrade: 'Ravenous Strikes replaces it in Phase 7.',
+    },
+    'Rampage': {
+      why: 'Vampire passive: +8% Physical Critical Chance, the last 8 that reach the 45% cap, and physical crits give +12% attack speed for 4 s, which a crit rate this high keeps up most of the time.',
+      upgrade: 'Kept to the end.',
+    },
+    'Lethal Strikes': {
+      why: 'Vampire passive: +8% Physical Critical Power (164 of the 180% cap with Rogue blood and the Raven elixir) and 12% more physical damage to enemies under 30% health, for every boss\'s last stretch.',
+      upgrade: 'Kept to the end.',
+    },
+    'Hunger for Blood': {
+      why: 'Vampire passive: +5% Primary Attack Leech and 8% more damage to V Bloods. It takes over Blood Spray\'s healing once crit is capped, and the 8% applies to every boss.',
+      upgrade: 'Kept to the end.',
+    },
+    'Ravenous Strikes': {
+      why: 'Vampire passive: +8% Weapon Skill Power and +5% Weapon Skill Leech. Weapon Skill Power is far from its cap, so all of it lands on Fan the Hammer and Explosive Bullet.',
+      upgrade: 'Kept to the end.',
+    },
+  };
 
   // ---------- Endgame + reference views ----------
   const renderEndgame = () => BR.shared.renderEndgame({
@@ -252,6 +562,7 @@
     phases: PHASES,
     resources: BR.shared.RES,
     needs: (window.BR_NEEDS || {}).rogue || {},
+    info: INFO,
     // Loadout slot text → icon (first spell named).
     slotIcons: ['Chaos Volley', 'Shadowbolt', 'Power Surge', 'Chaos Barrage', 'Blood Storm', 'Veil of Blood', 'Veil of Chaos'],
     finish: { icon: 'Soul Shard of Dracula', title: 'Dracula has fallen', text: 'Test your crit window on the Endgame builds tab and keep the Soul Shard repaired in Tier 2 Rift Incursions.' },
