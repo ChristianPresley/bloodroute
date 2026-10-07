@@ -1,16 +1,21 @@
 // Bloodroute app: the archetype picker and the route planner (phases, next step, stockpile, endgame, reference).
 // The active route is chosen by ?route=<id>, else the last route used in this browser; ?pick shows the picker.
+// Page HTML comes from js/view.js, ordering and "up next" from js/state.js, hover cards from js/cards.js and maps
+// from js/map.js. What's open, the scroll positions and the boss order are saved per route (BR.store.ui).
 (() => {
   'use strict';
-  const { ic, tiles, M, BOSS_NAMES, slotIcon } = BR.h;
+  const { ic, M, BOSS_NAMES, esc } = BR.h;
+  const V = BR.view, S = BR.state;
   const ARCH = BR.ARCHETYPES;
   const $ = id => document.getElementById(id);
   const ready = a => a && a.status === 'ready';
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   // Anchor jumps (scroll-padding-top) and the sticky rail sit below the app bar, whose height changes as it wraps.
   const appbar = document.querySelector('.appbar');
   const syncAppbar = () => document.documentElement.style.setProperty('--appbar-h', appbar.offsetHeight + 'px');
   if (appbar) { syncAppbar(); if (window.ResizeObserver) new ResizeObserver(syncAppbar).observe(appbar); }
+  const barH = () => (appbar ? appbar.offsetHeight : 0) + 11;
 
   const params = new URLSearchParams(location.search);
   const asked = params.get('route');
@@ -20,11 +25,13 @@
     : null;
 
   BOSS_NAMES.add('Dracula the Immortal King');
-  $('crest').innerHTML = ic('Dracula the Immortal King', 40, 'crest');
+  $('crest').innerHTML = ic('Dracula the Immortal King', 40, 'crest noinfo');
 
-  if (!arch) { showPicker(); return; }
-  loadScripts(arch.files || []).then(() => BR.whenRoute(def => startRoute(arch, def))).catch(err => {
-    $('view-path').innerHTML = `<div class="card"><h2>Couldn't load the ${arch.name} route</h2><p>${err.message}. <a href="?pick">Back to the archetypes</a>.</p></div>`;
+  // Game data (site/gamedata.js) is optional: without it the cards fall back to what the route says.
+  const optional = src => new Promise(ok => { const s = document.createElement('script'); s.src = src; s.onload = s.onerror = ok; document.body.appendChild(s); });
+  if (!arch) { optional('gamedata.js').then(showPicker); return; }
+  optional('gamedata.js').then(() => loadScripts(arch.files || [])).then(() => BR.whenRoute(def => startRoute(arch, def))).catch(err => {
+    $('view-path').innerHTML = `<div class="card"><h2>Couldn't load the ${arch.name} route</h2><p>${esc(err.message)}. <a href="?pick">Back to the archetypes</a>.</p></div>`;
   });
 
   function loadScripts(list) {
@@ -54,7 +61,7 @@
       return `<a class="arch${a.id === active ? ' current' : ''}" href="?route=${a.id}" style="--ac:${a.color}"><div class="top"><div class="icons">${icons}</div><span class="status chip ready">${started ? (pct === 100 ? 'Complete' : 'In progress') : 'Ready'}</span></div>
         <h3>${a.name}</h3><p>${a.tagline}</p>
         <div class="meta"><span class="cell" style="gap:6px">${ic(a.blood, 22)}${a.blood} blood</span>${a.patch ? `<span class="chip">patch ${a.patch}</span>` : ''}</div>
-        ${started ? `<div class="meta" style="color:var(--muted)">Phase ${s.phase}: ${s.phaseTitle} · ${s.n} / ${s.total} done</div>` : ''}
+        ${started ? `<div class="meta" style="color:var(--muted)">${s.stage ? `${esc(s.stage)} · ` : ''}Phase ${s.phase}: ${s.phaseTitle} · ${s.n} / ${s.total} done</div>` : ''}
         <div class="cta"><div class="prog" aria-label="${pct}% done"><i style="width:${pct}%"></i></div><span class="go">${started ? `${pct}% · Continue →` : 'Start this route →'}</span></div></a>`;
     };
     $('view-pick').innerHTML = `
@@ -79,17 +86,18 @@
       e.target.value = '';
     });
     function msg(t, kind) { const m = $('dataMsg'); m.textContent = t; m.className = 'msg ' + kind; }
+    if (BR.cards && !showPicker.cards) { BR.cards.init({ def: null, context: () => ({ view: 'pick' }) }); showPicker.cards = true; }
   }
 
   // ======================= Route planner =======================
   function startRoute(arch, def) {
     BR.store.setActive(arch.id);
-    if (params.get('route') !== arch.id) history.replaceState(null, '', `?route=${arch.id}${location.hash}`);
+    if (params.get('route') !== arch.id) history.replaceState(history.state, '', `?route=${arch.id}${location.hash}`);
     document.title = `Bloodroute · ${arch.name}`;
     $('sub').textContent = `${arch.name} route · patch ${arch.patch || '—'}`;
     const sw = $('archSwitch');
     sw.style.setProperty('--ac', arch.color);
-    sw.innerHTML = `${ic(arch.icons[0], 28)}<span>${arch.name}<br><small>Change archetype</small></span>`;
+    sw.innerHTML = `${ic(arch.icons[0], 28, 'noinfo')}<span>${arch.name}<br><small>Change archetype</small></span>`;
     sw.hidden = false;
     $('overall').hidden = false; $('tabs').hidden = false;
     syncAppbar();
@@ -103,9 +111,12 @@
     const HUES = def.hues || ['#55c46a', '#9ad44f', '#ff8a3d', '#f2c24b', '#35d0e0', '#9db4ff', '#c07bff', '#ff3d63'];
     const hueOf = n => HUES[(n - 1) % HUES.length];
 
-    // ---------- State (saved per route in this browser profile) ----------
+    // ---------- State: progress (BR.store.route) and view (BR.store.ui) ----------
     const R = BR.store.route(arch.id);
     const done = R.done, stock = R.stock;
+    const U = BR.store.ui(arch.id);
+    U.filters ??= {};
+    if (!S.ORDERS[U.order]) U.order = 'level';
     const items = [];
     PHASES.forEach((p, pi) => {
       p.n = pi + 1;
@@ -115,12 +126,35 @@
       (p.craft || []).forEach((s, i) => p.items.push({ id: `${p.id}-c${i}`, kind: 'Craft', text: s.t, icon: s.ic }));
       p.items.forEach(it => { it.phase = p; items.push(it); });
     });
-    const currentPhase = () => { const it = items.find(i => !done[i.id]); return it ? it.phase.n : PHASES.length; };
+    const byId = new Map(items.map(it => [it.id, it]));
+    const bossItems = p => p.items.filter(i => i.kind === 'Boss');
+    const visible = it => it.kind !== 'Boss' || S.bossVisible(it, U.filters);
+
+    // Boss order per phase. The direct route starts from the boss defeated last in the phase, else where the previous
+    // phase's route ended; it's planned when the order is picked or the page opens, so rows don't jump as you tick.
+    const plans = {};
+    const spot = it => { const s = S.spotsOf(it.boss.name); return s && s.length ? s[0] : null; };
+    function planPhase(p) {
+      let start = null;
+      const last = S.lastKill(bossItems(p), done);
+      if (last) start = spot(last);
+      else if (p.n > 1 && plans[PHASES[p.n - 2].id]) {
+        const prev = plans[PHASES[p.n - 2].id].ids.map(id => byId.get(id)).filter(it => spot(it));
+        if (prev.length) start = spot(prev[prev.length - 1]);
+      }
+      plans[p.id] = S.orderBosses(p, bossItems(p), U.order, { def, start });
+    }
+    const planAll = () => PHASES.forEach(planPhase);
+    const orders = () => Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.ids]));
+
+    const nextUp = () => S.nextItem(PHASES, done, { orders: orders(), visible });
+    const currentPhase = () => { const it = nextUp() || items.find(i => !done[i.id]); return it ? it.phase.n : PHASES.length; };
     function save() {
       const n = items.filter(i => done[i.id]).length, ph = PHASES[currentPhase() - 1];
-      R.summary = { n, total: items.length, pct: items.length ? Math.round(n / items.length * 100) : 0, phase: ph.n, phaseTitle: ph.title };
+      R.summary = { n, total: items.length, pct: items.length ? Math.round(n / items.length * 100) : 0, phase: ph.n, phaseTitle: ph.title, stage: V.stageLabel(ph) };
       BR.store.touch(arch.id);
     }
+    const saveUI = S.throttle(() => BR.store.saveUI(), 400);
 
     // ---------- Resources ----------
     const availOf = r => (RES[r] || [1])[0];
@@ -132,14 +166,14 @@
     function resRow(r, target, fromPhase, idp = 'ph') {
       const have = stock[r] || 0;
       const chips = Object.entries(NEEDS[r]).filter(([p]) => +p >= fromPhase)
-        .map(([p, v]) => `<span class="need" style="--pc:${hueOf(p)}" title="${v.for.join(', ')}">P${p} ×${v.qty}</span>`).join('');
+        .map(([p, v]) => `<span class="need" style="--pc:${hueOf(p)}" title="${esc(v.for.join(', '))}">P${p} ×${v.qty}</span>`).join('');
       const pct = target ? Math.min(100, Math.round(have / target * 100)) : 100;
-      return `<div class="res${have >= target ? ' full' : ''}" data-res-row="${r}" data-target="${target}">
-        ${ic(r, 44)}
-        <div><div class="rname">${r}</div><div class="rmeta">${chips}</div><div class="how">${(RES[r] || [0, ''])[1]}</div><div class="rbar"><i style="width:${pct}%"></i></div></div>
-        <div class="counter"><button type="button" data-res="${r}" data-delta="-10" class="big" aria-label="Remove 10 ${r}">−10</button><button type="button" data-res="${r}" data-delta="-1" aria-label="Remove 1 ${r}">−</button>
-        <input type="number" min="0" inputmode="numeric" id="cnt-${idp}${fromPhase}-${r.replace(/\W+/g, '')}" data-res-input="${r}" value="${have}" aria-label="${r} stockpiled">
-        <button type="button" data-res="${r}" data-delta="1" aria-label="Add 1 ${r}">+</button><button type="button" data-res="${r}" data-delta="10" class="big" aria-label="Add 10 ${r}">+10</button>
+      return `<div class="res${have >= target ? ' full' : ''}" data-res-row="${esc(r)}" data-target="${target}">
+        <span class="mat-ic" tabindex="0">${ic(r, 44)}</span>
+        <div><div class="rname">${esc(r)}</div><div class="rmeta">${chips}</div><div class="how">${V.sourceLine(r, def)}</div><div class="rbar"><i style="width:${pct}%"></i></div></div>
+        <div class="counter"><button type="button" data-res="${esc(r)}" data-delta="-10" class="big" aria-label="Remove 10 ${esc(r)}">−10</button><button type="button" data-res="${esc(r)}" data-delta="-1" aria-label="Remove 1 ${esc(r)}">−</button>
+        <input type="number" min="0" inputmode="numeric" id="cnt-${idp}${fromPhase}-${r.replace(/\W+/g, '')}" data-res-input="${esc(r)}" value="${have}" aria-label="${esc(r)} stockpiled">
+        <button type="button" data-res="${esc(r)}" data-delta="1" aria-label="Add 1 ${esc(r)}">+</button><button type="button" data-res="${esc(r)}" data-delta="10" class="big" aria-label="Add 10 ${esc(r)}">+10</button>
         <span class="of">/ ${target}</span></div></div>`;
     }
 
@@ -148,17 +182,11 @@
       const list = Object.keys(NEEDS).filter(r => availOf(r) <= p.n && needAfter(r, p.n) > 0)
         .sort((a, b) => Math.min(...Object.keys(NEEDS[a]).filter(x => +x > p.n)) - Math.min(...Object.keys(NEEDS[b]).filter(x => +x > p.n)) || a.localeCompare(b));
       if (!list.length) return '';
+      const key = `${p.id}:stock`, o = U.sections[key] === undefined ? true : U.sections[key];
       const sumUp = list.filter(r => (stock[r] || 0) >= needAfter(r, p.n)).length;
-      return `<details class="sec" open><summary>${ic('Greater Stygian Shard', 26, 'sec-ic')}Stock up now for later phases<span class="count" data-stockcount="${p.n}">${sumUp}/${list.length}</span></summary>
+      return `<details class="sec" data-sec="${key}"${o ? ' open' : ''}><summary>${ic('Greater Stygian Shard', 26, 'sec-ic noinfo')}Stock up now for later phases<span class="count" data-stockcount="${p.n}">${sumUp}/${list.length}</span></summary>
         <div class="sec-body stock"><div class="stock-intro">You can already gather these, and later phases need them. Counters are your stockpile and are shared across phases; the target is everything needed after this phase.</div>
         ${list.map(r => resRow(r, needAfter(r, p.n), p.n + 1)).join('')}</div></details>`;
-    }
-
-    // Phase n: materials this phase's crafting uses.
-    function needsTiles(p) {
-      const list = Object.keys(NEEDS).filter(r => needIn(r, p.n) > 0);
-      if (!list.length) return '';
-      return `<div><div class="dps" style="color:var(--muted);margin-bottom:8px">Materials this phase's crafting uses</div><div class="tiles qty-tiles">${list.map(r => `<span class="tile" title="${NEEDS[r][p.n].for.join(', ')}">${ic(r, 44)}<em>${r}<br><b>×${needIn(r, p.n)}</b></em></span>`).join('')}</div></div>`;
     }
 
     function updateStockUI(r) {
@@ -178,71 +206,47 @@
     function setStock(r, v) { stock[r] = Math.max(0, Math.floor(+v || 0)); save(); updateStockUI(r); }
 
     // ---------- Rendering ----------
-    const mapBtn = b => b.map ? `<a class="btn small" href="${M(b.map)}" target="_blank" rel="noopener" aria-label="Open ${b.name} on Map Genie">📍 Map</a>` : '';
-
-    function bossCard(it) {
-      const b = it.boss, c = done[it.id] ? ' checked' : '';
-      return `<div class="boss${b.must ? ' must' : ''}${c}" id="row-${it.id}">
-        <div class="portrait">${ic(b.name, 80)}<span class="lvb">Lv ${b.lv}</span></div>
-        <label class="defeat" title="Mark defeated"><input type="checkbox" id="${it.id}" data-id="${it.id}"${c} aria-label="Defeated ${b.name}"></label>
-        <div class="info">
-          <div class="name">${b.name}</div>
-          <div class="tools">${b.must ? '<span class="chip must">★ needed</span>' : ''}${mapBtn(b)}</div>
-          ${b.where ? `<div class="where">${b.where}</div>` : ''}
-          ${tiles(b.gets)}
-          <div class="take">${b.take}</div>
-        </div></div>`;
+    const ctx = () => ({ def, phases: PHASES, done, stock, ui: U, order: U.order, filters: U.filters, plans, hueOf, open, stockSection });
+    let open = {};
+    function renderPhases() {
+      $('rail').innerHTML = V.rail(ctx());
+      $('phases').innerHTML = PHASES.map(p => V.phaseCard(p, ctx())).join('');
+      decorate($('phases'));
+      applyFilters();
     }
-
-    function itemRow(it) {
-      const c = done[it.id] ? ' checked' : '';
-      return `<label class="item${c}" id="row-${it.id}" for="${it.id}">${ic(it.icon, 48)}<div class="text">${it.text}</div><input type="checkbox" id="${it.id}" data-id="${it.id}"${c}></label>`;
+    // Just the boss list, toolbar and roster of every phase (after the order or a filter changes).
+    function renderBosses() {
+      const c = ctx();
+      for (const p of PHASES) {
+        const body = document.querySelector(`[data-sec="${p.id}:Boss"] > .sec-body`);
+        const ordered = plans[p.id].ids.map(id => byId.get(id));
+        if (body) body.innerHTML = V.bossToolbar(p, c) + `<div class="bosses" data-bosses="${p.id}">${ordered.map(it => V.bossCard(it, c)).join('')}</div>`;
+        const roster = document.querySelector(`[data-roster="${p.id}"]`);
+        if (roster) roster.innerHTML = ordered.map(it => `<a href="#row-${it.id}" class="${it.boss.must ? 'must' : ''}${done[it.id] ? ' dead' : ''}" data-rost="${it.id}" aria-label="${esc(it.boss.name)} · Lv ${it.boss.lv}">${ic(it.boss.name, 40)}</a>`).join('');
+        if (body) decorate(body);
+      }
+      applyFilters(); renderNext(); updateProgress();
     }
-
-    function loadoutBlock(l) {
-      const keys = ['Veil', 'Spell 1', 'Spell 2', 'Ultimate'];
-      return `<div class="loadout"><div class="lo-part">
-        ${l.label || l.dps ? `<div class="dps">${[l.label, l.dps].filter(Boolean).join(' · ')}</div>` : ''}
-        <div class="slots">${l.slots.map((s, i) => `<div class="slot">${ic(slotIcon(def.slotIcons, s), 56)}<span class="k">${keys[i]}</span><span class="v">${s}</span></div>`).join('')}</div></div>
-        <div class="lo-part">${l.gear ? `<div><div class="dps" style="color:var(--muted);margin-bottom:8px">Gear, blood and passives</div>${tiles(l.gear)}</div>` : ''}
-        ${l.kv && l.kv.length ? `<dl class="kv">${l.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}</div>
-      </div>`;
+    // Filters hide boss cards (and their roster icons); the rows stay in the page, so ticks and ids never move.
+    function applyFilters() {
+      for (const it of items) if (it.kind === 'Boss') {
+        const show = visible(it);
+        const row = $('row-' + it.id); if (row) row.classList.toggle('filtered', !show);
+        const r = document.querySelector(`[data-rost="${it.id}"]`); if (r) r.classList.toggle('filtered', !show);
+      }
     }
-
-    function phaseCard(p) {
-      const sec = (title, kind, body, open = true) => {
-        const list = p.items.filter(i => i.kind === kind);
-        return `<details class="sec"${open ? ' open' : ''}><summary>${title}<span class="count">${list.filter(i => done[i.id]).length}/${list.length}</span></summary><div class="sec-body">${body}</div></details>`;
-      };
-      const steps = p.items.filter(i => i.kind === 'Step');
-      const bosses = p.items.filter(i => i.kind === 'Boss');
-      const craft = p.items.filter(i => i.kind === 'Craft');
-      return `<article class="phase" id="${p.id}" style="--ph:${hueOf(p.n)}">
-        <div class="phase-head">
-          <div class="row">${ic(p.sig, 56, 'sig')}<div><span class="num">PHASE ${p.n} / ${PHASES.length}</span><h2>${p.title}</h2></div><span class="lv">Lv ${p.levels}</span></div>
-          <div class="goal">${p.goal}</div>
-          <div class="roster" data-roster="${p.id}">${bosses.map(it => `<a href="#row-${it.id}" class="${it.boss.must ? 'must' : ''}${done[it.id] ? ' dead' : ''}" data-rost="${it.id}" title="${it.boss.name} · Lv ${it.boss.lv}">${ic(it.boss.name, 40)}</a>`).join('')}</div>
-          <div class="regions">${p.regions.map(r => `<span class="chip region">${r}</span>`).join('')}</div>
-          <div class="prog"><div class="bar"><i data-bar="${p.id}"></i></div><span data-count="${p.id}" class="mono"></span></div>
-        </div>
-        ${p.access ? `<details class="sec" open><summary>Before you go</summary><div class="sec-body"><div class="rows">${p.access.map(([n, a]) => `<div class="item" style="cursor:default;grid-template-columns:48px 1fr">${ic(n, 48)}<div class="text">${a}</div></div>`).join('')}</div></div></details>` : ''}
-        ${steps.length ? sec('Do', 'Step', `<div class="rows">${steps.map(itemRow).join('')}</div>`) : ''}
-        ${sec(`V Bloods to hunt (${bosses.length})`, 'Boss', `<div class="bosses">${bosses.map(bossCard).join('')}</div>`)}
-        ${craft.length ? sec('Craft and prepare', 'Craft', needsTiles(p) + `<div class="rows">${craft.map(itemRow).join('')}</div>`) : ''}
-        ${stockSection(p)}
-        ${p.notes ? `<details class="sec"><summary>Tips</summary><div class="sec-body"><div class="rows">${p.notes.map(n => `<div class="note">${n}</div>`).join('')}</div></div></details>` : ''}
-        ${p.loadout ? `<details class="sec" open><summary>Loadout at the end of this phase</summary><div class="sec-body">${loadoutBlock(p.loadout)}</div></details>` : ''}
-      </article>`;
-    }
-
-    function renderRail() {
-      $('rail').innerHTML = PHASES.map(p => `<a class="step" href="#${p.id}" data-step="${p.id}" style="--ph:${hueOf(p.n)}">
-        <span class="badge">${ic(p.sig, 44)}<b>${p.n}</b></span><span><span class="t">${p.title}</span><br><span class="l mono">Lv ${p.levels}</span><div class="bar"><i data-railbar="${p.id}"></i></div></span></a>`).join('') +
-        `<div class="rail-tools"><button class="btn small" id="toggleDone" type="button">Hide done</button><span id="resetWrap"><button class="btn small" id="reset" type="button">Reset</button></span></div>`;
+    // Map Genie links in route text name a place: give them that place's hover card.
+    const placeByMg = (() => {
+      const out = new Map();
+      for (const [name, pl] of Object.entries((BR.lex.data && BR.lex.data.PLACES) || {})) if (pl.mg) out.set(String(pl.mg), name);
+      return out;
+    })();
+    function decorate(root) {
+      root.querySelectorAll('a[data-mg]:not([data-info])').forEach(a => { const n = placeByMg.get(a.dataset.mg); if (n) a.dataset.info = n; });
     }
 
     function renderNext() {
-      const it = items.find(i => !done[i.id]);
+      const it = nextUp();
       const el = $('next');
       if (!it) {
         const f = def.finish || { icon: 'Dracula the Immortal King', title: 'Route complete', text: '' };
@@ -252,13 +256,15 @@
       const p = it.phase, b = it.boss;
       const title = b ? b.name : it.kind === 'Step' ? 'Next step' : 'Next to craft';
       const body = b ? b.take : it.text;
-      el.innerHTML = `<div class="next"><div class="hero">${ic(b ? b.name : it.icon, 112)}</div>
-        <div class="body split"><div class="lead"><div class="eyebrow">Up next · Phase ${p.n}: ${p.title}</div>
+      const mapBtns = b ? `<a class="btn" href="${BR.map.href('boss:' + b.name)}">📍 Map</a>${b.map ? `<a class="btn ghost" href="${M(b.map)}" target="_blank" rel="noopener" data-mg="${b.map}">Map Genie ↗</a>` : ''}` : '';
+      el.innerHTML = `<div class="next" data-phase="${p.id}"><div class="hero">${ic(b ? b.name : it.icon, 112)}</div>
+        <div class="body split"><div class="lead"><div class="eyebrow">Up next · ${esc(V.stageLabel(p))} · Phase ${p.n}: ${p.title}</div>
         <h2>${title}</h2>
         <div class="meta">${b ? `<span class="chip lv">Lv ${b.lv}</span>${b.must ? '<span class="chip must">★ needed</span>' : ''}${b.where ? `<span>${b.where}</span>` : ''}` : `<span class="chip">${it.kind}</span>`}</div>
-        ${b ? tiles(b.gets) : ''}</div>
+        ${b ? V.rewardTiles(b.gets) : ''}</div>
         <div class="what"><div class="take">${body}</div>
-        <div class="actions"><button class="btn primary" type="button" data-done="${it.id}">${b ? 'Mark defeated' : 'Mark done'}</button><a class="btn" href="#row-${it.id}" data-jump="${it.id}">Show in phase</a>${b ? mapBtn(b) : ''}</div></div></div></div>`;
+        <div class="actions"><button class="btn primary" type="button" data-done="${it.id}">${b ? 'Mark defeated' : 'Mark done'}</button><a class="btn" href="#row-${it.id}" data-jump-id="${it.id}">Show in phase</a>${mapBtns}</div></div></div></div>`;
+      decorate(el);
     }
 
     function updateProgress() {
@@ -270,27 +276,49 @@
         document.querySelectorAll(`[data-bar="${p.id}"], [data-railbar="${p.id}"]`).forEach(b => b.style.width = pct + '%');
         const c = document.querySelector(`[data-count="${p.id}"]`); if (c) c.textContent = `${d} / ${t} done`;
         const s = document.querySelector(`[data-step="${p.id}"]`); if (s) s.classList.toggle('done', d === t);
+        const cnt = S.counts(p, done);
+        for (const [k, [dd, tt]] of Object.entries(cnt)) { const el = document.querySelector(`[data-seccount="${p.id}:${k}"]`); if (el) el.textContent = `${dd}/${tt}`; }
       });
       const pct = total ? Math.round(n / total * 100) : 0;
       $('ring').style.setProperty('--p', pct);
       $('overallPct').textContent = pct + '%';
       $('overallCount').textContent = `${n} / ${total} items`;
       $('topbar').style.width = pct + '%';
-      document.querySelectorAll('details.sec > summary .count:not([data-stockcount])').forEach(el => {
-        const boxes = el.closest('details').querySelectorAll('input[type=checkbox]');
-        el.textContent = `${[...boxes].filter(x => x.checked).length}/${boxes.length}`;
-      });
     }
 
     function setDone(id, val) {
-      if (val) done[id] = 1; else delete done[id];
+      if (val) done[id] = Date.now(); else delete done[id];
       save();
       const box = $(id); if (box) box.checked = !!val;
       const row = $('row-' + id); if (row) row.classList.toggle('checked', !!val);
       if (row && val) { row.classList.add('pop'); setTimeout(() => row.classList.remove('pop'), 700); }
       const r = document.querySelector(`[data-rost="${id}"]`); if (r) r.classList.toggle('dead', !!val);
       renderNext(); updateProgress();
-      if (currentPhase() !== stockPhase) renderStockpile();
+      const cur = currentPhase();
+      if (cur !== stockPhase) renderStockpile();
+      if (PHASES[cur - 1].id !== U.cur) { U.cur = PHASES[cur - 1].id; setOpen(U.cur, true); }
+    }
+
+    // ---------- Open and closed phases ----------
+    function setOpen(id, on, persist = true) {
+      open[id] = on;
+      const art = $(id); if (!art) return;
+      art.classList.toggle('collapsed', !on);
+      const btn = art.querySelector('[data-toggle-phase]'); if (btn) btn.setAttribute('aria-expanded', String(on));
+      const body = art.querySelector('.phase-body');
+      if (body) { if (on) body.removeAttribute('hidden'); else body.setAttribute('hidden', 'until-found'); }
+      if (persist) { U.collapsed = Object.fromEntries(PHASES.map(p => [p.id, !open[p.id]])); saveUI(); }
+    }
+    // Shows an element wherever it is: opens its phase and section, un-hides it, then scrolls to it.
+    function reveal(el, { flash = true, smooth = true } = {}) {
+      if (!el) return;
+      const art = el.closest('.phase'); if (art && !open[art.id]) setOpen(art.id, true);
+      let d = el.closest('details'); while (d) { d.open = true; d = d.parentElement && d.parentElement.closest('details'); }
+      if (el.classList.contains('filtered')) { U.filters = {}; saveUI(); renderBosses(); el = $(el.id) || el; }
+      if (document.body.classList.contains('hide-done') && el.classList.contains('checked')) el.classList.add('force-show');
+      const top = el.getBoundingClientRect().top + scrollY - barH();
+      scrollTo({ top, behavior: smooth ? 'smooth' : 'instant' });
+      if (flash) { el.classList.add('flash'); setTimeout(() => el.classList.remove('flash'), 1600); }
     }
 
     // ---------- Stockpile tab ----------
@@ -302,87 +330,245 @@
       const groups = {};
       res.forEach(r => (groups[availOf(r)] ??= []).push(r));
       const now = res.filter(r => availOf(r) <= cur);
-      const head = `<div class="card" style="--ph:${hueOf(cur)}"><h2 class="cell">${ic(PHASES[cur - 1].sig, 44)}Stockpile</h2>
-        <p>You're in <b>Phase ${cur}: ${PHASES[cur - 1].title}</b>. These are the materials still needed from this phase to the end. Targets count only what's left, so they shrink as you progress. Counters are shared with the stock-up panels on the Path tab.</p>
-        <div class="tiles">${now.slice(0, 18).map(r => `<span class="tile">${ic(r, 44)}<em>${r}</em></span>`).join('')}</div></div>`;
+      const c = ctx();
+      const head = `<div class="card" style="--ph:${hueOf(cur)}"><h2 class="cell">${ic(PHASES[cur - 1].sig, 44, 'noinfo')}Stockpile</h2>
+        <p>You're in <b>Phase ${cur}: ${PHASES[cur - 1].title}</b> (${esc(V.stageLabel(PHASES[cur - 1]))}). These are the materials still needed from this phase to the end. Targets count only what's left, so they shrink as you progress. Counters are shared with the stock-up panels on the Path tab.</p>
+        <div class="mats">${now.slice(0, 18).map(r => V.matRow(r, 0, c)).join('')}</div></div>`;
       const sections = Object.keys(groups).sort((a, b) => a - b).map(a => {
         const ph = PHASES[a - 1];
         const label = +a <= cur ? `Gatherable now (from Phase ${a}: ${ph.title})` : `Unlocks in Phase ${a}: ${ph.title}`;
         return `<div class="card" style="--ph:${hueOf(a)};border-top:4px solid ${hueOf(a)}"><h3>${label}</h3><div class="stock">${groups[a].map(r => resRow(r, needFrom(r, cur), cur, 'all')).join('')}</div></div>`;
       }).join('');
-      const table = `<div class="card"><h2>Needs by phase</h2><p>Every material the route's crafting uses, by phase. The current phase is highlighted; hover a number to see what it's for.</p>
-        <div class="scroll"><table class="stock-table"><thead><tr><th>Material</th><th>From</th>${PHASES.map(p => `<th style="text-align:center;color:${hueOf(p.n)}">P${p.n}</th>`).join('')}<th>Have</th></tr></thead><tbody>
-        ${Object.keys(NEEDS).sort((a, b) => availOf(a) - availOf(b) || a.localeCompare(b)).map(r => `<tr><td><span class="cell">${ic(r, 32)}${r}</span></td><td class="ph">P${availOf(r)}</td>
-          ${PHASES.map(p => { const v = NEEDS[r][p.n]; return `<td class="ph${p.n === cur ? ' now' : ''}${v ? ' has' : ''}" ${v ? `title="${v.for.join(', ')}"` : ''}>${v ? v.qty : '·'}</td>`; }).join('')}
-          <td class="num" data-have="${r}">${stock[r] || 0}</td></tr>`).join('')}</tbody></table></div></div>`;
+      const table = `<div class="card"><h2>Needs by phase</h2><p>Every material the route's crafting uses, by phase. The current phase is highlighted; hover a number to see what it's for, or a material for where to get it.</p>
+        <div class="scroll"><table class="stock-table"><thead><tr><th>Material</th><th>Where</th><th>From</th>${PHASES.map(p => `<th style="text-align:center;color:${hueOf(p.n)}">P${p.n}</th>`).join('')}<th>Have</th></tr></thead><tbody>
+        ${Object.keys(NEEDS).sort((a, b) => availOf(a) - availOf(b) || a.localeCompare(b)).map(r => `<tr><td><span class="cell">${ic(r, 32)}${esc(r)}</span></td><td class="where">${V.mapLinks(r, (RES[r] || [])[1]) || '<span class="muted">—</span>'}</td><td class="ph">P${availOf(r)}</td>
+          ${PHASES.map(p => { const v = NEEDS[r][p.n]; return `<td class="ph${p.n === cur ? ' now' : ''}${v ? ' has' : ''}" ${v ? `title="${esc(v.for.join(', '))}"` : ''}>${v ? v.qty : '·'}</td>`; }).join('')}
+          <td class="num" data-have="${esc(r)}">${stock[r] || 0}</td></tr>`).join('')}</tbody></table></div></div>`;
       $('view-stock').innerHTML = head + sections + table;
+      decorate($('view-stock'));
       stockPhase = cur;
     }
 
-    // ---------- Wiring ----------
-    renderRail();
-    $('phases').innerHTML = PHASES.map(phaseCard).join('');
-    renderNext(); updateProgress(); renderStockpile();
-    for (const [view, fn] of [['endgame', def.renderEndgame], ['ref', def.renderRef]]) {
-      if (fn) $('view-' + view).innerHTML = fn(); else $('tab-' + view).hidden = true;
+    // ---------- Saved position ----------
+    const view = () => (document.querySelector('.tab[aria-selected="true"]') || {}).dataset?.view || 'path';
+    // The anchor is the innermost phase, section or row crossing the top of the screen (else the next one below),
+    // with how far it's scrolled past.
+    const ANCHORS = '.phase, details.sec[data-sec], [id^="row-"]';
+    function anchorNow() {
+      const line = barH();
+      let above = null, below = null;
+      for (const el of document.querySelectorAll(`#phases :is(${ANCHORS})`)) {
+        if (!el.offsetParent) continue;
+        const r = el.getBoundingClientRect();
+        if (r.bottom <= line) continue;
+        if (r.top <= line + 2) { if (!above || r.top >= above.r.top) above = { el, r }; }
+        else if (!below || r.top < below.r.top) below = { el, r };
+      }
+      const best = above || below;
+      if (!best) return null;
+      const el = best.el;
+      return { anchor: el.id ? '#' + el.id : `[data-sec="${el.dataset.sec}"]`, offset: Math.round(line - best.r.top) };
+    }
+    function remember() {
+      const v = view();
+      if (v === 'path') { const a = anchorNow(); if (a) U.scroll.path = a; }
+      else U.scroll[v] = { y: Math.round(scrollY) };
+      const rail = $('rail'); if (rail) U.rail = rail.scrollTop;
+      saveUI();
+    }
+    let userScrolled = false;
+    ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(t => addEventListener(t, () => { userScrolled = true; }, { passive: true, once: true }));
+    function restore(v = 'path') {
+      const s = U.scroll[v];
+      if (!s) return false;
+      if (v !== 'path') { scrollTo({ top: s.y || 0, behavior: 'instant' }); return true; }
+      let el = s.anchor && document.querySelector(s.anchor);
+      if (el && !el.offsetParent) el = el.closest('.phase') || el;
+      if (!el) return false;
+      scrollTo({ top: el.getBoundingClientRect().top + scrollY - barH() + (s.offset || 0), behavior: 'instant' });
+      return true;
+    }
+
+    // ---------- First render ----------
+    planAll();
+    const cur0 = currentPhase();
+    open = S.openPhases(PHASES, cur0, U);
+    U.cur = PHASES[cur0 - 1].id;
+    U.collapsed = Object.fromEntries(PHASES.map(p => [p.id, !open[p.id]]));
+    renderPhases(); renderNext(); updateProgress(); renderStockpile();
+    for (const [v, fn] of [['endgame', def.renderEndgame], ['ref', def.renderRef]]) {
+      if (fn) { $('view-' + v).innerHTML = fn(); decorate($('view-' + v)); } else $('tab-' + v).hidden = true;
     }
     if (BR.store.pref('hideDone')) { document.body.classList.add('hide-done'); $('toggleDone').textContent = 'Show done'; }
     if (!R.summary) save();
+    BR.store.saveUI();
+    if (U.rail) $('rail').scrollTop = U.rail;
 
-    document.addEventListener('change', e => {
-      const id = e.target.dataset && e.target.dataset.id; if (id) setDone(id, e.target.checked);
-      const r = e.target.dataset && e.target.dataset.resInput; if (r) setStock(r, e.target.value);
+    // Hover cards: the context is the phase an icon sits in (or the endgame build on the Endgame tab).
+    BR.cards.init({
+      def,
+      context: el => {
+        const ph = el && el.closest('[data-phase]');
+        const v = view();
+        return { def, phase: ph ? PHASES.find(p => p.id === ph.dataset.phase) : v === 'endgame' ? PHASES[PHASES.length - 1] : null, view: v };
+      },
+      onJump: name => jumpToBoss(name),
     });
-    document.addEventListener('click', e => {
-      const d = e.target.closest('[data-done]'); if (d) { setDone(d.dataset.done, true); return; }
-      const sb = e.target.closest('[data-delta]');
-      if (sb) { const r = sb.dataset.res; setStock(r, (stock[r] || 0) + +sb.dataset.delta); return; }
-      const j = e.target.closest('[data-jump], .roster a');
-      if (j) {
-        const id = j.dataset.jump || j.dataset.rost;
-        const row = $('row-' + id);
-        if (row) { const det = row.closest('details'); if (det) det.open = true; row.classList.add('flash'); setTimeout(() => row.classList.remove('flash'), 1600); }
+    function jumpToBoss(name) {
+      const it = items.find(i => i.boss && i.boss.name === name);
+      if (it) { selectTab('path'); reveal($('row-' + it.id)); }
+    }
+
+    // Maps: '#map=phase:<id>' shows a phase's bosses in the chosen order, with the route when it's the direct one.
+    BR.map.resolve(spec => {
+      const m = /^(phase|route):(\w+)$/.exec(spec);
+      if (!m) return null;
+      const p = PHASES.find(x => x.id === m[2]); if (!p) return null;
+      const plan = plans[p.id], route = U.order === 'route';
+      const pins = plan.ids.map(id => byId.get(id)).map((it, i) => {
+        const leg = plan.legs && plan.legs[it.id];
+        const at = (leg && leg.to) || spot(it);
+        return at && { p: at, label: `${it.boss.name} · Lv ${it.boss.lv}`, kind: 'boss', icon: it.boss.name, n: route ? i + 1 : undefined, done: !!done[it.id] };
+      }).filter(Boolean);
+      // The route line: walk to each boss; a waygate hop walks to the gate, lifts the pen (null) and starts at the other gate.
+      let path = null;
+      if (route && plan.legs) {
+        path = [];
+        plan.ids.forEach((id, i) => {
+          const leg = plan.legs[id]; if (!leg) return;
+          if (i === 0 && leg.from) path.push(leg.from);
+          if (leg.via) path.push(leg.via[0], null, leg.via[1]);
+          path.push(leg.to);
+        });
       }
-      if (e.target.id === 'toggleDone') {
+      return { title: `Phase ${p.n}: ${p.title} · ${route ? 'most direct route' : 'V Bloods'}`, pins, path, waygates: route, focus: null };
+    });
+
+    // ---------- Events ----------
+    document.addEventListener('change', e => {
+      const t = e.target, d = t.dataset || {};
+      if (d.id) setDone(d.id, t.checked);
+      if (d.resInput) setStock(d.resInput, t.value);
+      if (d.filter) {
+        U.filters = { ...U.filters, [d.filter]: t.type === 'checkbox' ? t.checked : t.value };
+        saveUI(); renderBosses();
+      }
+    });
+    // Sections that render open fire 'toggle' too, so only a click on a section's heading is saved.
+    document.addEventListener('click', e => {
+      const sum = e.target.closest('details.sec[data-sec] > summary'); if (!sum) return;
+      const d = sum.parentElement;
+      setTimeout(() => { U.sections[d.dataset.sec] = d.open; saveUI(); });
+    });
+    document.addEventListener('beforematch', e => { const art = e.target.closest('.phase'); if (art) setOpen(art.id, true); }, true);
+    document.addEventListener('click', e => {
+      const t = e.target;
+      const map = t.closest('a[href^="#map="]');
+      if (map) { e.preventDefault(); BR.map.follow(map.getAttribute('href')); return; }
+      const d = t.closest('[data-done]'); if (d) { setDone(d.dataset.done, true); return; }
+      const sb = t.closest('[data-delta]');
+      if (sb) { const r = sb.dataset.res; setStock(r, (stock[r] || 0) + +sb.dataset.delta); return; }
+      const tog = t.closest('[data-toggle-phase]'); if (tog) { setOpen(tog.dataset.togglePhase, !open[tog.dataset.togglePhase]); return; }
+      const ord = t.closest('[data-order]');
+      if (ord && !ord.disabled) { U.order = ord.dataset.order; saveUI(); planAll(); renderBosses(); return; }
+      const rp = t.closest('[data-replan]'); if (rp) { planPhase(PHASES.find(p => p.id === rp.dataset.replan)); renderBosses(); return; }
+      const rm = t.closest('[data-route-map]'); if (rm) { BR.map.follow(BR.map.href('phase:' + rm.dataset.routeMap)); return; }
+      const jb = t.closest('[data-jump]'); if (jb) { e.preventDefault(); jumpToBoss(jb.dataset.jump); return; }
+      // Rail steps, roster icons and "Show in phase" open what they point at instead of jumping to a closed phase.
+      const step = t.closest('[data-step]');
+      if (step) { e.preventDefault(); const art = $(step.dataset.step); if (art && !open[art.id]) setOpen(art.id, true); reveal(art, { flash: false }); return; }
+      const j = t.closest('[data-jump-id], .roster a');
+      if (j) { e.preventDefault(); reveal($('row-' + (j.dataset.jumpId || j.dataset.rost))); return; }
+      if (t.id === 'collapseAll' || t.id === 'expandAll') { PHASES.forEach(p => setOpen(p.id, t.id === 'expandAll')); return; }
+      if (t.id === 'focusCur') { const c = PHASES[currentPhase() - 1].id; PHASES.forEach(p => setOpen(p.id, p.id === c)); reveal($(c), { flash: false }); return; }
+      if (t.id === 'toggleDone') {
         const on = document.body.classList.toggle('hide-done');
-        e.target.textContent = on ? 'Show done' : 'Hide done';
+        t.textContent = on ? 'Show done' : 'Hide done';
+        document.querySelectorAll('.force-show').forEach(x => x.classList.remove('force-show'));
         BR.store.pref('hideDone', on);
       }
-      if (e.target.id === 'reset') {
+      if (t.id === 'reset') {
         $('resetWrap').innerHTML = `<span class="confirm">Clear all ticks for ${arch.name}? <button class="btn small primary" id="resetYes" type="button">Clear</button><button class="btn small" id="resetNo" type="button">Keep</button></span>`;
       }
-      if (e.target.id === 'resetYes' || e.target.id === 'resetNo') {
-        if (e.target.id === 'resetYes') {
+      if (t.id === 'resetYes' || t.id === 'resetNo') {
+        if (t.id === 'resetYes') {
           Object.keys(done).forEach(k => delete done[k]); save();
+          planAll(); renderBosses();
           document.querySelectorAll('[data-id]').forEach(b => { b.checked = false; const r = $('row-' + b.dataset.id); if (r) r.classList.remove('checked'); });
           document.querySelectorAll('.roster a').forEach(a => a.classList.remove('dead'));
+          const c = PHASES[currentPhase() - 1].id; PHASES.forEach(p => setOpen(p.id, p.id === c));
           renderNext(); updateProgress(); renderStockpile();
         }
         $('resetWrap').innerHTML = `<button class="btn small" id="reset" type="button">Reset</button>`;
       }
     });
 
-    document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
-      document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== 'view-' + t.dataset.view);
-      window.scrollTo({ top: 0 });
-    }));
+    function selectTab(v) {
+      if (view() === v) return;
+      remember();
+      document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x.dataset.view === v)));
+      document.querySelectorAll('.view').forEach(x => x.hidden = x.id !== 'view-' + v);
+      U.tab = v; saveUI();
+      if (!restore(v)) scrollTo({ top: 0, behavior: 'instant' });
+    }
+    document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => selectTab(t.dataset.view)));
 
+    // Rail highlight: the last phase whose header is above 40% of the screen. Also saves the reading position.
     const steps = [...document.querySelectorAll('[data-step]')];
-    // When the sticky rail is taller than the screen it scrolls: keep the highlighted phase in view.
-    const reveal = s => {
+    const revealStep = s => {
       const r = $('rail');
       if (!s || getComputedStyle(r).position !== 'sticky' || r.scrollHeight <= r.clientHeight) return;
       if (s.offsetTop < r.scrollTop) r.scrollTop = s.offsetTop;
       else if (s.offsetTop + s.offsetHeight > r.scrollTop + r.clientHeight) r.scrollTop = s.offsetTop + s.offsetHeight - r.clientHeight;
     };
-    const activate = id => { steps.forEach(s => s.classList.toggle('active', s.dataset.step === id)); reveal(steps.find(s => s.dataset.step === id)); };
-    const spy = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) activate(en.target.id); });
-    }, { rootMargin: '-35% 0px -60% 0px' });
-    document.querySelectorAll('.phase').forEach(p => spy.observe(p));
-    const first = items.find(i => !done[i.id]);
-    if (first) activate(first.phase.id);
-    if (location.hash) { const t = document.querySelector(location.hash.replace(/[^\w#-]/g, '')); if (t) { syncAppbar(); t.scrollIntoView(); } }
+    let activeId = null;
+    const activate = id => {
+      if (id === activeId) return; activeId = id;
+      steps.forEach(s => s.classList.toggle('active', s.dataset.step === id)); revealStep(steps.find(s => s.dataset.step === id));
+    };
+    const spy = () => {
+      const line = innerHeight * 0.4;
+      let cur = PHASES[0].id;
+      for (const p of PHASES) { const el = $(p.id); if (el && el.getBoundingClientRect().top <= line) cur = p.id; }
+      activate(cur);
+    };
+    const keep = S.throttle(remember, 400);
+    let raf = 0;
+    addEventListener('scroll', () => { keep(); if (raf) return; raf = requestAnimationFrame(() => { raf = 0; if (view() === 'path') spy(); }); }, { passive: true });
+    $('rail').addEventListener('scroll', keep, { passive: true });
+    addEventListener('pagehide', () => { remember(); keep.flush(); saveUI.flush(); });
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') { remember(); keep.flush(); saveUI.flush(); } });
+
+    // Another tab ticked something: take its progress and redraw the ticks.
+    addEventListener('storage', e => {
+      if (e.key !== BR.store.KEY || !BR.store.reload()) return;
+      document.querySelectorAll('[data-id]').forEach(b => { const on = !!done[b.dataset.id]; b.checked = on; const r = $('row-' + b.dataset.id); if (r) r.classList.toggle('checked', on); });
+      document.querySelectorAll('[data-rost]').forEach(a => a.classList.toggle('dead', !!done[a.dataset.rost]));
+      for (const r of Object.keys(stock)) updateStockUI(r);
+      renderNext(); updateProgress(); renderStockpile();
+    });
+
+    // Where to start: a #link on a fresh visit, else the saved tab and position, else the current phase.
+    if (U.tab && U.tab !== 'path' && !$('tab-' + U.tab).hidden) selectTab(U.tab);
+    const nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0] || {}).type || 'navigate';
+    const mode = S.restoreMode({ hash: location.hash, navType: nav, saved: U.scroll.path });
+    const place = () => {
+      if (/^#map=/.test(location.hash)) return;
+      if (view() !== 'path') { restore(view()); return; }
+      if (mode === 'hash') {
+        const target = document.querySelector(location.hash.replace(/[^\w#-]/g, ''));
+        if (target) { syncAppbar(); reveal(target, { smooth: false, flash: target.id.startsWith('row-') }); }
+        history.replaceState(history.state, '', location.pathname + location.search);
+      } else if (mode === 'saved') restore('path');
+      else if (cur0 > 1) reveal($(PHASES[cur0 - 1].id), { smooth: false, flash: false });
+      spy();
+    };
+    place();
+    // Fonts can reflow the page once they arrive: place it again, unless the reader has moved since.
+    const placedY = scrollY;
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!userScrolled && Math.abs(scrollY - placedY) < 2) place(); });
+    if (/^#map=/.test(location.hash)) BR.map.follow(location.hash);
+    addEventListener('hashchange', () => { if (/^#map=/.test(location.hash)) BR.map.follow(location.hash); });
+    activate(PHASES[cur0 - 1].id); spy();
   }
 })();

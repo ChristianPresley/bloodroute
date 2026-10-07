@@ -73,8 +73,34 @@ function loadRoutes() {
     [...arch.icons, arch.blood].forEach(n => icons.add(n));
     const endgame = def.renderEndgame ? def.renderEndgame() : '';
     const ref = def.renderRef ? def.renderRef() : '';
-    return { arch, def, icons, endgame, ref };
+    // The planner page itself (js/view.js), every phase open, in each boss order: its icons count too.
+    for (const f of MODULES) p.run(f);
+    const planner = renderPlanner(BR, defs[0]);
+    return { arch, def, icons, endgame, ref, planner, BR, live: defs[0] };
   });
+}
+
+// Builds the planner's items the way js/app.js does and renders every phase with js/view.js.
+// → { html: { [order]: page HTML }, phases } (phases are the live, item-carrying objects)
+function renderPlanner(BR, def) {
+  const phases = def.phases;
+  phases.forEach((p, pi) => {
+    p.n = pi + 1;
+    p.items = [];
+    (p.steps || []).forEach((s, i) => p.items.push({ id: `${p.id}-s${i}`, kind: 'Step', text: s.t, icon: s.ic }));
+    p.bosses.forEach((b, i) => p.items.push({ id: `${p.id}-b${i}`, kind: 'Boss', boss: b }));
+    (p.craft || []).forEach((s, i) => p.items.push({ id: `${p.id}-c${i}`, kind: 'Craft', text: s.t, icon: s.ic }));
+    p.items.forEach(it => { it.phase = p; });
+  });
+  const html = {};
+  for (const order of Object.keys(BR.state.ORDERS)) {
+    const plans = {};
+    for (const p of phases) plans[p.id] = BR.state.orderBosses(p, p.items.filter(i => i.kind === 'Boss'), order, { def });
+    const ctx = { def, phases, done: {}, stock: {}, ui: { collapsed: {}, sections: {}, scroll: {} }, order, filters: {}, plans,
+      hueOf: () => '#fff', open: Object.fromEntries(phases.map(p => [p.id, true])) };
+    html[order] = BR.view.rail(ctx) + phases.map(p => BR.view.phaseCard(p, ctx)).join('');
+  }
+  return { html, phases };
 }
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\r/g, '');
