@@ -15,23 +15,33 @@
   const ICONS = window.VR_ICONS || {};
   const ALIAS = { 'Jewelcrafting Table': 'Regular jewel', 'Altar of Stygian Awakening': 'Stygian Shard', 'Fusion Forge': 'Ember Glass',
     'Ancestral Forge': 'Ancestral Crossbow Shards', 'Blood Homogenizer': 'Primal Blood Essence', 'Stygian Summoning Circle': 'Stygian Shard',
-    'Regular gem': 'Regular Topaz', 'Flawless gem': 'Flawless Amethyst', 'Empty waterskin': 'Empty Waterskin' };
+    'Regular gem': 'Regular Topaz', 'Flawless gem': 'Flawless Amethyst', 'Empty waterskin': 'Empty Waterskin',
+    'Ancestral Pistols Shards': 'Sanguine Pistols' };
   const BOSS_NAMES = new Set();
   const srcOf = n => ICONS[n] || ICONS[ALIAS[n]] || null;
   const initials = n => n.replace(/^(The|General|Sir|Lord)\s+/i, '').split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
   // Frame colour by spell school or item rarity.
   const SCHOOL = {
-    '#b46bff': ['Chaos Volley', 'Rain of Chaos', 'Chaos Barrage', 'Aftershock', 'Void', 'Veil of Chaos', 'Chaos Kindling', 'Renewing Flames'],
-    '#ff3d63': ['Shadowbolt', 'Blood Rite', 'Veil of Blood', 'Blood Storm', 'Carrion Swarm', 'Crimson Beam', 'Blood Rage', 'Hunger for Blood', 'Scholar', 'Draculin', 'Mutant', 'Warrior', 'Rogue', 'Brute'],
+    '#b46bff': ['Chaos Volley', 'Rain of Chaos', 'Chaos Barrage', 'Aftershock', 'Void', 'Veil of Chaos', 'Chaos Kindling', 'Renewing Flames', 'Power Surge'],
+    '#ff3d63': ['Shadowbolt', 'Blood Rite', 'Veil of Blood', 'Blood Storm', 'Carrion Swarm', 'Crimson Beam', 'Blood Rage', 'Hunger for Blood', 'Scholar', 'Draculin', 'Mutant', 'Warrior', 'Rogue', 'Brute',
+      'Heart Strike', 'Sanguine Coil', 'Blood Spray', 'Sanguine Mastery', 'Rampage', 'Lethal Strikes', 'Ravenous Strikes', 'Overpower'],
     '#6fdc5c': ['Bone Explosion', 'Volatile Arachnid', 'Unholy Chains', 'Veil of Bones'],
-    '#ffd23f': ['Lightning Tendrils', 'Ball Lightning', 'Veil of Storm', 'Enhanced Conductivity', 'Lightning Fast Strikes'],
+    '#ffd23f': ['Lightning Tendrils', 'Ball Lightning', 'Veil of Storm', 'Enhanced Conductivity', 'Lightning Fast Strikes', 'Discharge', 'Lightning Typhoon'],
     '#52d4ff': ['Cold Snap', 'Ice Block', 'Veil of Frost', 'Cold Soul'],
     '#3ee6c1': ['Phantom Aegis', 'Wraith Spear', 'Curse', 'Spectral Guardian', 'Veil of Illusion', 'Wicked Power'],
     '#ff9a3c': ['Soul Shard of Dracula', 'Soul Shard of the Winged Horror', 'Soul Shard of Solarus', 'Soul Shard of the Monster', 'Soul Shard of the Serpent',
       "Dracula's Maleficer Chestguard", "Dracula's Maleficer Gloves", "Dracula's Maleficer Boots", "Dracula's Maleficer Leggings", 'Sanguine Crossbow',
-      'Ancestral Crossbow Shards', 'Blood Key', 'Primal jewel'],
+      'Ancestral Crossbow Shards', 'Blood Key', 'Primal jewel',
+      'Sanguine Reaper', 'Sanguine Pistols', 'Sanguine Twinblade', 'Ancestral Reaper Shards', 'Ancestral Pistols Shards', 'Ancestral Twinblade Shards',
+      'Ancestral Sword Shards', 'Ancestral Axes Shards', 'Ancestral Spear Shards',
+      "Dracula's Dread Chestguard", "Dracula's Dread Gloves", "Dracula's Dread Boots", "Dracula's Dread Leggings",
+      "Dracula's Grim Chestguard", "Dracula's Grim Gloves", "Dracula's Grim Boots", "Dracula's Grim Leggings",
+      "Dracula's Shadow Chestguard", "Dracula's Shadow Gloves", "Dracula's Shadow Boots", "Dracula's Shadow Leggings"],
     '#e056c9': ['Amulet of the Arch-Warlock', 'Blood Merlot Amulet', 'Maleficer Scholar Chestguard', 'Dawnthorn Chestguard', 'Greater jewel',
-      'Elixir of the Prowler', 'Elixir of the Twisted', 'Elixir of the Blasphemous', 'Elixir of the Bat', 'Merciless Iron Crossbow'],
+      'Elixir of the Prowler', 'Elixir of the Twisted', 'Elixir of the Blasphemous', 'Elixir of the Bat', 'Merciless Iron Crossbow',
+      'Amulet of the Crimson Commander', 'Amulet of the Blademaster', 'Dread Plate Chestguard', 'Grim Knight Chestguard', 'Shadowmoon Chestguard',
+      'Greater Blood jewel', 'Greater Chaos jewel', 'Elixir of the Raven', 'Elixir of the Crow', 'Elixir of the Werewolf', 'Elixir of the Beast',
+      'Merciless Iron Reaper', 'Merciless Iron Pistols', 'Merciless Iron Twinblade'],
     '#c9a56a': ['Wolf Form', 'Rat Form', 'Bear Form', 'Human Form', 'Spider Form', 'Toad Form', 'Bat Form'],
   };
   const FRAME = {};

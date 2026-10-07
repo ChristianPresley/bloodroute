@@ -25,6 +25,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
+      - name: Test routes
+        run: node --test
       - name: Download icons
         run: node site/build-icons.js
       - name: Package site

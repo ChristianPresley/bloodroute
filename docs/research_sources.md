@@ -23,7 +23,7 @@ Spellbook on any spell of that school and tier. **Veils** drop directly from one
 
 | School | T1 spells (point from) | T2 spells (point from) | T3 spells (point from) | Veil |
 |---|---|---|---|---|
-| Blood | Blood Rage (Rufus 20). Shadowbolt and Blood Rite are known from the start | Sanguine Coil, Blood Fountain, Carrion Swarm (Raziel 57, Baron 70, Lucile 76) | Crimson Beam, Heart Strike (Tristan 44, Wilfred 64) | Veil of Blood: Beatrice (40) |
+| Blood | Blood Rage (Rufus 20). Shadowbolt and Blood Rite are known from the start | Sanguine Coil, Blood Fountain, Carrion Swarm (Raziel 57, Baron 70, Lucile 76) | Crimson Beam, Heart Strike (Tristan 44, Willfred 64) | Veil of Blood: Beatrice (40) |
 | Chaos | Chaos Volley, Power Surge, Aftershock (Errol 20, Lidia 30, Morian 70) | Void, Chaos Barrier, Rain of Chaos (Clive 30, Angram 61, Stavros 75) | Chaos Barrage, Merciless Charge (Quincey 37, Azariel 79) | Veil of Chaos: Jade (57) |
 | Frost | Frost Bat, Cold Snap, Ice Nova (Keely 20, Finn 32, Sir Magnus 66) | Crystal Lance, Frost Barrier, Arctic Storm (Elena 53, Ben 63, Dantos 82) | Arctic Leap, Ice Block (Frostmaw 53, Terrorclaw 76) | Veil of Frost: Vincent (44) |
 | Illusion | Spectral Wolf, Phantom Aegis, Wraith Spear (Grayson 27, Polora 35, Maja 47) | Mosquito, Mist Trance, Curse (Christina 44, Jakira 75, Matka 76) | Spectral Guardian, Wisp Dance (Terah 53, Gorecrusher 84) | Veil of Illusion: Cyril (65) |

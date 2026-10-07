@@ -226,7 +226,7 @@ td .best { color: var(--ok); font-weight: 600; }
 .build dt { color: var(--muted); }
 .build dd { margin: 0; }
 .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
-.grid2 .card { margin: 0; }
+.grid2 .card { margin: 0; align-content: start; }
 .confirm { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; }
 footer { color: var(--muted); font-size: 13px; max-width: 80ch; }
 
