@@ -23,6 +23,19 @@ function page(storage = {}) {
   return { window, run, storage };
 }
 
+// The scripts index.html loads between core.js and the routes.
+const LEXICON = ['js/lexicon-data.js', 'js/lexicon.js'];
+const MODULES = ['js/geo.js', 'js/map.js', 'js/cards.js', 'js/state.js', 'js/view.js'];
+
+// A page with core.js, the lexicon and the planner modules loaded (and optionally a BR_GAME fixture).
+function modules({ game = false } = {}) {
+  const p = page();
+  if (game) p.run('../test/fixtures/gamedata.js');
+  p.run('js/core.js');
+  for (const f of [...LEXICON, ...MODULES]) p.run(f);
+  return p;
+}
+
 // Every archetype in the registry, each loaded on its own page like the site does:
 // { arch, def, icons: Set of icon names used (phases and rendered views), endgame, ref }.
 function loadRoutes() {
@@ -38,6 +51,7 @@ function loadRoutes() {
     const ic = BR.h.ic, tiles = BR.h.tiles;
     BR.h.ic = (n, ...a) => { icons.add(n); return ic(n, ...a); };
     BR.h.tiles = l => { (l || []).forEach(n => icons.add(n)); return tiles(l); };
+    for (const f of LEXICON) p.run(f);
     const defs = [];
     BR.registerRoute = d => defs.push(d);
     for (const f of arch.files) p.run(f);
@@ -109,4 +123,4 @@ function spellTable() {
   return { points, spells, veils, start: ['Shadowbolt', 'Blood Rite'], shards };
 }
 
-module.exports = { ROOT, SITE, page, loadRoutes, vbloodRewards, spellTable };
+module.exports = { ROOT, SITE, LEXICON, MODULES, page, modules, loadRoutes, vbloodRewards, spellTable };
