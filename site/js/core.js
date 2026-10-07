@@ -119,6 +119,7 @@
   let ui = {};
   try { ui = JSON.parse(localStorage.getItem(UI_KEY)) || {}; } catch { ui = {}; }
   if (!ui || typeof ui !== 'object' || Array.isArray(ui)) ui = {};
+  const uiTouched = new Set();
 
   BR.store = {
     get data() { return store; },
@@ -131,10 +132,20 @@
     touch(id) { store.routes[id].updated = Date.now(); persist(); },
     setActive(id) { store.active = id; persist(); },
     pref(k, v) { if (v === undefined) return store.prefs[k]; store.prefs[k] = v; persist(); },
-    clearRoute(id) { delete store.routes[id]; delete ui[id]; if (store.active === id) store.active = null; persist(); this.saveUI(); },
+    clearRoute(id) { delete store.routes[id]; delete ui[id]; uiTouched.add(id); if (store.active === id) store.active = null; persist(); this.saveUI(); },
     // A route's view state; mutate it, then call saveUI() (js/app.js throttles the calls).
-    ui(id) { const u = ui[id] ??= {}; u.collapsed ??= {}; u.sections ??= {}; u.scroll ??= {}; return u; },
-    saveUI() { try { localStorage.setItem(UI_KEY, JSON.stringify(ui)); return true; } catch { return false; } },
+    ui(id) { uiTouched.add(id); const u = ui[id] ??= {}; u.collapsed ??= {}; u.sections ??= {}; u.scroll ??= {}; return u; },
+    // Writes only the routes this page has used, over what's stored now, so a tab on another route keeps its own.
+    saveUI() {
+      try {
+        let disk = null;
+        try { disk = JSON.parse(localStorage.getItem(UI_KEY)); } catch { disk = null; }
+        if (!disk || typeof disk !== 'object' || Array.isArray(disk)) disk = {};
+        for (const id of uiTouched) { if (ui[id]) disk[id] = ui[id]; else delete disk[id]; }
+        localStorage.setItem(UI_KEY, JSON.stringify(disk));
+        return true;
+      } catch { return false; }
+    },
     // Another tab saved progress: copy its ticks and counts into the route objects this page already holds.
     reload() {
       let s = null;

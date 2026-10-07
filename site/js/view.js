@@ -167,7 +167,8 @@
   function bossToolbar(p, ctx) {
     const regions = [...new Set(p.bosses.map(b => ((L().data.VBLOOD || {})[b.name] || {}).region).filter(Boolean))];
     const orders = Object.entries(BR.state.ORDERS).map(([k, label]) => {
-      const off = k === 'route' && !BR.geo.plan ? ' disabled title="Needs the map data"' : '';
+      // The direct route needs boss positions, which come with the game data.
+      const off = k === 'route' && !(window.BR_GAME && window.BR_GAME.npcs) ? ' disabled title="Needs the game data (gamedata.js)"' : '';
       return `<button type="button" class="seg-b" data-order="${k}" aria-pressed="${ctx.order === k}"${off}>${label}</button>`;
     }).join('');
     const plan = ctx.plans[p.id];

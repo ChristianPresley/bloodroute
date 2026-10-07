@@ -91,6 +91,17 @@ describe('saved data', () => {
     assert.deepEqual(JSON.parse(JSON.stringify(again.ui('warrior').scroll.path)), { anchor: 'row-p2-b1', offset: 40 });
   });
 
+  it('keeps two tabs on different routes from overwriting each other\'s view state', () => {
+    const storage = {};
+    const a = open(storage), b = open(storage);
+    a.ui('spellcaster').collapsed.p2 = true; a.saveUI();
+    b.ui('warrior').scroll.path = { anchor: '#p4', offset: 0 }; b.saveUI();
+    a.ui('spellcaster').collapsed.p3 = true; a.saveUI();
+    const again = open(storage);
+    assert.equal(again.ui('warrior').scroll.path.anchor, '#p4', 'tab A did not undo tab B\'s warrior position');
+    assert.equal(again.ui('spellcaster').collapsed.p3, true);
+  });
+
   it('leaves view state out of backups and keeps this browser\'s on import', () => {
     const s = open({});
     s.route('rogue').done['p1-s0'] = 1; s.touch('rogue');

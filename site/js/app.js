@@ -116,7 +116,7 @@
     const done = R.done, stock = R.stock;
     const U = BR.store.ui(arch.id);
     U.filters ??= {};
-    if (!S.ORDERS[U.order]) U.order = 'level';
+    if (!S.ORDERS[U.order] || (U.order === 'route' && !(window.BR_GAME && window.BR_GAME.npcs))) U.order = 'level';
     const items = [];
     PHASES.forEach((p, pi) => {
       p.n = pi + 1;
@@ -148,7 +148,8 @@
     const orders = () => Object.fromEntries(Object.entries(plans).map(([k, v]) => [k, v.ids]));
 
     const nextUp = () => S.nextItem(PHASES, done, { orders: orders(), visible });
-    const currentPhase = () => { const it = nextUp() || items.find(i => !done[i.id]); return it ? it.phase.n : PHASES.length; };
+    // The phase of what's up next; with everything shown done (even if filtered-out bosses remain), the last phase.
+    const currentPhase = () => { const it = nextUp(); return it ? it.phase.n : PHASES.length; };
     function save() {
       const n = items.filter(i => done[i.id]).length, ph = PHASES[currentPhase() - 1];
       R.summary = { n, total: items.length, pct: items.length ? Math.round(n / items.length * 100) : 0, phase: ph.n, phaseTitle: ph.title, stage: V.stageLabel(ph) };
@@ -382,10 +383,11 @@
       const s = U.scroll[v];
       if (!s) return false;
       if (v !== 'path') { scrollTo({ top: s.y || 0, behavior: 'instant' }); return true; }
-      let el = s.anchor && document.querySelector(s.anchor);
-      if (el && !el.offsetParent) el = el.closest('.phase') || el;
+      let el = s.anchor && document.querySelector(s.anchor), offset = s.offset || 0;
+      // A hidden anchor (collapsed phase, filtered boss): go to its phase's header instead, without the old offset.
+      if (el && !el.offsetParent) { el = el.closest('.phase') || el; offset = 0; }
       if (!el) return false;
-      scrollTo({ top: el.getBoundingClientRect().top + scrollY - barH() + (s.offset || 0), behavior: 'instant' });
+      scrollTo({ top: el.getBoundingClientRect().top + scrollY - barH() + offset, behavior: 'instant' });
       return true;
     }
 
@@ -502,9 +504,10 @@
       }
     });
 
-    function selectTab(v) {
+    // keep: false when reopening the saved tab on load, before the Path view has been placed (its position is still unread).
+    function selectTab(v, keep = true) {
       if (view() === v) return;
-      remember();
+      if (keep) remember();
       document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x.dataset.view === v)));
       document.querySelectorAll('.view').forEach(x => x.hidden = x.id !== 'view-' + v);
       U.tab = v; saveUI();
@@ -548,7 +551,7 @@
     });
 
     // Where to start: a #link on a fresh visit, else the saved tab and position, else the current phase.
-    if (U.tab && U.tab !== 'path' && !$('tab-' + U.tab).hidden) selectTab(U.tab);
+    if (U.tab && U.tab !== 'path' && !$('tab-' + U.tab).hidden) selectTab(U.tab, false);
     const nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0] || {}).type || 'navigate';
     const mode = S.restoreMode({ hash: location.hash, navType: nav, saved: U.scroll.path });
     const place = () => {

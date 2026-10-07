@@ -42,6 +42,14 @@ describe('boss order', () => {
     assert.ok(alpha.tags.includes('optional'));
   });
 
+  it('sees a reward feeding this phase\'s craft from the craft text alone', () => {
+    const { BR, planner } = ROUTES.find(r => r.arch.id === 'spellcaster');
+    const p = planner.phases[2];
+    const quincey = p.bosses.find(b => b.name === 'Quincey the Bandit King');
+    const ben = BR.state.benefit(quincey, p, { phases: planner.phases });
+    assert.ok(plain(ben.why).some(w => /needed for Iron Crossbow/.test(w)), plain(ben.why).join('; '));
+  });
+
   it('rates difficulty from 1 to 5 with the reasons', () => {
     const p = modules({ game: true });
     const d = p.window.BR.state.difficulty('Adam the Firstborn');

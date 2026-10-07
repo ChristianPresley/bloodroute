@@ -49,13 +49,13 @@
 
   // ---------- Build benefit ----------
   const loadoutNames = l => l ? [...l.slots.flatMap(splitSlot), ...(l.gear || [])] : [];
-  // Items a phase's crafting turns into loadout gear: the craft row's icon plus anything its text names in bold.
-  function needsFor(item, phase) {
+  // Does making `item` need `name`? Its recipe's station or inputs, or (without game data) the phase's craft row for it
+  // naming it, e.g. "Iron Crossbow (Smithy): 12 Iron Ingot + 8 Plank".
+  function feeds(item, phase, name) {
     const g = (G().items || {})[item];
-    const out = new Set();
-    if (g && g.recipe) { if (g.recipe.station) out.add(g.recipe.station); (g.recipe.inputs || []).forEach(([n]) => out.add(n)); }
-    for (const c of (phase && phase.craft) || []) if (c.ic === item) (String(c.t).match(/\b[A-Z][\w' ]+/g) || []).forEach(w => out.add(w.trim()));
-    return out;
+    if (g && g.recipe && (g.recipe.station === name || (g.recipe.inputs || []).some(([n]) => n === name))) return true;
+    const strip = s => String(s).replace(/<[^>]+>/g, '');
+    return ((phase && phase.craft) || []).some(c => c.ic === item && new RegExp(`\\b${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(strip(c.t)));
   }
   const KIND_TAG = { spell: 'dps', veil: 'dps', ult: 'dps', weapon: 'dps', 'weapon-skill': 'dps', jewelry: 'dps', jewel: 'dps', passive: 'dps',
     coating: 'dps', elixir: 'dps', armor: 'sustain', blood: 'sustain', consumable: 'sustain', form: 'sustain', station: 'progression', material: 'progression' };
@@ -69,8 +69,8 @@
     for (const g of boss.gets || []) {
       let used = now.has(g) ? 'now' : next.has(g) ? 'next' : null, item = g;
       if (!used) {
-        const feeds = [...now].find(x => needsFor(x, phase).has(g)) || [...next].find(x => needsFor(x, phases[i + 1]).has(g));
-        if (feeds) { item = feeds; used = now.has(feeds) ? 'now' : 'next'; why.push(`${g}: needed for ${feeds}${used === 'now' ? ' this phase' : ' next phase'}`); }
+        const fed = [...now].find(x => feeds(x, phase, g)) || [...next].find(x => feeds(x, phases[i + 1], g));
+        if (fed) { item = fed; used = now.has(fed) ? 'now' : 'next'; why.push(`${g}: needed for ${fed}${used === 'now' ? ' this phase' : ' next phase'}`); }
       } else why.push(`${g}: in your loadout ${used === 'now' ? 'this phase' : 'next phase'}`);
       const tag = KIND_TAG[kindOf(item)] || 'progression';
       if (used) {
