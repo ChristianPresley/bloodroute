@@ -1,17 +1,27 @@
-// Sensitivity of the top builds to unconfirmed mechanics: node calc/sens.js
-// Reads out_late.json and out_late-pre.json (run `run.js late` and `run.js late-pre` first),
-// re-scores their top builds under each scenario.
+// Sensitivity of the top builds to unconfirmed mechanics: re-scores the late and late-pre top builds under each scenario.
+// Usage: node calc/sens.js [late.json late-pre.json] [--out sens.json]
+// With no inputs it reads the curated calc/optimizer_results.json; pass two `run.js late` / `run.js late-pre` outputs
+// to use fresh runs instead. Prints the table and writes it as JSON to --out (default calc/out_sens.json, git-ignored).
 const fs = require('fs');
 const path = require('path');
 const V = require('./engine.js');
 
-const late = JSON.parse(fs.readFileSync(path.join(__dirname, 'out_late.json'))).top;
-const pre = JSON.parse(fs.readFileSync(path.join(__dirname, 'out_late-pre.json'))).top;
+const args = process.argv.slice(2);
+const outAt = args.indexOf('--out');
+const out = outAt >= 0 ? path.resolve(args[outAt + 1]) : path.join(__dirname, 'out_sens.json');
+const inputs = outAt >= 0 ? args.filter((a, i) => i !== outAt && i !== outAt + 1) : args;
+if (inputs.length !== 0 && inputs.length !== 2) throw new Error('Pass both late.json and late-pre.json, or neither');
+const readTop = f => JSON.parse(fs.readFileSync(path.resolve(f))).top;
+const curated = inputs.length ? null : JSON.parse(fs.readFileSync(path.join(__dirname, 'optimizer_results.json'))).stages;
+const late = curated ? curated.late.top : readTop(inputs[0]);
+const pre = curated ? curated['late-pre'].top : readTop(inputs[1]);
+
 const label = r => `${r.build.veil} | ${r.build.s1} + ${r.build.s2} | ${r.build.ult} | ${r.cfg.amulet}`;
-const seen = new Set();
+const seen = new Set();   // the same spells with different blood or gear are different builds
 const bestNonStorm = late.find(r => r.build.ult !== 'Blood Storm');   // e.g. Chaos Barrage while wearing the shard
 const builds = [...late.slice(0, 6), ...(bestNonStorm ? [bestNonStorm] : []), ...pre.slice(0, 3)]
-  .filter(r => !seen.has(label(r)) && seen.add(label(r)));
+  .filter(r => { const k = label(r) + '#' + V.cfgKey(r.cfg); return !seen.has(k) && seen.add(k); });
+const blood = r => r.cfg.primary + (r.cfg.secondary ? ` + ${r.cfg.secondary.blood} T${r.cfg.secondary.tier}` : '');
 
 const base = { ...V.ASSUME };
 const scenarios = [
@@ -32,11 +42,14 @@ const scenarios = [
   ['caps are hard (no bypass)', { capBypass: false }],
   ['Bonus Spell Power applies to base 10 only', { spFormula: 'base' }],
 ];
-const r2 = n => Math.round(n * 10) / 10;
-const out = { builds: builds.map(label), scenarios: {} };
+const r1 = n => Math.round(n * 10) / 10;
+const res = { builds: builds.map(r => `${label(r)} | ${blood(r)} | ${r.cfg.elixir}`), scenarios: {} };
 for (const [name, patch] of scenarios) {
   Object.assign(V.ASSUME, base, patch);
-  out.scenarios[name] = builds.map(b => r2(V.confirm(b.build, b.cfg, 24).dps));
+  res.scenarios[name] = builds.map(b => r1(V.confirm(b.build, b.cfg, 24).dps));
 }
 Object.assign(V.ASSUME, base);
-fs.writeFileSync(path.join(__dirname, 'out_sens.json'), JSON.stringify(out, null, 1));
+fs.writeFileSync(out, JSON.stringify(res, null, 1));
+res.builds.forEach((b, i) => console.log(`#${i + 1} ${b}`));
+for (const [name, v] of Object.entries(res.scenarios)) console.log(`${name.padEnd(62)} ${v.map(x => x.toFixed(1).padStart(6)).join('')}`);
+console.log(`Wrote ${out}`);

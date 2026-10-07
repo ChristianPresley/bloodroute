@@ -5,7 +5,7 @@ data/
 site/icons.js
 
 # Optimizer scratch output — the curated result is calc/optimizer_results.json
-calc/out_*.json
+calc/out_*
 
 node_modules/
 .DS_Store

@@ -75,7 +75,7 @@
         dps: '≈33 DPS', label: 'Early build',
         slots: ['Veil of Blood', 'Chaos Volley', 'Bone Explosion or Shadowbolt', 'Chaos Barrage'],
         gear: ['Ring of the Sorcerer', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'],
-        kv: [['Rotation', 'Volley → spell 2 → Veil; ultimate when both spells are on cooldown'], ['Spell 2', 'Bone Explosion 33.3 vs Shadowbolt 32.7; the gap comes only from short fights']],
+        kv: [['Rotation', 'Volley → spell 2 → Veil; ultimate when both spells are on cooldown'], ['Spell 2', 'Bone Explosion 33.4 vs Shadowbolt 32.7; the gap comes mostly from short fights']],
       },
     },
     {
@@ -217,7 +217,7 @@
         { ic: 'Fusion Forge', t: 'Once you\'ve picked a build, fuse or re-craft the Ancestral Crossbow toward its rolls at the Fusion Forge (12 Ember Glass): swap Bonus Spell Power for Crit, and for build A Spell Cooldown for Veil Cooldown.' },
         { ic: 'Greater Stygian Shard', t: 'Keep the shard repaired: feed on Primal Blood Souls in Tier 2 Rift Incursions (+750 each, shared across carried shards).' },
       ],
-      loadout: { dps: '264 – 275 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Blasphemous', 'Witch Potion', 'Mutant', 'Draculin', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
+      loadout: { dps: '265 – 276 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Blasphemous', 'Witch Potion', 'Mutant', 'Draculin', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
     },
   ];
 
@@ -255,21 +255,21 @@
   // ---------- Endgame + reference views ----------
   function renderEndgame() {
     const builds = [
-      { k: 'A', top: true, dps: '275.5', spells: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], blood: ['Mutant', 'Draculin'], bloodText: 'Mutant + Draculin T2', elixir: 'Elixir of the Blasphemous', rolls: 'Crit · Crit Power · Veil Cooldown', when: 'Veil cut ≥ ~14 s and ≥ ~90% of bolts land' },
-      { k: 'A2', dps: '266.7', spells: ['Veil of Chaos', 'Chaos Volley', 'Lightning Tendrils', 'Blood Storm'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Bosses teleport or break the Chains tether (Shadowbolt can replace Volley, 267.0)' },
-      { k: 'A3', dps: '265.1', spells: ['Veil of Chaos', 'Chaos Volley', 'Shadowbolt', 'Blood Storm'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Tendrils\' bolts also miss often' },
-      { k: 'B+', dps: '264.4', spells: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Many Blood Storm bolts miss (keep wearing the shard)' },
+      { k: 'A', top: true, dps: '276.2', spells: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], blood: ['Mutant', 'Draculin'], bloodText: 'Mutant + Draculin T2', elixir: 'Elixir of the Blasphemous', rolls: 'Crit · Crit Power · Veil Cooldown', when: 'Veil cut ≥ ~14 s and ≥ ~90% of bolts land' },
+      { k: 'A2', dps: '270.0', spells: ['Veil of Chaos', 'Shadowbolt', 'Lightning Tendrils', 'Blood Storm'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Bosses teleport or break the Chains tether (Chaos Volley can replace Shadowbolt, 267.3)' },
+      { k: 'A3', dps: '268.3', spells: ['Veil of Chaos', 'Chaos Volley', 'Shadowbolt', 'Blood Storm'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Tendrils\' bolts also miss often' },
+      { k: 'B+', dps: '265.0', spells: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Many Blood Storm bolts miss (keep wearing the shard)' },
     ];
     const sc = [
-      ['Default assumptions', 275.2, 266.5, 264.3, 264.8],
-      ['Ultimate Cooldown Rate works as the tooltip says', 286.7, 266.5, 264.3, 264.8],
-      ['Ultimate Cooldown Rate does nothing', 252.6, 266.5, 264.3, 264.8],
-      ['Veil of Chaos recast counts as a second Veil attack', 280.4, 256.7, 257.7, 250.1],
-      ['Blood Efficiency doesn\'t stretch fixed traits', 246.8, 254.2, 245.0, 255.4],
-      ['Only 75% of Blood Storm bolts hit', 252.4, 262.3, 261.5, 264.8],
-      ['Only 50% of Blood Storm bolts hit', 230.8, 256.6, 256.2, 264.8],
-      ['80% of Tendrils bolts hit and Static shocks once per second', 250.3, 230.2, 262.6, 230.1],
-      ['25% of Unholy Chains channels fail', 254.1, 266.5, 264.3, 228.9],
+      ['Default assumptions', 276.3, 269.5, 267.9, 265.4],
+      ['Ultimate Cooldown Rate works as the tooltip says', 285.4, 269.5, 267.9, 265.4],
+      ['Ultimate Cooldown Rate does nothing', 252.8, 269.5, 267.9, 265.4],
+      ['Veil of Chaos recast counts as a second Veil attack', 280.8, 260.3, 259.0, 250.4],
+      ['Blood Efficiency doesn\'t stretch fixed traits', 245.9, 255.7, 246.6, 256.2],
+      ['Only 75% of Blood Storm bolts hit', 249.1, 263.6, 262.1, 265.4],
+      ['Only 50% of Blood Storm bolts hit', 231.7, 258.1, 256.8, 265.4],
+      ['80% of Tendrils bolts hit and Static shocks once per second', 250.2, 231.0, 266.3, 230.7],
+      ['25% of Unholy Chains channels fail', 254.1, 269.5, 267.9, 229.5],
     ];
     const scRows = sc.map(r => { const mx = Math.max(...r.slice(1)); return `<tr><td>${r[0]}</td>${r.slice(1).map(v => `<td class="num">${v === mx ? `<span class="best">${v.toFixed(1)}</span>` : v.toFixed(1)}</td>`).join('')}</tr>`; }).join('');
     return `

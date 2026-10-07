@@ -34,14 +34,14 @@ The site works without the icon bundle; icons fall back to initials.
 node --test
 ```
 
-`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades, and that each loadout wears the highest Gear Level weapon, magic source and armor crafted so far; every loadout item with a recipe crafted by that phase, and every consumable restocked in the phase that uses it; the full gear and station progression in the right phases; stockpile crafts that match the page, with Stygian Shards priced for every passive; no placeholder text; and an icon for everything shown. `test/store.test.js` covers saved progress and backups. The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
+`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades, and that each loadout wears the highest Gear Level weapon, magic source and armor crafted so far; every loadout item with a recipe crafted by that phase, and every consumable restocked in the phase that uses it; the full gear and station progression in the right phases; stockpile crafts that match the page, with Stygian Shards priced for every passive; no placeholder text; and an icon for everything shown. `test/store.test.js` covers saved progress and backups, and `test/calc.test.js` the simulator (cooldown timing, crit and Spell Power scaling, damage bookkeeping, step size). The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
 
 ### Simulator
 
 ```bash
 node calc/smoke.js                # quick sanity check
 node calc/run.js late             # optimize a stage: early | mid | late-pre | late (late takes about 10 minutes)
-node calc/sens.js                 # scenario tables, after running late and late-pre
+node calc/sens.js                 # scenario tables for calc/optimizer_results.json, or pass out_late.json out_late-pre.json
 ```
 
 To run it in a browser, serve `calc/` over http and open `index.html`.

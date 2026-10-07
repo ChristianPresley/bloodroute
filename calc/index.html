@@ -19,7 +19,7 @@
 </style>
 <main>
   <h1>V Rising caster calculator</h1>
-  <p class="sub">Simulates a single-target boss fight and searches for the highest-damage loadout per game stage. DPS (mix) averages 90/180/300/600-second fights. Assumptions are in engine.js (ASSUME).</p>
+  <p class="sub">Simulates a single-target boss fight and searches for the highest-damage loadout per game stage. DPS (mix) averages 90/180/300/600-second fights, ± its standard error over the random seeds. Assumptions are in engine.js (ASSUME).</p>
   <div>
     <button data-stage="early">Optimise early</button>
     <button data-stage="mid">Optimise mid</button>
@@ -39,18 +39,18 @@
       const c = r.cfg, sec = c.secondary ? `${c.secondary.blood} T${c.secondary.tier}` : '—';
       const top = Object.entries(r.by).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => `${k} ${fmt(v)}`).join(', ');
       const lens = Object.entries(r.byLen).map(([k, v]) => `${k}s ${fmt(v)}`).join('<br>');
-      return `<tr><td>${i + 1}</td><td class="num">${fmt(r.dps)}</td><td class="num">${lens}</td><td>${r.build.veil}<br>${r.build.s1} + ${r.build.s2}<br><b>${r.build.ult}</b></td>
+      return `<tr><td>${i + 1}</td><td class="num">${fmt(r.dps)} ± ${fmt(r.se)}</td><td class="num">${lens}</td><td>${r.build.veil}<br>${r.build.s1} + ${r.build.s2}<br><b>${r.build.ult}</b></td>
         <td>${c.primary} / ${sec}<br>${c.amulet}<br>${c.elixir}</td><td>${c.passives.join(', ') || '—'}<br>${c.weapon.join(', ') || ''}</td><td>${top}</td></tr>`;
     }).join('');
-    out.insertAdjacentHTML('afterbegin', `<h2>${VRCalc.STAGES[res.stage].label}</h2><div class="wrap"><table>
+    out.insertAdjacentHTML('afterbegin', `<h2>${res.label}</h2><div class="wrap"><table>
       <tr><th>#</th><th>DPS (mix)</th><th>By fight length</th><th>Veil / spells / ultimate</th><th>Blood / amulet / elixir</th><th>Passives / weapon rolls</th><th>Top damage sources (DPS)</th></tr>${rows}</table></div>`);
   }
   const setBusy = busy => document.querySelectorAll('button').forEach(x => x.disabled = busy);
   function runOnPage(stage) {
     setTimeout(() => {
-      const pre = stage === 'late-pre';
-      render(VRCalc.optimize(pre ? 'late' : stage, m => logEl.textContent += '\n' + m, pre ? { amulets: VRCalc.PRE_DRACULA } : {}));
-      setBusy(false);
+      try { render(VRCalc.optimizeRun(stage, m => logEl.textContent += '\n' + m)); }
+      catch (err) { logEl.textContent += '\nFailed: ' + err.message; }
+      finally { setBusy(false); }
     }, 30);
   }
   document.querySelectorAll('button').forEach(b => b.onclick = () => {

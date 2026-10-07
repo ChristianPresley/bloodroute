@@ -1,8 +1,8 @@
 # PvE Spellcaster: maximum-damage build (patch 1.1.13)
 
 Every loadout here was chosen by the simulator in `calc/engine.js`. It simulates a single-target V Blood boss fight
-using the vrising.gaming.tools game data and the mechanics in `research_sources.md`. This is the fourth version; it
-fixes the issues raised in two rounds of independent review.
+using the vrising.gaming.tools game data and the mechanics in `research_sources.md`. This is the fifth version; it
+fixes timing bugs in the simulator that a code review found (see "What changed").
 
 **How the search works:**
 1. Every feasible pair of damage spells is ranked in up to 6 veil/ultimate setups, with 4 rotation orders. Feasible means the spell points of each school and tier exist by that stage.
@@ -14,15 +14,16 @@ fixes the issues raised in two rounds of independent review.
 4. Finalists get their best rotation chosen once (from 6 priority orders × "hold the ultimate" on/off), then are scored on fresh seeds.
 
 **How DPS is reported:** each figure is the **equal-weight average of 90 s, 180 s, 300 s and 600 s fights** (32 runs each).
-Treat the figures as comparisons between builds, not exact in-game numbers. Gaps under ~1.5 DPS are noise late
-game; early and mid numbers are steadier (about ±0.2). Full output is in `calc/optimizer_results.json`.
+Treat the figures as comparisons between builds, not exact in-game numbers. Late-game figures carry about ±1 DPS of
+noise, so gaps under ~2 DPS mean little; early and mid figures are steadier (about ±0.1). Full output, including each
+figure's standard error (`se`), is in `calc/optimizer_results.json`.
 
 | Stage | Best loadout (veil · spells · ultimate) | DPS |
 |---|---|---|
-| Early (bosses ≤ Lv 40) | Veil of Blood · Chaos Volley + Bone Explosion **or** Shadowbolt · Chaos Barrage | 33.3 / 32.7 |
-| Mid (bosses ≤ Lv 70) | Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage | 119.2 |
-| Late, before Dracula | Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage | 257.7 |
-| Endgame | Veil of Chaos · Lightning Tendrils + Unholy Chains · Blood Storm (if the in-game test passes; otherwise see the ladder below) | 275.5 |
+| Early (bosses ≤ Lv 40) | Veil of Blood · Chaos Volley + Bone Explosion **or** Shadowbolt · Chaos Barrage | 33.4 / 32.7 |
+| Mid (bosses ≤ Lv 70) | Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage | 119.5 |
+| Late, before Dracula | Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage | 257.8 |
+| Endgame | Veil of Chaos · Lightning Tendrils + Unholy Chains · Blood Storm (if the in-game test passes; otherwise see the ladder below) | 276.2 |
 
 **The core from mid game on is Lightning Tendrils + Unholy Chains:**
 - **Unholy Chains** is the biggest single hit (448% with its jewel), and its Condemn makes the boss take +15% from everything.
@@ -37,12 +38,12 @@ Four builds are close; which one is best depends on mechanics nobody has confirm
 
 | | **A** | **A2** | **A3** | **B+** |
 |---|---|---|---|---|
-| Spells | Lightning Tendrils + Unholy Chains | Chaos Volley (or Shadowbolt, 267.0) + Lightning Tendrils | Chaos Volley + Shadowbolt | Lightning Tendrils + Unholy Chains |
+| Spells | Lightning Tendrils + Unholy Chains | Shadowbolt (or Chaos Volley, 267.3) + Lightning Tendrils | Chaos Volley + Shadowbolt | Lightning Tendrils + Unholy Chains |
 | Ultimate | Blood Storm | Blood Storm | Blood Storm | Chaos Barrage |
 | Blood (100%) | **Mutant** + Draculin T2 | Draculin + Scholar T2 | Draculin + Scholar T2 | Draculin + Scholar T2 |
 | Elixir | Blasphemous | Twisted | Twisted | Twisted |
 | Weapon rolls | Crit · Crit Power · **Veil Cooldown** | Crit · Crit Power · Cooldown | Crit · Crit Power · Cooldown | Crit · Crit Power · Cooldown |
-| DPS (mix) | **275.5** | 266.7 | 265.1 | 264.4 |
+| DPS (mix) | **276.2** | 270.0 | 268.3 | 265.0 |
 | Relies on | Mutant's Veil cut being ~14.5 s, ≥ ~90% of bolts landing, Tendrils + Chains landing | Tendrils landing, bolts landing | Bolts landing only | Tendrils + Chains landing |
 
 **Shared by all four:**
@@ -56,20 +57,20 @@ Four builds are close; which one is best depends on mechanics nobody has confirm
 
 | Scenario | A | A2 | A3 | B+ |
 |---|---|---|---|---|
-| Default assumptions | **275.2** | 266.5 | 264.3 | 264.8 |
-| Ultimate Cooldown Rate works as the tooltip says | **286.7** | 266.5 | 264.3 | 264.8 |
-| Ultimate Cooldown Rate does nothing at all | 252.6 | **266.5** | 264.3 | 264.8 |
-| The ~14 s is two 7 s cuts (Veil of Chaos recast's attack counts too) | **280.4** | 256.7 | 257.7 | 250.1 |
-| Blood Efficiency doesn't stretch fixed traits (Mutant's 7 s, Draculin's 30%) | 246.8 | 254.2 | 245.0 | **255.4** |
-| Only 75% of Blood Storm's bolts hit | 252.4 | 262.3 | 261.5 | **264.8** |
-| Only 50% of Blood Storm's bolts hit | 230.8 | 256.6 | 256.2 | **264.8** |
-| 80% of Tendrils bolts hit **and** Static shocks at most once per second | 250.3 | 230.2 | **262.6** | 230.1 |
-| 25% of Unholy Chains channels fail (moving or teleporting boss) | 254.1 | **266.5** | 264.3 | 228.9 |
-| Bloodthirst (shard proc) only boosts physical damage | **268.4** | 256.1 | 255.1 | 258.0 |
+| Default assumptions | **276.3** | 269.5 | 267.9 | 265.4 |
+| Ultimate Cooldown Rate works as the tooltip says | **285.4** | 269.5 | 267.9 | 265.4 |
+| Ultimate Cooldown Rate does nothing at all | 252.8 | **269.5** | 267.9 | 265.4 |
+| The ~14 s is two 7 s cuts (Veil of Chaos recast's attack counts too) | **280.8** | 260.3 | 259.0 | 250.4 |
+| Blood Efficiency doesn't stretch fixed traits (Mutant's 7 s, Draculin's 30%) | 245.9 | 255.7 | 246.6 | **256.2** |
+| Only 75% of Blood Storm's bolts hit | 249.1 | 263.6 | 262.1 | **265.4** |
+| Only 50% of Blood Storm's bolts hit | 231.7 | 258.1 | 256.8 | **265.4** |
+| 80% of Tendrils bolts hit **and** Static shocks at most once per second | 250.2 | 231.0 | **266.3** | 230.7 |
+| 25% of Unholy Chains channels fail (moving or teleporting boss) | 254.1 | **269.5** | 267.9 | 229.5 |
+| Bloodthirst (shard proc) only boosts physical damage | **269.3** | 259.3 | 258.2 | 258.5 |
 
 **How to choose:**
 1. **Run the in-game test below.** If Mutant's Veil cut is ~14 s or more per Veil attack (or two cuts) **and at least ~90%** of Blood Storm's bolts land, use **A**.
-2. Otherwise A2, A3 and B+ are within ~2 DPS of each other. Pick by your bosses:
+2. Otherwise A2, A3 and B+ are within ~5 DPS of each other. Pick by your bosses:
    - Bosses that teleport or move a lot, so the Chains tether breaks → **A2**. If Tendrils' bolts also miss often → **A3**, which has no channel and no multi-bolt spell.
    - Many Blood Storm bolts missing → **B+**.
    - Unsure → **A2**. It never falls far behind except when Tendrils misses.
@@ -132,27 +133,27 @@ Best priority orders found:
 | Build | Order |
 |---|---|
 | A | Veil → Tendrils → Chains |
-| A2 | Volley → Tendrils → Veil |
+| A2 | Shadowbolt → Tendrils → Veil |
 | B+ | Tendrils → Veil → Chains |
 
 ### Where the damage comes from (A, 600 s fight)
 
 | Source | DPS |
 |---|---|
-| Blood Storm (16 casts, one per ~37 s) | 87.1 |
-| Unholy Chains | 71.7 |
-| Lightning Tendrils | 61.6 |
-| Veil of Chaos | 22.1 |
-| Static shock | 16.5 |
+| Blood Storm (16 casts, one per ~37 s) | 87.2 |
+| Unholy Chains | 72.2 |
+| Lightning Tendrils | 61.8 |
+| Veil of Chaos | 22.2 |
+| Static shock | 16.6 |
 | Ignite | 8.3 |
 | Agonizing Flames | 4.0 |
-| **Total** | **271.3** |
+| **Total** | **272.2** |
 
 ---
 
-## Late game, before you kill Dracula (setup B, 257.7 DPS)
+## Late game, before you kill Dracula (setup B, 257.8 DPS)
 
-The 257.7 assumes Dracula's Maleficer armor, whose pieces come from Talzur, Solarus, Adam and Megara (86–88) before
+The 257.8 assumes Dracula's Maleficer armor, whose pieces come from Talzur, Solarus, Adam and Megara (86–88) before
 you fight Dracula. With Maleficer Scholar armor (Lv 76–84) the same loadout scores about **249**.
 
 | Slot | Choice |
@@ -175,8 +176,8 @@ you fight Dracula. With Maleficer Scholar armor (Lv 76–84) the same loadout sc
 
 | Source | DPS |
 |---|---|
-| Chains | 113.6 |
-| Tendrils | 88.9 |
+| Chains | 113.4 |
+| Tendrils | 89.1 |
 | Static | 17.5 |
 | Veil | 16.9 |
 | Chaos Barrage | 9.3 |
@@ -187,10 +188,10 @@ you fight Dracula. With Maleficer Scholar armor (Lv 76–84) the same loadout sc
 
 | Loadout | DPS |
 |---|---|
-| Volatile Arachnid as ultimate | 251.6 |
-| Spectral Guardian as ultimate | 251.1 |
-| Chaos Volley + Tendrils | 249.1 |
-| Shadowbolt + Tendrils | 248.5 |
+| Scholar + Draculin T1 blood; rolls Cooldown · Crit · Crit Power; Veil → Tendrils → Chains | 255.5 |
+| Volatile Arachnid as ultimate | 253.2 |
+| Spectral Guardian as ultimate | 251.5 |
+| Shadowbolt + Tendrils | 249.0 |
 
 ## Mid game (bosses up to Lv 70)
 
@@ -219,11 +220,11 @@ you fight Dracula. With Maleficer Scholar armor (Lv 76–84) the same loadout sc
 
 | Loadout | DPS |
 |---|---|
-| Tendrils + Chains + Chaos Barrage, Prowler (recommended) | **119.2** |
-| Same with Elixir of the Bat | 116.2 |
-| Chaos Volley + Chains + Chaos Barrage, Prowler | 114.7 |
-| Tendrils + Chains with Volatile Arachnid / Wisp Dance / Spectral Guardian | ~113.4 |
-| Curse + Chains + Chaos Barrage (Bat, Spiritual Infusion) | 112.5 |
+| Tendrils + Chains + Chaos Barrage, Prowler (recommended) | **119.5** |
+| Same with Elixir of the Bat | 116.6 |
+| Chaos Volley + Chains + Chaos Barrage, Prowler | 115.1 |
+| Tendrils + Chains with Spectral Guardian / Volatile Arachnid / Wisp Dance | 114.5 / 113.6 / 113.3 |
+| Curse + Chains + Chaos Barrage (Mutant, Blasphemous, Spiritual Infusion) | 111.1 |
 
 All mid numbers use Lv 70 gear and mastery, so expect less before then.
 
@@ -239,10 +240,10 @@ All mid numbers use Lv 70 gear and mastery, so expect less before then.
 For a step-by-step route with map links, see `progression_schedule.md`.
 
 **Spell 2 choice:**
-- Bone Explosion scores 33.3 and Shadowbolt 32.7. The gap is real but comes from short fights: at 90 s it's 35.3 vs 33.6, at 600 s it's a tie (31.4 each).
+- Bone Explosion scores 33.4 and Shadowbolt 32.7. The gap is real but comes mostly from short fights: at 90 s it's 35.3 vs 33.5, at 600 s 31.6 vs 31.4.
 - Bone Explosion's early source is Goreswine (Unholy T1, confirmed by his wiki infobox; an older guide listing him as Illusion was wrong). The other Unholy T1 sources are Leandra (47) and Gaius (55).
 - The early numbers assume the Ring of the Sorcerer. It's a Research Desk recipe, and its Greater Blood Essence can be crafted from Unsullied Hearts (4, per the wiki) at the Blood Press from the start. Most V Bloods from Grayson on drop a heart, so it's reachable early in Phase 3 of the progression schedule. With only the Gravedigger Ring, early DPS is about 29.
-- Shadowbolt is the safe pick. Rain of Chaos (Clive, Lv 30) scores 32.3.
+- Shadowbolt is the safe pick. Rain of Chaos (Clive, Lv 30) scores 32.5.
 
 **Gear and setup:**
 - **Gear:** Warlock Vestment (+7.2% Bonus Spell Power), Ring of the Sorcerer, Enchanted Brew, Scholar blood.
@@ -268,28 +269,29 @@ exists and an unrepaired one is destroyed.
 ---
 
 ## What changed in this version
-- **Gear tuning rebuilt:**
-  - It now tries blood × amulet together, including wearing the Dracula shard with another ultimate.
-  - It starts from each primary blood plus a random setup, and searches early/mid exhaustively.
-  - It re-scores its best 16 setups on separate seeds, and scores loadouts with their own best rotation instead of always "Veil first".
-- **New endgame options this uncovered:**
-  - B+ (Chaos Barrage while keeping the shard, 264.4).
-  - A2/A3 (Draculin-based Blood Storm builds, 265–267), which don't depend on the disputed Ultimate Cooldown Rate.
-- **Setup B improved:** from 254.6 to 257.7 with Draculin + Scholar T2.
-- **Mid game improved:** from 117.1 to 119.2 with the Prowler elixir.
-- **Search changes:**
-  - Spell-first rotations are now tried during the search.
-  - The spell-pair shortlist is wider.
-  - Each finalist's rotation is chosen once on separate seeds before scoring.
-- **Unchanged:**
-  - The endgame A build (275.5).
-  - The early results.
-  - The mid winner. A reviewer's mid three-way tie came from the previous engine, before the Curse fixes; on the current engine Tendrils + Chains leads by 4.5.
+- **Simulator fixes** (no game assumptions changed):
+  - A spell whose cooldown timer was left a hair above zero by rounding waited an extra 0.05 s step. It cost some builds casts depending on their cooldown rate, by up to ±2% and unevenly between builds.
+  - Draculin's +30% cooldown rate, Ignite and Agonizing Flames now end exactly when they run out instead of at the end of a step, and nothing counts after the fight ends. One Ignite was 50.5% of Spell Power; it's now 50%.
+  - A Curse no longer counts other curses' payouts.
+  - Results no longer depend on the simulation step: 0.05 s and 0.005 s steps agree within ~0.1%.
+  - The search's final re-rank no longer treats one setup in a different passive order as a different setup.
+- **What moved:**
+  - Every stage winner is the same: early 33.4, mid 119.5, setup B 257.8, endgame A 276.2.
+  - **A2 is now Shadowbolt + Tendrils** (270.0). Chaos Volley + Tendrils (267.3) is 2.7 ± 0.8 behind it. A3 rose from 265.1 to 268.3 and B+ is 265.0, so A2, A3 and B+ are within ~5 DPS.
+  - Setup B's runner-up is now Scholar + Draculin T1 blood (255.5). Chaos Volley + Tendrils dropped out of the late-pre top 10.
+  - Mid: Chaos Volley + Chains is third (115.1). Curse + Chains fell from 112.5 to 111.1 with the Curse fix.
+  - Early: the top three are unchanged (33.4 / 32.7 / 32.5). Spectral Wolf fell from 5th to 10th.
+
+### Version 4
+- **Gear tuning rebuilt:** blood × amulet tried together (including the Dracula shard with another ultimate), starts from each primary blood plus a random setup, exhaustive early/mid search, best 16 setups re-scored on separate seeds, each loadout scored with its own best rotation.
+- **New endgame options this uncovered:** B+ (Chaos Barrage while keeping the shard) and A2/A3 (Draculin-based Blood Storm builds), which don't depend on the disputed Ultimate Cooldown Rate.
+- **Setup B** gained ~3 DPS with Draculin + Scholar T2, and **mid** ~2 DPS with the Prowler elixir.
+- **Search changes:** spell-first rotations are tried during the search, the spell-pair shortlist is wider, and each finalist's rotation is chosen once on separate seeds before scoring.
 
 ## Limits of the model
 - **Unconfirmed mechanics:** the endgame scenario table covers Mutant's cut, Blood Storm bolts, Tendrils bolts, Static's cooldown, Chains completion and Bloodthirst.
-- **Hard caps:** if caps can't be bypassed, A drops to 270.9 and B to 241.8.
-- **Spell Power formula:** if Bonus Spell Power multiplies only the base 10, numbers drop about 11% early, 16% mid and 19–20% late (A 222.0, B 205.7). The ranking is unchanged.
+- **Hard caps:** if caps can't be bypassed, A drops to 272.1 and B to 242.2.
+- **Spell Power formula:** if Bonus Spell Power multiplies only the base 10, numbers drop about 11% early, 16% mid and 19–20% late (A 223.0, B 205.7). The ranking is unchanged.
 - **Fight-length weighting:** results average 90/180/300/600 s fights equally. Short fights favour builds that open with a big ultimate; Bone Explosion's early edge is entirely from short fights.
 - **Assumed with no source:**
   - 60% of Rain meteors hit a moving boss.
@@ -302,5 +304,5 @@ exists and an unrepaired one is destroyed.
 - **Jewel rolls:** per-tier values aren't published, so every jewel assumes tier-5 rolls.
 
 To rerun:
-- **Command line:** `node calc/run.js <early|mid|late-pre|late>`, then `node calc/sens.js` for the scenario tables. A late-game run takes about 10 minutes.
+- **Command line:** `node calc/run.js <early|mid|late-pre|late>` (writes `calc/out_<stage>.json`), then `node calc/sens.js calc/out_late.json calc/out_late-pre.json` for the scenario tables. With no arguments `sens.js` re-scores the curated results. A late-game run takes about 10 minutes.
 - **Browser:** serve `calc/` over http (for example `npx http-server calc`) and open `index.html`, so it runs in the background.
