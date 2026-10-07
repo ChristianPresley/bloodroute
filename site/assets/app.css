@@ -79,9 +79,12 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 @media (max-width: 900px) { .path { grid-template-columns: 1fr; } }
 
 /* Stepper rail */
-.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--appbar-h, 117px) + 11px); display: grid; gap: 2px; }
+/* On short screens (laptops, 2560×720 ultrawides) the rail is taller than the space under the app bar, so it scrolls. */
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--appbar-h, 117px) + 11px); display: grid; gap: 2px;
+  max-height: calc(100vh - env(safe-area-inset-top, 0px) - var(--appbar-h, 117px) - 22px); overflow-y: auto; scrollbar-width: thin; }
 .step { display: grid; grid-template-columns: 44px 1fr; gap: 10px; padding: 8px 10px; border-radius: 10px; color: var(--text); text-decoration: none; align-items: center; }
 .step:hover { background: var(--surface-2); }
+.step:focus-visible { outline-offset: -2px; }   /* inside the scrolling rail, so it isn't clipped */
 .step.active { background: var(--blood-soft); }
 .step .badge { position: relative; width: 44px; height: 44px; }
 .step .badge .ic, .step .badge .ic-fallback { width: 44px; height: 44px; padding: 3px; border: 2px solid var(--line); border-radius: 10px; }
@@ -96,7 +99,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .step.done .bar i { background: var(--ok); }
 .rail-tools { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 10px 0; }
 @media (max-width: 900px) {
-  .rail { position: static; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); overflow-x: auto; padding-bottom: 6px; }
+  .rail { position: static; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); overflow-x: auto; padding-bottom: 6px; max-height: none; }
   .rail .step { grid-row: 1; }   /* one scrolling row of phases; the tools sit below */
   .rail-tools { grid-row: 2; grid-column: 1 / span 2; align-items: center; padding: 6px 4px 0; position: sticky; left: 0; }
 }

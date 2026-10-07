@@ -92,6 +92,7 @@
     sw.innerHTML = `${ic(arch.icons[0], 28)}<span>${arch.name}<br><small>Change archetype</small></span>`;
     sw.hidden = false;
     $('overall').hidden = false; $('tabs').hidden = false;
+    syncAppbar();
 
     const PHASES = def.phases;
     PHASES.forEach(p => p.bosses.forEach(b => BOSS_NAMES.add(b.name)));
@@ -368,12 +369,20 @@
     }));
 
     const steps = [...document.querySelectorAll('[data-step]')];
+    // When the sticky rail is taller than the screen it scrolls: keep the highlighted phase in view.
+    const reveal = s => {
+      const r = $('rail');
+      if (!s || getComputedStyle(r).position !== 'sticky' || r.scrollHeight <= r.clientHeight) return;
+      if (s.offsetTop < r.scrollTop) r.scrollTop = s.offsetTop;
+      else if (s.offsetTop + s.offsetHeight > r.scrollTop + r.clientHeight) r.scrollTop = s.offsetTop + s.offsetHeight - r.clientHeight;
+    };
+    const activate = id => { steps.forEach(s => s.classList.toggle('active', s.dataset.step === id)); reveal(steps.find(s => s.dataset.step === id)); };
     const spy = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) steps.forEach(s => s.classList.toggle('active', s.dataset.step === en.target.id)); });
+      entries.forEach(en => { if (en.isIntersecting) activate(en.target.id); });
     }, { rootMargin: '-35% 0px -60% 0px' });
     document.querySelectorAll('.phase').forEach(p => spy.observe(p));
     const first = items.find(i => !done[i.id]);
-    if (first) steps.forEach(s => s.classList.toggle('active', s.dataset.step === first.phase.id));
+    if (first) activate(first.phase.id);
     if (location.hash) { const t = document.querySelector(location.hash.replace(/[^\w#-]/g, '')); if (t) { syncAppbar(); t.scrollIntoView(); } }
   }
 })();
