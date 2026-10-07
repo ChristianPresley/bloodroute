@@ -1,7 +1,10 @@
-// Calculator invariants (calc/engine.js): cooldown timing, crit and Spell Power scaling, damage bookkeeping, step size.
-// Fast: single simulations only, no optimizer runs. Run: node --test
+// Calculator invariants (calc/engine.js): cooldown timing, crit and Spell Power scaling, damage bookkeeping, step size;
+// and the spellcaster page and guide quoting calc/optimizer_results.json. Fast: no optimizer runs. Run: node --test
 const { describe, it, after } = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('fs');
+const path = require('path');
+const { ROOT, loadRoutes } = require('./load');
 const V = require('../calc/engine.js');
 
 const DT = V.ASSUME.dt;
@@ -144,5 +147,55 @@ describe('optimizer helpers', () => {
     assert.match(V.RUNS['late-pre'].label, /before Dracula/);
     assert.ok(!V.RUNS['late-pre'].amulets.includes('Soul Shard of Dracula'));
     assert.throws(() => V.optimizeRun('nope'), /Unknown run/);
+  });
+});
+
+// The spellcaster page and guide quote calc/optimizer_results.json; these checks keep them in step after a re-run.
+describe('curated results (calc/optimizer_results.json)', () => {
+  const R = require('../calc/optimizer_results.json');
+  const guide = fs.readFileSync(path.join(ROOT, 'docs/pve_spellcaster_build.md'), 'utf8').replace(/\r/g, '');
+  const endgame = loadRoutes().find(r => r.arch.id === 'spellcaster').endgame;
+  const nums = s => (s.match(/\d+\.\d/g) || []).map(Number);
+  const f1 = r => +r.dps.toFixed(1);
+  const pair = (r, a, b) => [r.build.s1, r.build.s2].sort().join() === [a, b].sort().join();
+  const late = R.stages.late.top;
+  // The endgame ladder: the best late finalist of each kind.
+  const LADDER = {
+    A: late.find(r => pair(r, 'Lightning Tendrils', 'Unholy Chains') && r.build.ult === 'Blood Storm' && r.cfg.primary === 'Mutant'),
+    A2: late.find(r => pair(r, 'Shadowbolt', 'Lightning Tendrils') && r.build.ult === 'Blood Storm'),
+    A3: late.find(r => pair(r, 'Chaos Volley', 'Shadowbolt') && r.build.ult === 'Blood Storm'),
+    'B+': late.find(r => pair(r, 'Lightning Tendrils', 'Unholy Chains') && r.build.ult === 'Chaos Barrage' && r.cfg.amulet === 'Soul Shard of Dracula'),
+  };
+  const cells = line => line.split('|').slice(1, -1).map(c => c.trim());
+  const guideRow = start => cells(guide.split('\n').find(l => l.startsWith(start)));
+
+  it('were generated with the engine\'s current assumptions', () => {
+    assert.deepEqual(R.assumptions, { ...V.ASSUME });
+    assert.deepEqual(R.fightLengths, V.FIGHT_LENGTHS);
+  });
+  it('the guide\'s stage summary quotes each stage\'s winner', () => {
+    const early = R.stages.early.top, shadowbolt = early.find(r => pair(r, 'Chaos Volley', 'Shadowbolt') && r.build.veil === early[0].build.veil && r.build.ult === early[0].build.ult);
+    assert.deepEqual(nums(guideRow('| Early (').pop()), [f1(early[0]), f1(shadowbolt)]);
+    assert.deepEqual(nums(guideRow('| Mid (').pop()), [f1(R.stages.mid.top[0])]);
+    assert.deepEqual(nums(guideRow('| Late, before Dracula').pop()), [f1(R.stages['late-pre'].top[0])]);
+    assert.deepEqual(nums(guideRow('| Endgame').pop()), [f1(LADDER.A)]);
+  });
+  it('the endgame ladder on the page and in the guide quotes the late finalists', () => {
+    for (const [k, r] of Object.entries(LADDER)) {
+      assert.ok(r, `${k} is not among the late finalists`);
+      assert.ok(endgame.includes(`<b>${k}</b><span>${f1(r).toFixed(1)} DPS</span>`), `page: ${k} should show ${f1(r).toFixed(1)}`);
+    }
+    assert.deepEqual(nums(guideRow('| DPS (mix)').slice(1).join(' ')), Object.values(LADDER).map(f1));
+  });
+  it('every scenario row on the page and in the guide is a row of the sensitivity table', () => {
+    const blood = r => r.cfg.primary + (r.cfg.secondary ? ` + ${r.cfg.secondary.blood} T${r.cfg.secondary.tier}` : '');
+    const label = r => `${r.build.veil} | ${r.build.s1} + ${r.build.s2} | ${r.build.ult} | ${r.cfg.amulet} | ${blood(r)} | ${r.cfg.elixir}`;
+    const cols = Object.entries(LADDER).map(([k, r]) => { const i = R.sensitivity.builds.indexOf(label(r)); assert.ok(i >= 0, `${k} is not in the sensitivity table`); return i; });
+    const known = Object.values(R.sensitivity.scenarios).map(v => cols.map(i => v[i]).join());
+    const pageRows = [...endgame.matchAll(/<tr><td>([^<]+)<\/td>((?:<td class="num">.*?<\/td>){4})<\/tr>/g)].map(m => [m[1], nums(m[2])]);
+    const at = guide.indexOf('| Scenario | A | A2 | A3 | B+ |');
+    const guideRows = guide.slice(at, guide.indexOf('\n\n', at)).split('\n').slice(2).map(l => [cells(l)[0], nums(cells(l).slice(1).join(' '))]);
+    assert.ok(pageRows.length >= 5 && guideRows.length >= 5);
+    for (const [name, v] of [...pageRows, ...guideRows]) assert.ok(known.includes(v.join()), `"${name}" ${v.join(' / ')} matches no sensitivity scenario`);
   });
 });
