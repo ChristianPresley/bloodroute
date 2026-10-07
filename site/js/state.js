@@ -18,26 +18,29 @@
   // ---------- Difficulty ----------
   // Median physical power of the V Bloods within 5 levels: what a boss of that level usually hits for.
   function expectedPower(lv) {
-    const pw = Object.values(G().npcs || {}).filter(n => n.vblood && n.stats && Math.abs(n.lv - lv) <= 5).map(n => n.stats.pp).sort((a, b) => a - b);
+    const pw = Object.values(G().npcs || {}).filter(n => n.vblood && n.stats && Number.isFinite(n.stats.pp) && Math.abs(n.lv - lv) <= 5).map(n => n.stats.pp).sort((a, b) => a - b);
     return pw.length ? pw[Math.floor(pw.length / 2)] : null;
   }
   function difficulty(name, phase) {
     const v = vb(name), n = (G().npcs || {})[name] || {};
     const boss = phase && (phase.bosses || []).find(b => b.name === name);
     const lv = n.lv || (boss && boss.lv) || 0;
-    const start = phase ? levelBand(phase.levels)[0] : lv;
+    // Against the phase's lowest-level V Blood: the one your gear is ready for when the phase begins.
+    const lows = phase ? (phase.bosses || []).map(b => b.lv).filter(Number.isFinite) : [];
+    const start = lows.length ? Math.min(...lows) : lv;
     let score = v.challenge || 3;
     const parts = [];
     if (v.note) parts.push(['Fight', v.note]);
     parts.push(['Challenge', `${v.challenge || 3} / 5 for its level`]);
-    if (phase && lv - start >= 8) { score += 0.5; parts.push(['Level', `Lv ${lv}: ${lv - start} levels above where this phase starts`]); }
+    if (phase && lv - start >= 8) { score += 0.5; parts.push(['Level', `Lv ${lv}: ${lv - start} levels above this phase's first V Blood`]); }
     else if (lv) parts.push(['Level', `Lv ${lv}`]);
-    if (n.stats) {
-      const exp = expectedPower(lv), pp = Math.round(n.stats.pp);
+    const pp = n.stats && Number.isFinite(n.stats.pp) ? n.stats.pp : null, sp = n.stats && Number.isFinite(n.stats.sp) ? n.stats.sp : null;
+    if (pp !== null) {
+      const exp = expectedPower(lv);
       let rel = '';
-      if (exp && n.stats.pp > exp * 1.15) { score += 0.5; rel = ', hits harder than most at its level'; }
-      else if (exp && n.stats.pp < exp * 0.85) { score -= 0.5; rel = ', hits softer than most at its level'; }
-      parts.push(['Power', `${pp} physical / ${Math.round(n.stats.sp)} spell${rel}`]);
+      if (exp && pp > exp * 1.15) { score += 0.5; rel = ', hits harder than most at its level'; }
+      else if (exp && pp < exp * 0.85) { score -= 0.5; rel = ', hits softer than most at its level'; }
+      parts.push(['Power', `${Math.round(pp)} physical${sp !== null ? ` / ${Math.round(sp)} spell` : ''}${rel}`]);
     }
     const attacks = (n.abilities || []).length;
     if (attacks) { if (attacks >= 8) score += 0.5; parts.push(['Attacks', `${attacks} different attacks`]); }

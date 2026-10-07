@@ -79,7 +79,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .rows { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); align-items: start; }
 .view[hidden] { display: none !important; }
 .path { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; align-items: start; }
-@media (max-width: 900px) { .path { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .path { grid-template-columns: minmax(0, 1fr); } .path > * { min-width: 0; } }
 
 /* Stepper rail */
 /* On short screens (laptops, 2560×720 ultrawides) the rail is taller than the space under the app bar, so it scrolls. */
@@ -392,7 +392,7 @@ a.arch:hover, a.arch:focus-visible { transform: translateY(-3px); border-color: 
 .phase-head .regions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; padding: 0 20px 14px 82px; }
 .phase-head .regions .lbl, .boss-tools .lbl, .muted { color: var(--muted); font-size: 12px; }
 .phase-head .regions .lbl { text-transform: uppercase; letter-spacing: .8px; margin-right: 2px; }
-.chip.region { cursor: help; }
+.chip.region { cursor: help; white-space: normal; max-width: 100%; }
 .chip.region small { font-weight: 500; color: var(--muted); }
 .chip.region:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
 .phase-intro { display: grid; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--line); }

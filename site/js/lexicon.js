@@ -72,19 +72,21 @@
   const STAGES = { Beginning: 'Beginning', Early: 'Early game', Mid: 'Mid game', Late: 'Late game', End: 'Endgame' };
 
   // What a name is. Order matters: bosses before everything, specific consumables before the material catch-all.
+  // Own keys only, so names like "constructor" don't match Object.prototype.
+  const has = (o, k) => !!o && Object.prototype.hasOwnProperty.call(o, k) && !!o[k];
   function kindOf(name) {
     const n = String(name || '');
     if (!n) return 'unknown';
     const d = D(), g = G();
-    if (BR.h.GLYPH && n in BR.h.GLYPH && n !== 'Starting dash') return 'glyph';
-    if ((d.VBLOOD && d.VBLOOD[n]) || (g.npcs && g.npcs[n] && g.npcs[n].vblood) || BR.h.BOSS_NAMES.has(n) || /the Immortal King$/.test(n)) return 'boss';
-    if (d.REGIONS && d.REGIONS[n]) return 'region';
-    if (d.PLACES && d.PLACES[n]) return 'place';
+    if (has(BR.h.GLYPH, n) && n !== 'Starting dash') return 'glyph';
+    if (has(d.VBLOOD, n) || (has(g.npcs, n) && g.npcs[n].vblood) || BR.h.BOSS_NAMES.has(n) || /the Immortal King$/.test(n)) return 'boss';
+    if (has(d.REGIONS, n)) return 'region';
+    if (has(d.PLACES, n)) return 'place';
     if (BLOODS.includes(n)) return 'blood';
     if (ALL_PASSIVES.includes(n)) return 'passive';
-    if (SPELLS[n]) return ({ Spell: 'spell', Veil: 'veil', Ultimate: 'ult' })[SPELLS[n].slot];
+    if (has(SPELLS, n)) return ({ Spell: 'spell', Veil: 'veil', Ultimate: 'ult' })[SPELLS[n].slot];
     if (FORMS.includes(n)) return 'form';
-    if (SKILL_WEAPON[n]) return 'weapon-skill';
+    if (has(SKILL_WEAPON, n)) return 'weapon-skill';
     if (OTHER_ABILITIES.includes(n)) return 'ability';
     if (JEWEL.test(n) || /^(Regular|Greater|Primal) gem$/.test(n)) return 'jewel';
     if (/^Elixir of the /.test(n)) return 'elixir';
@@ -94,9 +96,9 @@
     if (MAGIC_TIERS.some(([k]) => n.startsWith(k))) return 'jewelry';
     if (/(Chestguard|Vest|Leggings|Gloves|Boots|Battlegear|Vestment|Regalia)$|^Shroud of /.test(n)) return 'armor';
     if (STATIONS.includes(n)) return 'station';
-    if ((d.MATERIALS && d.MATERIALS[n]) || MATERIAL.test(n)) return 'material';
-    if (g.npcs && g.npcs[n]) return 'enemy';
-    if (d.ENEMIES && d.ENEMIES[n]) return 'enemy';
+    if (has(d.MATERIALS, n) || MATERIAL.test(n)) return 'material';
+    if (has(g.npcs, n)) return 'enemy';
+    if (has(d.ENEMIES, n)) return 'enemy';
     return 'unknown';
   }
 

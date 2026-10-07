@@ -27,7 +27,8 @@
     'Regular gem': 'Regular Topaz', 'Flawless gem': 'Flawless Amethyst',
     'Ancestral Pistols Shards': 'Sanguine Pistols' };
   const BOSS_NAMES = new Set();
-  const srcOf = n => ICONS[n] || ICONS[ALIAS[n]] || null;
+  const own = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+  const srcOf = n => (own(ICONS, n) && ICONS[n]) || (own(ALIAS, n) && own(ICONS, ALIAS[n]) && ICONS[ALIAS[n]]) || null;
   const initials = n => n.replace(/^(The|General|Sir|Lord)\s+/i, '').split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
   // Names with no item behind them, drawn as a glyph: an empty slot, the dash every vampire starts with, and the
   // rotation steps that are actions rather than abilities.
@@ -68,9 +69,9 @@
     const round = BOSS_NAMES.has(name) ? ' round' : '';
     const fr = FRAME[name] ? ` framed" style="--fr:${FRAME[name]}` : '';
     const label = esc(display(name));
-    const info = /\bnoinfo\b/.test(cls) || GLYPH[name] === '—' ? '' : ` data-info="${esc(name)}"`;
+    const info = /\bnoinfo\b/.test(cls) || (own(GLYPH, name) && GLYPH[name] === '—') ? '' : ` data-info="${esc(name)}"`;
     if (s) return `<img class="ic${round} ${cls}${fr}" src="${s}" alt="${label}"${info} width="${size}" height="${size}" loading="lazy">`;
-    const glyph = GLYPH[name];
+    const glyph = own(GLYPH, name) ? GLYPH[name] : null;
     return `<span class="ic-fallback${glyph ? ' glyph' : ''} ${cls}" style="width:${size}px;height:${size}px" role="img" aria-label="${label}"${info}>${glyph || initials(name || '?')}</span>`;
   }
   // Tiles are focusable so a keyboard can open their hover card.
