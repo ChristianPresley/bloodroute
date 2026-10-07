@@ -1,0 +1,622 @@
+{
+ "Bone": {
+  "1": {
+   "qty": 48,
+   "for": [
+    "Bone Ring",
+    "Bone Spear"
+   ]
+  }
+ },
+ "Plank": {
+  "1": {
+   "qty": 12,
+   "for": [
+    "Reinforced Bone Spear",
+    "Copper Spear"
+   ]
+  },
+  "3": {
+   "qty": 8,
+   "for": [
+    "Iron Spear"
+   ]
+  },
+  "5": {
+   "qty": 8,
+   "for": [
+    "Iron Twinblade"
+   ]
+  }
+ },
+ "Stone": {
+  "1": {
+   "qty": 128,
+   "for": [
+    "Reinforced Bone Spear"
+   ]
+  }
+ },
+ "Copper Ingot": {
+  "1": {
+   "qty": 16,
+   "for": [
+    "Copper Spear"
+   ]
+  },
+  "2": {
+   "qty": 44,
+   "for": [
+    "Marauder Vest",
+    "Marauder Leggings",
+    "Marauder Gloves",
+    "Marauder Boots",
+    "Castle Heart level 2"
+   ]
+  }
+ },
+ "Leather": {
+  "1": {
+   "qty": 32,
+   "for": [
+    "Nightstalker Vest",
+    "Nightstalker Leggings",
+    "Nightstalker Gloves",
+    "Nightstalker Boots"
+   ]
+  },
+  "2": {
+   "qty": 32,
+   "for": [
+    "Merciless Copper Spear",
+    "Marauder Vest",
+    "Marauder Leggings",
+    "Marauder Gloves",
+    "Marauder Boots",
+    "Castle Heart level 2"
+   ]
+  }
+ },
+ "Coarse Thread": {
+  "1": {
+   "qty": 16,
+   "for": [
+    "Nightstalker Vest",
+    "Nightstalker Leggings",
+    "Nightstalker Gloves",
+    "Nightstalker Boots"
+   ]
+  },
+  "2": {
+   "qty": 16,
+   "for": [
+    "Marauder Vest",
+    "Marauder Leggings",
+    "Marauder Gloves",
+    "Marauder Boots"
+   ]
+  }
+ },
+ "Grave Dust": {
+  "2": {
+   "qty": 12,
+   "for": [
+    "Gravedigger Ring"
+   ]
+  }
+ },
+ "Mourning Lily": {
+  "2": {
+   "qty": 32,
+   "for": [
+    "Gravedigger Ring"
+   ]
+  }
+ },
+ "Crude Emerald": {
+  "2": {
+   "qty": 2,
+   "for": [
+    "Merciless Copper Spear"
+   ]
+  }
+ },
+ "Whetstone": {
+  "2": {
+   "qty": 12,
+   "for": [
+    "Merciless Copper Spear"
+   ]
+  }
+ },
+ "Greater Blood Essence": {
+  "3": {
+   "qty": 1,
+   "for": [
+    "Ring of the Duskwatcher"
+   ]
+  },
+  "4": {
+   "qty": 1,
+   "for": [
+    "Castle Heart level 3"
+   ]
+  },
+  "5": {
+   "qty": 6,
+   "for": [
+    "Merciless Iron Twinblade",
+    "Elixir of the Beast"
+   ]
+  },
+  "6": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
+ "Crude Topaz": {
+  "3": {
+   "qty": 4,
+   "for": [
+    "Ring of the Duskwatcher"
+   ]
+  }
+ },
+ "Iron Ingot": {
+  "3": {
+   "qty": 12,
+   "for": [
+    "Iron Spear"
+   ]
+  },
+  "4": {
+   "qty": 12,
+   "for": [
+    "Eye of Mortium",
+    "Prison Cell"
+   ]
+  },
+  "5": {
+   "qty": 36,
+   "for": [
+    "Crimson Templar Chestguard",
+    "Crimson Templar Leggings",
+    "Crimson Templar Gloves",
+    "Crimson Templar Boots",
+    "Iron Twinblade",
+    "Regular jewels ×2"
+   ]
+  }
+ },
+ "Hell's Clarion": {
+  "3": {
+   "qty": 96,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "5": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Beast"
+   ]
+  },
+  "7": {
+   "qty": 120,
+   "for": [
+    "Potion of Rage"
+   ]
+  }
+ },
+ "Fish Bone": {
+  "3": {
+   "qty": 3,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  },
+  "7": {
+   "qty": 2,
+   "for": [
+    "Potion of Rage"
+   ]
+  }
+ },
+ "Empty waterskin": {
+  "3": {
+   "qty": 3,
+   "for": [
+    "Brew of Ferocity"
+   ]
+  }
+ },
+ "Cotton Yarn": {
+  "4": {
+   "qty": 48,
+   "for": [
+    "Hollowfang Chestguard",
+    "Hollowfang Leggings",
+    "Hollowfang Gloves",
+    "Hollowfang Boots"
+   ]
+  }
+ },
+ "Wool Thread": {
+  "4": {
+   "qty": 32,
+   "for": [
+    "Hollowfang Chestguard",
+    "Hollowfang Leggings",
+    "Hollowfang Gloves",
+    "Hollowfang Boots"
+   ]
+  }
+ },
+ "Scourgestone": {
+  "4": {
+   "qty": 12,
+   "for": [
+    "Scourgestone Pendant",
+    "Eye of Mortium"
+   ]
+  }
+ },
+ "Gem Dust": {
+  "4": {
+   "qty": 24,
+   "for": [
+    "Scourgestone Pendant"
+   ]
+  }
+ },
+ "Thick Leather": {
+  "5": {
+   "qty": 32,
+   "for": [
+    "Crimson Templar Chestguard",
+    "Crimson Templar Leggings",
+    "Crimson Templar Gloves",
+    "Crimson Templar Boots"
+   ]
+  }
+ },
+ "Regular Topaz": {
+  "5": {
+   "qty": 8,
+   "for": [
+    "Pendant of the Duskwatcher",
+    "Regular jewels ×2"
+   ]
+  }
+ },
+ "Glass": {
+  "4": {
+   "qty": 24,
+   "for": [
+    "Castle Heart level 3"
+   ]
+  },
+  "5": {
+   "qty": 16,
+   "for": [
+    "Pendant of the Duskwatcher"
+   ]
+  }
+ },
+ "Regular Sapphire": {
+  "5": {
+   "qty": 1,
+   "for": [
+    "Merciless Iron Twinblade"
+   ]
+  }
+ },
+ "Reinforced Plank": {
+  "4": {
+   "qty": 10,
+   "for": [
+    "Castle Heart level 3",
+    "Prison Cell"
+   ]
+  },
+  "5": {
+   "qty": 4,
+   "for": [
+    "Merciless Iron Twinblade"
+   ]
+  },
+  "6": {
+   "qty": 8,
+   "for": [
+    "Dark Silver Twinblade"
+   ]
+  }
+ },
+ "Snow Flower": {
+  "5": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Beast"
+   ]
+  }
+ },
+ "Empty Glass Bottle": {
+  "5": {
+   "qty": 2,
+   "for": [
+    "Elixir of the Beast"
+   ]
+  },
+  "6": {
+   "qty": 3,
+   "for": [
+    "Blood Merlot",
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 4,
+   "for": [
+    "Potion of Rage",
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
+ "Pristine Leather": {
+  "6": {
+   "qty": 48,
+   "for": [
+    "Dawnthorn Chestguard",
+    "Dawnthorn Leggings",
+    "Dawnthorn Gloves",
+    "Dawnthorn Boots"
+   ]
+  }
+ },
+ "Silk": {
+  "6": {
+   "qty": 32,
+   "for": [
+    "Dawnthorn Chestguard",
+    "Dawnthorn Leggings",
+    "Dawnthorn Gloves",
+    "Dawnthorn Boots"
+   ]
+  }
+ },
+ "Dark Silver Ingot": {
+  "6": {
+   "qty": 24,
+   "for": [
+    "Dark Silver Twinblade",
+    "Blood Merlot Amulet",
+    "Greater jewels ×2"
+   ]
+  },
+  "7": {
+   "qty": 12,
+   "for": [
+    "Castle Heart level 5"
+   ]
+  }
+ },
+ "Primal Blood Essence": {
+  "6": {
+   "qty": 2,
+   "for": [
+    "Dark Silver Twinblade",
+    "Castle Heart level 4"
+   ]
+  },
+  "7": {
+   "qty": 9,
+   "for": [
+    "Grim Knight Chestguard",
+    "Grim Knight Leggings",
+    "Grim Knight Gloves",
+    "Grim Knight Boots",
+    "Castle Heart level 5",
+    "Blood Key"
+   ]
+  }
+ },
+ "Sacred Grapes": {
+  "6": {
+   "qty": 60,
+   "for": [
+    "Blood Merlot"
+   ]
+  }
+ },
+ "Radium Alloy": {
+  "6": {
+   "qty": 24,
+   "for": [
+    "Blood Merlot Amulet",
+    "Castle Heart level 4"
+   ]
+  }
+ },
+ "Ghost Shroom": {
+  "6": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
+ "Fire Blossom": {
+  "6": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  },
+  "7": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Werewolf"
+   ]
+  }
+ },
+ "Ghost Yarn": {
+  "7": {
+   "qty": 32,
+   "for": [
+    "Grim Knight Chestguard",
+    "Grim Knight Leggings",
+    "Grim Knight Gloves",
+    "Grim Knight Boots"
+   ]
+  }
+ },
+ "Flawless Topaz": {
+  "6": {
+   "qty": 4,
+   "for": [
+    "Greater jewels ×2"
+   ]
+  },
+  "7": {
+   "qty": 4,
+   "for": [
+    "Amulet of the Blademaster"
+   ]
+  }
+ },
+ "Power Core": {
+  "7": {
+   "qty": 48,
+   "for": [
+    "Amulet of the Blademaster",
+    "Castle Heart level 5",
+    "Onyx Tear ×8 (Blood Key + Epic Ancestral)"
+   ]
+  }
+ },
+ "Flawless Sapphire": {
+  "7": {
+   "qty": 1,
+   "for": [
+    "Sanguine Twinblade"
+   ]
+  }
+ },
+ "Gold Ingot": {
+  "7": {
+   "qty": 44,
+   "for": [
+    "Sanguine Twinblade",
+    "Onyx Tear ×8 (Blood Key + Epic Ancestral)"
+   ]
+  }
+ },
+ "Plague Brier": {
+  "7": {
+   "qty": 120,
+   "for": [
+    "Potion of Rage"
+   ]
+  }
+ },
+ "Corrupted Flower": {
+  "7": {
+   "qty": 32,
+   "for": [
+    "Blood Coating"
+   ]
+  }
+ },
+ "Venom Sap": {
+  "7": {
+   "qty": 32,
+   "for": [
+    "Blood Coating"
+   ]
+  }
+ },
+ "Shadow Weave": {
+  "8": {
+   "qty": 48,
+   "for": [
+    "Dracula's Grim Chestguard",
+    "Dracula's Grim Leggings",
+    "Dracula's Grim Gloves",
+    "Dracula's Grim Boots"
+   ]
+  }
+ },
+ "Bat Leather": {
+  "8": {
+   "qty": 48,
+   "for": [
+    "Dracula's Grim Chestguard",
+    "Dracula's Grim Leggings",
+    "Dracula's Grim Gloves",
+    "Dracula's Grim Boots"
+   ]
+  }
+ },
+ "Unsullied Heart": {
+  "3": {
+   "qty": 4,
+   "for": [
+    "Greater Blood Essence (for the ring)"
+   ]
+  }
+ },
+ "Scroll": {
+  "4": {
+   "qty": 20,
+   "for": [
+    "Eye of Mortium"
+   ]
+  }
+ },
+ "Regular Ruby": {
+  "5": {
+   "qty": 4,
+   "for": [
+    "Regular jewels ×2"
+   ]
+  }
+ },
+ "Flawless Ruby": {
+  "6": {
+   "qty": 4,
+   "for": [
+    "Greater jewels ×2"
+   ]
+  }
+ },
+ "Ember Glass": {
+  "7": {
+   "qty": 32,
+   "for": [
+    "Onyx Tear ×8 (Blood Key + Epic Ancestral)"
+   ]
+  }
+ },
+ "Blood Crystal": {
+  "7": {
+   "qty": 200,
+   "for": [
+    "Blood Key"
+   ]
+  }
+ }
+}

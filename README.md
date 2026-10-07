@@ -1,10 +1,10 @@
 # Bloodroute
 
-Bloodroute: a V Rising progression planner. Step-by-step paths from fresh spawn to Dracula for every archetype — V Blood boss order with map links, gear to craft, a stockpile tracker that tells you what to gather early, and endgame builds backed by a damage simulator.
+Bloodroute: a V Rising progression planner. Step-by-step paths from fresh spawn to Dracula for every archetype — V Blood boss order with map links, gear to craft, a stockpile tracker that tells you what to gather early, and endgame builds (the spellcaster's backed by a damage simulator).
 
 **Live site: https://christianpresley.github.io/bloodroute/**
 
-Pick an archetype, then follow its route. The **PvE Spellcaster** route is ready; Warrior, Rogue and Brute are coming. Progress and stockpile counts are saved per archetype in your browser profile, and you can export or import a backup from the archetype page.
+Pick an archetype, then follow its route. Four PvE routes are ready: **Spellcaster**, **Warrior** (Sword, then Reaper), **Rogue** (Axes, then Pistols) and **Brute** (Spear, then Twinblades). The Warrior, Rogue and Brute endgame builds follow the game data and the wiki's weapon numbers; the simulator only models spells, so they are not scored yet. Progress and stockpile counts are saved per archetype in your browser profile, and you can export or import a backup from the archetype page.
 
 ## What's here
 
@@ -12,7 +12,7 @@ Pick an archetype, then follow its route. The **PvE Spellcaster** route is ready
 |---|---|
 | `site/` | The planner: an archetype picker, then each route's phases, "next step" card, boss cards with Map Genie links, phase loadouts, stockpile tracker and endgame builds. Deployed to GitHub Pages by `.github/workflows/pages.yml`. |
 | `calc/` | The damage simulator and optimizer used to choose every loadout. `optimizer_results.json` holds the curated results. |
-| `docs/` | The written guides: build guide, full progression schedule, V Blood rewards and research sources. |
+| `docs/` | The written guides: spellcaster build guide, full progression schedule, V Blood rewards and research sources for every route. |
 
 ## Running it
 
@@ -28,6 +28,14 @@ npx http-server site
 
 The site works without the icon bundle; icons fall back to initials.
 
+### Tests
+
+```bash
+node --test
+```
+
+`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades; the full gear and station progression in the right phases; stockpile crafts that match the page; and an icon for everything shown. `test/store.test.js` covers saved progress and backups. The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
+
 ### Simulator
 
 ```bash
@@ -40,10 +48,11 @@ To run it in a browser, serve `calc/` over http and open `index.html`.
 
 ### Stockpile targets
 
-`site/routes/spellcaster/needs.js` lists the materials each phase needs. It is generated from item recipes:
+Each route's `needs.js` lists the materials each phase needs. They are generated from item recipes; the crafts per phase are listed in `site/build-needs.js`:
 
 ```bash
-node site/build-needs.js          # reads data/items.json
+node site/build-needs.js          # all routes; reads data/items.json
+node site/build-needs.js warrior  # one route
 ```
 
 ## Adding an archetype
@@ -57,12 +66,15 @@ site/
   js/core.js             icon and map-link helpers, saved-data store
   js/app.js              archetype picker and route planner
   routes/registry.js     the archetypes shown on the picker
-  routes/spellcaster/    route.js (phases, bosses, loadouts, endgame) + needs.js (stockpile)
+  routes/shared.js       V Blood locations, materials, common steps and reference cards (Warrior, Rogue, Brute)
+  routes/<id>/           route.js (phases, bosses, loadouts, endgame) + needs.js (stockpile)
 ```
 
-1. Create `site/routes/<id>/route.js`. Copy the spellcaster route: it calls `BR.registerRoute({ id, phases, resources, needs, slotIcons, finish, renderEndgame, renderRef })`. Phases and `needs` are required; the Endgame and Reference tabs are hidden if their render functions are missing.
-2. In `site/routes/registry.js`, set the archetype's `status` to `'ready'` and list its files in `files`.
-3. Add any new icon names to `site/build-icons.js`.
+1. Create `site/routes/<id>/route.js`. It calls `BR.registerRoute({ id, phases, resources, needs, slotIcons, finish, renderEndgame, renderRef })`. Phases and `needs` are required; the Endgame and Reference tabs are hidden if their render functions are missing. The spellcaster route is self-contained; the Warrior, Rogue and Brute routes build their boss cards, shared steps and reference views from `routes/shared.js` (`B()` for a boss the build needs, `O()` for an optional one).
+2. Add the route's crafts to `ROUTES` in `site/build-needs.js` and run it to generate `routes/<id>/needs.js`.
+3. In `site/routes/registry.js`, set the archetype's `status` to `'ready'` and list its files in `files` (including `routes/shared.js` if the route uses it).
+4. Add any new icon names to `site/build-icons.js`: `ITEMS` for gaming.tools icons, `PAGES` for item icons taken from a wiki page.
+5. Add the route's gear and station milestones to `MILESTONES` in `test/routes.test.js` and run `node --test`.
 
 Saved data lives in one localStorage entry (`bloodroute:v1`), keyed by route id, so routes never overwrite each other.
 

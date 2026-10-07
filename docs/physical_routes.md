@@ -1,0 +1,75 @@
+# Research sources for the Warrior, Rogue and Brute routes
+
+Gathered 2026-10-06 for game patch **1.1.13**. The routes live in `site/routes/{warrior,rogue,brute}/route.js`, with V Blood
+locations, materials and reference views shared in `site/routes/shared.js`. Recipes come from the scraped item data
+(`data/items.json`, vrising.gaming.tools data version 1790852702230). Wiki facts were read through the Fandom MediaWiki API;
+W/Page = https://vrising.fandom.com/wiki/Page, with the revision date used.
+
+These routes are **not scored by the damage simulator** (`calc/` models spells only). Weapon and gear choices follow the
+numbers below; the open questions at the end are what a player should test.
+
+## The three builds
+
+| | Warrior | Rogue | Brute |
+|---|---|---|---|
+| Weapon | Sword → Reaper (Kriig 47) | Axes → Pistols (Jade 57) | Spear → Twinblades (Gaius 55) |
+| Armor line | Grim Ranger → Blood Hunter → Dread Plate → Dracula's Dread | Shadewalker → Duskwatcher → Shadowmoon → Dracula's Shadow | Marauder → Crimson Templar → Grim Knight → Dracula's Grim |
+| Jewelry | Ring/Pendant of the Warrior → Crimson Commander (Ruby, Weapon Skill Power) | same as Warrior | Ring/Pendant of the Duskwatcher → Blademaster (Topaz, Attack Speed) |
+| Spells | Veil of Blood, Shadowbolt, Blood Rage | Veil of Chaos, Chaos Volley, Power Surge | Veil of Storm, Blood Rage, Discharge |
+| Ultimate | Chaos Barrage → Blood Storm | Chaos Barrage → Blood Storm | Chaos Barrage → Heart Strike → Blood Storm |
+| Elixir | Prowler → Crow → Werewolf | Prowler → Raven | Beast → Werewolf |
+| Blood | Warrior + Rogue I/IV | Rogue + Warrior I/IV | Brute + Rogue I/IV |
+| Passives | Sanguine Mastery, Ravenous Strikes, Overpower, Hunger for Blood, Blood Spray | Rampage, Lethal Strikes, Hunger for Blood, Lightning Fast Strikes, Sanguine Mastery | Hunger for Blood, Rampage, Lethal Strikes, Sanguine Mastery, Blood Spray |
+
+Why: the Warrior's damage is weapon skills (Weapon Skill Power, Weapon Cooldown Rate, Veil attacks), so it takes the
+weapon with the strongest skills. The Rogue's blood makes hits right after a Veil crit, so it takes burst skills it can
+fire inside that window. The Brute's damage and healing come from primary attacks, so it takes the fastest primary combo.
+
+## Weapon numbers (W/Sword, W/Axes, W/Mace, W/Spear, W/Greatsword, W/Reaper, W/Claws, W/Twinblade, W/Pistols, W/Whip; 2025-05 to 2026-05)
+
+| Weapon | Unlock | Primary combo/s | Skills (damage / cooldown) | Skills/s |
+|---|---|---|---|---|
+| Sword | Start | 64.7% | Whirlwind 175%/8s, Shockwave 100% + 3 × 20% recast /8s | 41.9% |
+| Axes | Start | 68.7% | Frenzy 100%/8s (+50% attack speed 1.5 s), X-Strike 2 × 80%/8s | 32.5% |
+| Mace | Start | 68.1% | Crushing Blow 150%/8s, Smack 70%/8s | 27.5% |
+| Spear | Start | 75.6% | A Thousand Spears 140% + 50% recast /9s, Harpoon 110%/8s | 34.9% |
+| Greatsword | Tristan 44 | 73.3% | Great Cleaver 125%/8s, Death from Above 125%/10s | 28.1% |
+| Reaper | Kriig 47 | 73.8% | Tendon Swing 130%/8s, Howling Reaper 50% + 180%/8s | 45.0% |
+| Twinblade | Gaius 55 | 83.3% | Javelin 125% + 80% recall /8s, Sweeping Strike 100%/8s | 38.1% |
+| Pistols | Jade 57 | 76.7% | Fan the Hammer 10 × 25%/8s, Explosive Bullet 25% + 115%/10s | 45.3% |
+
+Skills/s assumes one target, every hit landing and each skill on cooldown. Bone weapons have only the primary; Copper adds
+the first skill and Iron the second (tier column on each weapon page).
+
+## Facts used
+
+| Fact | Source |
+|---|---|
+| Research Desk: T4 sets, Rings, Merciless Copper Sword/Axes/Mace/Spear/Crossbow/Longbow, Brew of Ferocity; Clive guarantees a weapon blueprint, Grayson an armour one | W/Research_Desk (2026-09-27) |
+| Study: T6 sets, Pendants, every Merciless Iron weapon; Meredith and Jade guarantee a weapon blueprint, Raziel magic, Bane/Octavian/Angram armour | W/Study (2026-09-21) |
+| Athenaeum: T8 sets, GL 25 amulets, Sanguine weapons (not the whip), Potion of Rage, Witch Potion | W/Athenaeum (2026-09-21) |
+| Brew of Ferocity +3 Physical Power (32 Hell's Clarion + Fish Bone + Empty Waterskin); Potion of Rage +5 (60 Plague Brier + 60 Hell's Clarion + Fish Bone + bottle); they don't stack | W/Brew_of_Ferocity (2025-05-15), W/Potion_of_Rage (2026-07-25) |
+| Warrior, Rogue and Brute blood tiers; tiers at 1/30/60/90/100% | W/Blood (2026-08-08) |
+| Blood carriers by region and level | W/Enemies (2026-09-19) |
+| Weapon unlocks; Rare Ancestral (Merciless Iron weapon + shard + 8 Radium + 1 GBE, 2 rolls, upgradable to GL 24/27); Epic Ancestral (3 rolls); physical roll pool and ranges; infused second skill | W/Weapons (2026-09-01) |
+| Stygian passives: Blood Spray, Lightning Fast Strikes, Sanguine Mastery, Rampage, Lethal Strikes, Ravenous Strikes, Overpower, Hunger for Blood | W/Altar_of_Stygian_Awakening (2026-04-08) |
+| Caps: Bonus Physical Power 25%, Attack Speed 40%, Physical Crit 45%, Crit Power 180%, Weapon Skill Power 145%, Weapon Cooldown Rate 35%, Veil Cooldown Rate 35%, Primary and Weapon Skill Leech 25% | W/Attributes |
+| Jewelry: Warrior line +9% Weapon Skill Power, Duskwatcher line and Blademaster +7% Attack Speed; amulet procs | W/Ring_of_the_Warrior, W/Ring_of_the_Duskwatcher, W/Pendant_of_the_Duskwatcher, W/Amulet_of_the_Crimson_Commander, W/Amulet_of_the_Blademaster |
+| Set bonuses and set totals (Dread Plate 4.8% Bonus Physical Power, Shadowmoon 8% Physical Crit, Grim Knight 7.2% Attack Speed) | `data/build_reference.md` (game data), W/Dread_Plate_Chestguard, W/Shadowmoon_Chestguard, W/Grim_Knight_Chestguard |
+| Elixirs: Raven (Elena), Crow (Jade), Beast (Frostmaw), Werewolf (Willfred) | `data/items.json`, W/Elixir_of_the_Raven, W/Elixir_of_the_Crow, W/Elixir_of_the_Beast, W/Elixir_of_the_Werewolf |
+| Jewel modifiers for Blood Rage, Power Surge, Shadowbolt, Discharge and the Veils; gem per school (Blood Ruby, Chaos Amethyst, Storm Topaz) | W/Template:Jewel_Table (2026-06-13), `data/items.json` |
+| Plants: Bleeding Heart (Ruins of Mortium), Ghost Shroom (Cursed Forest), Hell's Clarion (underground), Plague Brier (Gloomrot South, Iron+ weapon), Corrupted Flower and Venom Sap (Oakveil) | W/Bleeding_Heart, W/Ghost_Shroom, W/Hell's_Clarion, W/Plague_Brier, W/Corrupted_Flower, W/Venom_Sap |
+
+Spell points, Veil drops, V Blood locations, Castle Heart costs and Stygian slots are the same as the spellcaster route
+(`research_sources.md`, `progression_schedule.md`).
+
+## Open questions (the Endgame tabs ask players to test these)
+
+- **Veil of Chaos recast.** Whether its second dash counts as a new Veil: a second Veil attack for Warrior blood (+40%) and
+  Dracula's Dread (+30%), and a second crit window for Rogue blood Tier III. The same question is open for the spellcaster.
+- **Rogue blood Tier III.** "100% increased Physical Critical Chance after using a Veil": how long it lasts, and whether it
+  adds 100 points (every hit crits) or doubles the current chance.
+- **Caps.** How much Tier V blood and Spell School Mastery raise the Attack Speed, Physical Crit and cooldown caps. The Brute
+  and Rogue builds sit near the Attack Speed and Crit caps, so they skip those Ancestral rolls.
+- **Twinblade and Reaper skills on moving bosses.** Howling Reaper spins in place and Javelin needs the recall to pass
+  through the boss; the skills/s figures above assume every hit lands.

@@ -1,6 +1,7 @@
 // Downloads the icons the site uses and writes icons.js (window.VR_ICONS = { name: dataURI }).
 // Run: node site/build-icons.js (the Pages workflow runs it at deploy time; icons.js is git-ignored)
-// Item, spell and passive icons: vrising.gaming.tools CDN. Boss portraits and station images: V Rising Fandom wiki.
+// The tests (test/) import the name lists to check every icon a route uses gets downloaded.
+// Item, spell and passive icons: vrising.gaming.tools CDN. Boss portraits, station images and a few item icons: V Rising Fandom wiki.
 const fs = require('fs');
 const path = require('path');
 
@@ -89,7 +90,50 @@ const ITEMS = {
   'Plague Brier': 'stunlock_icon_plaguebrier.webp', "Hell's Clarion": 'stunlock_icon_hellsclarion.webp',
   'Regular jewel': 'stunlock_icon_item_jewel_topaz2.webp', 'Greater jewel': 'stunlock_icon_item_jewel_topaz3.webp',
   'Primal jewel': 'stunlock_icon_item_jewel_topaz4.webp',
+  // Warrior, Rogue and Brute routes.
+  'Bone Axes': 'stunlock_icon_boneaxe01.webp', 'Bone Spear': 'stunlock_icon_bonespear01.webp',
+  'Copper Sword': 'stunlock_icon_bronzesword01.webp', 'Merciless Copper Sword': 'stunlock_icon_bronzesword02.webp',
+  'Copper Axes': 'stunlock_icon_bronzeaxe01.webp', 'Merciless Copper Axes': 'stunlock_icon_bronzeaxe02.webp',
+  'Copper Spear': 'stunlock_icon_bronzespear01.webp', 'Merciless Copper Spear': 'stunlock_icon_bronzespear02.webp',
+  'Iron Sword': 'stunlock_icon_ironsword01.webp', 'Iron Axes': 'stunlock_icon_ironaxe01.webp', 'Iron Spear': 'stunlock_icon_ironspear01.webp',
+  'Iron Mace': 'stunlock_icon_ironmace01.webp', 'Iron Greatsword': 'stunlock_icon_irongreatsword01.webp', 'Iron Claws': 'stunlock_icon_ironclaws01.webp',
+  'Iron Daggers': 'stunlock_icon_irondaggers01.webp', 'Iron Slashers': 'stunlock_icon_ironslashers01.webp',
+  'Iron Reaper': 'stunlock_icon_ironscythe01.webp', 'Merciless Iron Reaper': 'stunlock_icon_ironscythe02_legendary.webp',
+  'Dark Silver Reaper': 'stunlock_icon_steelscythe01.webp', 'Sanguine Reaper': 'stunlock_icon_steelscythe02.webp',
+  'Iron Twinblade': 'stunlock_icon_irontwinblades01.webp', 'Merciless Iron Twinblade': 'stunlock_icon_irontwinblades02_legendary.webp',
+  'Dark Silver Twinblade': 'stunlock_icon_steeltwinblades01.webp', 'Sanguine Twinblade': 'stunlock_icon_steeltwinblades02.webp',
+  'Iron Pistols': 'stunlock_icon_ironpistol01.webp', 'Merciless Iron Pistols': 'stunlock_icon_ironpistol02_legendary.webp',
+  'Ancestral Reaper Shards': 'stunlock_icon_steelscythe02_shattered_epic.webp', 'Ancestral Twinblade Shards': 'stunlock_icon_steeltwinblades02_shattered_epic.webp',
+  'Ancestral Sword Shards': 'stunlock_icon_steelsword02_shattered_epic.webp', 'Ancestral Axes Shards': 'stunlock_icon_steelaxe02_shattered_epic.webp',
+  'Ancestral Spear Shards': 'stunlock_icon_steelspear02_shattered_epic.webp',
+  "Dracula's Dread Chestguard": 'stunlock_icon_chest_dracula_warrior.webp', "Dracula's Dread Gloves": 'stunlock_icon_gloves_dracula_warrior.webp',
+  "Dracula's Dread Boots": 'stunlock_icon_boots_dracula_warrior.webp', "Dracula's Dread Leggings": 'stunlock_icon_legs_dracula_warrior.webp',
+  "Dracula's Grim Chestguard": 'stunlock_icon_chest_dracula_brute.webp', "Dracula's Grim Gloves": 'stunlock_icon_gloves_dracula_brute.webp',
+  "Dracula's Grim Boots": 'stunlock_icon_boots_dracula_brute.webp', "Dracula's Grim Leggings": 'stunlock_icon_legs_dracula_brute.webp',
+  "Dracula's Shadow Chestguard": 'stunlock_icon_chest_dracula_rogue.webp', "Dracula's Shadow Gloves": 'stunlock_icon_gloves_dracula_rogue.webp',
+  "Dracula's Shadow Boots": 'stunlock_icon_boots_dracula_rogue.webp', "Dracula's Shadow Leggings": 'stunlock_icon_legs_dracula_rogue.webp',
+  'Ring of the Duskwatcher': 'item_magicsource_general_t04_duskwatcher.webp', 'Pendant of the Warrior': 'item_magicsource_general_t06_rubypendant.webp',
+  'Pendant of the Duskwatcher': 'item_magicsource_general_t06_topazamulet.webp',
+  'Elixir of the Raven': 'stunlock_icon_item_elixir_raven.webp', 'Elixir of the Crow': 'stunlock_icon_item_elixir_crow.webp',
+  'Elixir of the Werewolf': 'stunlock_icon_item_elixir_werewolf.webp', 'Elixir of the Beast': 'stunlock_icon_item_elixir_beast.webp',
+  'Brew of Ferocity': 'stunlock_icon_item_canteen_physicalbrew_t01.webp', 'Potion of Rage': 'stunlock_icon_glassbottle_physicalbrew_t02.webp',
+  'Blood Coating': 'stunlock_icon_item_coating_blood.webp', 'Unholy Coating': 'stunlock_icon_item_coating_unholy.webp',
+  'Power Surge': 'stunlock_icon_ability_spell_chaos_powersurge.webp', 'Discharge': 'stunlock_icon_ability_spell_storm_discharge.webp',
+  'Heart Strike': 'stunlock_icon_ability_spell_blood_heartstrike.webp', 'Sanguine Coil': 'stunlock_icon_ability_spell_blood_sanguinecoil.webp',
+  'Blood Spray': 'stunlock_icon_ability_spell_blood_passive_bloodspray.webp', 'Sanguine Mastery': 'stunlock_icon_ability_spell_blood_passive_sanguinemastery.webp',
+  'Rampage': 'stunlock_icon_spellpassive_rampage.webp', 'Lethal Strikes': 'stunlock_icon_spellpassive_lethalstrikes.webp',
+  'Ravenous Strikes': 'stunlock_icon_spellpassive_ravenousstrikes.webp', 'Overpower': 'stunlock_icon_spellpassive_overpower.webp',
+  'Crude Ruby': 'stunlock_icon_item_gem_ruby1.webp', 'Regular Ruby': 'stunlock_icon_item_gem_ruby2.webp', 'Flawless Ruby': 'stunlock_icon_item_gem_ruby3.webp',
+  'Crude Sapphire': 'stunlock_icon_item_gem_sapphire1.webp', 'Regular Sapphire': 'stunlock_icon_item_gem_sapphire2.webp',
+  'Crude Emerald': 'stunlock_icon_item_gem_emerald1.webp', 'Ghost Shroom': 'stunlock_icon_ghostshroom.webp',
+  'Regular Blood jewel': 'stunlock_icon_item_jewel_ruby2.webp', 'Greater Blood jewel': 'stunlock_icon_item_jewel_ruby3.webp',
+  'Regular Chaos jewel': 'stunlock_icon_item_jewel_amethyst2.webp', 'Greater Chaos jewel': 'stunlock_icon_item_jewel_amethyst3.webp',
 };
+// Item icons the CDN doesn't have under a predictable name: taken from the wiki page of the same title.
+const PAGES = ['Iron Whip', 'Dark Silver Pistols', 'Sanguine Pistols', 'Ring of the Warrior', 'Amulet of the Crimson Commander',
+  'Amulet of the Blademaster', 'Lightning Typhoon', 'Regular Miststone', 'Flawless Miststone', 'Bleeding Heart', 'Venom Sap',
+  'Grim Ranger Vest', 'Blood Hunter Chestguard', 'Dread Plate Chestguard', 'Marauder Vest', 'Crimson Templar Chestguard',
+  'Grim Knight Chestguard', 'Shadewalker Vest', 'Duskwatcher Chestguard', 'Shadowmoon Chestguard'];
 
 // Wiki page titles -> display names (portraits and structure images).
 const BOSSES = ['Alpha the White Wolf', 'Errol the Stonebreaker', 'Keely the Frost Archer', 'Rufus the Foreman', 'Grayson the Armourer',
@@ -147,13 +191,15 @@ async function wikiThumbs(titles, width) {
   return out;
 }
 
-(async () => {
+async function main() {
   const icons = {}, missing = [];
   const jobs = Object.entries(ITEMS).map(([name, file]) => [name, CDN + file + VER]);
   const bossThumbs = await wikiThumbs(BOSSES, 96);
   const stationThumbs = await wikiThumbs(STATIONS, 96);
+  const pageThumbs = await wikiThumbs(PAGES, 96);
   for (const t of BOSSES) bossThumbs[t] ? jobs.push([t, bossThumbs[t]]) : missing.push(t);
   for (const t of STATIONS) stationThumbs[t] ? jobs.push([t, stationThumbs[t]]) : missing.push(t);
+  for (const t of PAGES) pageThumbs[t] ? jobs.push([t, pageThumbs[t]]) : missing.push(t);
   let i = 0;
   await Promise.all(Array.from({ length: 8 }, async () => {
     while (i < jobs.length) {
@@ -162,9 +208,12 @@ async function wikiThumbs(titles, width) {
     }
   }));
   const sorted = Object.fromEntries(Object.keys(icons).sort().map(k => [k, icons[k]]));
-  const js = '// Generated by build-icons.js. Item/spell icons: vrising.gaming.tools; boss and station images: vrising.fandom.com.\n' +
+  const js = '// Generated by build-icons.js. Item/spell icons: vrising.gaming.tools; boss, station and some item images: vrising.fandom.com.\n' +
     'window.VR_ICONS = ' + JSON.stringify(sorted) + ';\n';
   fs.writeFileSync(path.join(__dirname, 'icons.js'), js);
   console.log(`icons: ${Object.keys(icons).length}, size: ${(js.length / 1024).toFixed(0)} KB`);
   if (missing.length) console.log('missing:', missing.join('; '));
-})();
+}
+
+module.exports = { ITEMS, PAGES, BOSSES, STATIONS };
+if (require.main === module) main();
