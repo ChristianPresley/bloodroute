@@ -18,6 +18,7 @@
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
   --radius: 12px;
+  --page: 1240px;   /* content width; grows on wide screens (bottom of this file) */
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
@@ -38,7 +39,8 @@
   --shadow: 0 1px 2px rgba(40,20,40,.08), 0 4px 14px rgba(40,20,40,.06);
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 128px; }
+/* --appbar-h is the app bar's measured height (js/app.js); it wraps taller on narrow screens. */
+html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + var(--appbar-h, 117px) + 11px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 var(--font-body); }
 a { color: var(--blood); }
@@ -53,11 +55,11 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .tiles { display: flex; flex-wrap: wrap; gap: 8px; }
 .tile { display: grid; justify-items: center; gap: 4px; width: 68px; text-align: center; }
 .tile .ic { width: 44px; height: 44px; padding: 3px; border: 1px solid var(--line); }
-.tile em { font-style: normal; font-size: 11px; line-height: 1.2; color: var(--muted); }
+.tile em { font-style: normal; font-size: 11px; line-height: 1.2; color: var(--muted); max-width: 100%; overflow-wrap: anywhere; hyphens: auto; }
 
 /* App bar */
 .appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
-.appbar-inner { max-width: 1240px; margin: 0 auto; padding: 10px 16px 0; display: grid; gap: 8px; }
+.appbar-inner { max-width: var(--page); margin: 0 auto; padding: 10px 16px 0; display: grid; gap: 8px; }
 .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .brand .crest { width: 40px; height: 40px; }
 .brand h1 { font: 700 30px/1 var(--font-display); letter-spacing: .5px; color: var(--text); }
@@ -72,15 +74,20 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .tab:hover { color: var(--text); }
 
 /* Shell */
-.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 64px; }
+.wrap { max-width: var(--page); margin: 0 auto; padding-inline: 16px; padding-block: 20px 64px; }
+/* Lists that become columns when there's room (wide screens); a column is never narrower than the layout's usual single row. */
+.rows { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); align-items: start; }
 .view[hidden] { display: none !important; }
 .path { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; align-items: start; }
 @media (max-width: 900px) { .path { grid-template-columns: 1fr; } }
 
 /* Stepper rail */
-.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 128px); display: grid; gap: 2px; }
+/* On short screens (laptops, 2560×720 ultrawides) the rail is taller than the space under the app bar, so it scrolls. */
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--appbar-h, 117px) + 11px); display: grid; gap: 2px;
+  max-height: calc(100vh - env(safe-area-inset-top, 0px) - var(--appbar-h, 117px) - 22px); overflow-y: auto; scrollbar-width: thin; }
 .step { display: grid; grid-template-columns: 44px 1fr; gap: 10px; padding: 8px 10px; border-radius: 10px; color: var(--text); text-decoration: none; align-items: center; }
 .step:hover { background: var(--surface-2); }
+.step:focus-visible { outline-offset: -2px; }   /* inside the scrolling rail, so it isn't clipped */
 .step.active { background: var(--blood-soft); }
 .step .badge { position: relative; width: 44px; height: 44px; }
 .step .badge .ic, .step .badge .ic-fallback { width: 44px; height: 44px; padding: 3px; border: 2px solid var(--line); border-radius: 10px; }
@@ -95,7 +102,8 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .step.done .bar i { background: var(--ok); }
 .rail-tools { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 10px 0; }
 @media (max-width: 900px) {
-  .rail { position: static; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); overflow-x: auto; padding-bottom: 6px; }
+  .rail { position: static; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); overflow-x: auto; padding-bottom: 6px; max-height: none; }
+  .rail .step { grid-row: 1; }   /* one scrolling row of phases; the tools sit below */
   .rail-tools { grid-row: 2; grid-column: 1 / span 2; align-items: center; padding: 6px 4px 0; position: sticky; left: 0; }
 }
 
@@ -115,7 +123,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .next .hero .ic, .next .hero .ic-fallback { width: 112px; height: 112px; border: 3px solid var(--blood); }
 .next .hero .ic.round { padding: 0; }
 .next .hero .ic:not(.round) { padding: 10px; }
-.next .body { display: grid; gap: 10px; min-width: 0; }
+.next .body, .next .lead, .next .what { display: grid; gap: 10px; min-width: 0; align-content: start; }
 .next .eyebrow { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blood); font-weight: 600; }
 .next h2 { font: 700 30px/1.1 var(--font-display); }
 .next .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--muted); }
@@ -164,7 +172,6 @@ details.sec > summary .count { margin-left: auto; font: 500 12px var(--font-mono
 .boss .name { font-weight: 600; line-height: 1.25; padding-right: 28px; }
 .boss .where { font-size: 12.5px; color: var(--muted); }
 .boss .take { font-size: 13.5px; }
-.boss .tiles .tile { width: 58px; }
 .boss .tiles .tile .ic { width: 38px; height: 38px; }
 .boss .tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .boss .defeat { position: absolute; top: 10px; right: 10px; }
@@ -185,11 +192,12 @@ details.sec > summary .count { margin-left: auto; font: 500 12px var(--font-mono
 .flash { box-shadow: 0 0 0 2px var(--blood); }
 
 /* Loadout */
-.loadout { display: grid; gap: 14px; }
+.loadout, .lo-part { display: grid; gap: 14px; align-content: start; }
 .slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 640px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .slot { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--surface-2); display: grid; justify-items: center; gap: 6px; text-align: center; }
 .slot .ic, .slot .ic-fallback { width: 56px; height: 56px; border: 2px solid var(--blood); }
+.ic-fallback.glyph { border-style: solid; font-size: 22px; font-weight: 500; }
 .slot .k { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
 .slot .v { font-weight: 600; font-size: 13.5px; line-height: 1.25; }
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 14px; }
@@ -211,7 +219,7 @@ td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text
 td .best { color: var(--ok); font-weight: 600; }
 .cell { display: flex; align-items: center; gap: 10px; }
 .cell .ic, .cell .ic-fallback { width: 36px; height: 36px; padding: 2px; border: 1px solid var(--line); }
-.ladder { counter-reset: s; display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.ladder { counter-reset: s; display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 96ch; }
 .ladder li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
 .ladder li::before { content: counter(s); width: 30px; height: 30px; border-radius: 50%; background: var(--blood-soft); color: var(--blood); display: grid; place-items: center; font: 500 13px var(--font-mono); }
 .builds { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
@@ -225,7 +233,8 @@ td .best { color: var(--ok); font-weight: 600; }
 .build dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 10px; font-size: 13px; }
 .build dt { color: var(--muted); }
 .build dd { margin: 0; }
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+/* At most three cards a row, so wide screens don't squeeze six tables side by side. */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(max(min(100%, 300px), calc((100% - 44px) / 3)), 1fr)); gap: 22px; }
 .grid2 .card { margin: 0; align-content: start; }
 .confirm { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; }
 footer { color: var(--muted); font-size: 13px; max-width: 80ch; }
@@ -279,8 +288,8 @@ details.sec > summary .sec-ic { width: 26px; height: 26px; }
 @media (prefers-reduced-motion: reduce) { .next::before { animation: none; } .boss.pop .portrait::after { animation: none; } }
 
 /* Resource counters */
-.stock { display: grid; gap: 8px; }
-.stock-intro { font-size: 13.5px; color: var(--muted); max-width: 80ch; }
+.stock { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 600px), 1fr)); align-items: start; }
+.stock-intro { font-size: 13.5px; color: var(--muted); max-width: 80ch; grid-column: 1 / -1; }
 .res { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 10px;
   background: var(--surface-2); border: 1px solid var(--line); }
 .res .ic, .res .ic-fallback { width: 44px; height: 44px; padding: 3px; border: 1px solid var(--line); }
@@ -320,12 +329,13 @@ body.picking .tabs, body.picking .overall, body.picking .topbar, body.picking .a
 .arch { --ac: var(--blood); position: relative; display: grid; gap: 12px; align-content: start; padding: 18px; border-radius: var(--radius); background: linear-gradient(160deg, color-mix(in srgb, var(--ac) 16%, var(--surface)), var(--surface) 55%); border: 1px solid color-mix(in srgb, var(--ac) 45%, var(--line)); color: var(--text); text-decoration: none; transition: transform .18s, box-shadow .18s, border-color .18s; }
 a.arch:hover, a.arch:focus-visible { transform: translateY(-3px); border-color: var(--ac); box-shadow: 0 10px 28px color-mix(in srgb, var(--ac) 30%, transparent); outline: none; }
 .arch.soon { opacity: .62; filter: saturate(.55); }
+.arch .top { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
 .arch .icons { display: flex; gap: 8px; }
 .arch .icons .ic, .arch .icons .ic-fallback { width: 52px; height: 52px; }
 .arch h3 { font: 700 30px/1 var(--font-display); }
 .arch p { margin: 0; color: var(--muted); font-size: 14px; }
 .arch .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; }
-.arch .status { position: absolute; top: 14px; right: 14px; }
+.arch .status { margin-left: auto; }
 .arch .chip.ready { background: color-mix(in srgb, var(--ac) 22%, transparent); color: var(--text); border-color: transparent; }
 .arch .cta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
 .arch .prog { flex: 1; height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
@@ -337,3 +347,24 @@ a.arch:hover, a.arch:focus-visible { transform: translateY(-3px); border-color: 
 .data-actions .msg.err { color: var(--blood); }
 .data-actions .msg.ok { color: var(--ok); }
 @media (max-width: 560px) { .pick-hero h2 { font-size: 34px; } }
+
+/* ---------- Wide screens (1600px and up, e.g. 2560×720 ultrawides) ----------
+   The page grows with the screen. Text keeps its usual line length: lists turn into columns instead of longer rows. */
+@media (min-width: 1600px) {
+  :root { --page: min(100vw - 64px, 2280px); }
+  /* One-row app bar (brand, tabs, progress), leaving more height for the page on short screens. */
+  .appbar-inner { display: flex; align-items: center; gap: 14px; }
+  .brand { display: contents; }
+  .tabs { order: 1; align-self: flex-end; margin-left: 10px; flex: none; }
+  .overall { order: 2; }
+  /* Loadout: spell slots beside the gear. */
+  .loadout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  /* Next step and phase headers: title on the left, the rest beside it instead of below. */
+  .next .body.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: 32px; align-items: center; }
+  .phase-head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-flow: row dense; column-gap: 32px; align-items: start; }
+  .phase-head > .row, .phase-head > .goal { grid-column: 1; }
+  .phase-head > .roster, .phase-head > .regions, .phase-head > .prog { grid-column: 2; }
+  /* Endgame: "Pick your endgame build" beside the builds; everything after spans the page. */
+  #view-endgame { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: start; }
+  #view-endgame > :nth-child(n+3) { grid-column: 1 / -1; }
+}

@@ -174,7 +174,7 @@
       bosses: [
         { lv: 74, name: 'Henry Blackbrew the Doctor', must: true, map: 283053, where: 'Gloomrot North', gets: ['Athenaeum'], take: '<b>Athenaeum</b> (research tier 3). Storm T3 point.' },
         { lv: 75, name: 'Jakira the Shadow Huntress', must: true, map: 474543, where: 'Oakveil Woodlands', gets: ['Elixir of the Twisted'], take: 'Passive slot 4 and Elixir of the Twisted. Illusion T2 point.' },
-        { lv: 75, name: 'Stavros the Carver', must: true, map: 474540, where: 'Oakveil', gets: [], take: 'Weapon coatings → <b>Unholy Coating</b>. Chaos T2 point → <b>Chaos mastery T3</b> (Ignite +1 tick).' },
+        { lv: 75, name: 'Stavros the Carver', must: true, map: 474540, where: 'Oakveil', gets: ['Unholy Coating'], take: 'Weapon coatings → <b>Unholy Coating</b>. Chaos T2 point → <b>Chaos mastery T3</b> (Ignite +1 tick).' },
         { lv: 76, name: 'Matka the Curse Weaver', must: true, map: 178460, where: 'Cursed Forest', gets: ['Ghost Yarn'], take: 'Advanced Loom and Ghost Yarn. Illusion T2 point.' },
         { lv: 76, name: 'Lucile the Venom Alchemist', must: true, map: 450465, where: 'Oakveil', gets: ['Blood Homogenizer'], take: '<b>Blood Homogenizer</b>. Blood T2 point.' },
         { lv: 76, name: 'Terrorclaw the Ogre', map: 178281, where: 'Hallowed Mountains', gets: ['Tannery'], take: 'Advanced Tannery. Frost T3 point.' },
@@ -230,7 +230,7 @@
     'Unsullied Heart': [1, 'V Blood drops (25% from the first few, guaranteed from Grayson to Gaius)'], 'Mourning Lily': [1, L(C(6116), 'Mourning Lily map layer')],
     'Snow Flower': [1, L(C(6090), 'Snow Flower map layer')], "Hell's Clarion": [1, `${L(C(6106), "Hell's Clarion map layer")}: caves and underground areas; Mantraps drop it`],
     'Crude Topaz': [1, L(C(6098), 'Gem nodes')], 'Crude Amethyst': [1, L(C(6098), 'Gem nodes')],
-    'Gem Dust': [1, 'Grinder (from gems)'], 'Empty waterskin': [1, 'Recipe from Keely'], 'Grave Dust': [2, 'Recipe from Goreswine'],
+    'Gem Dust': [1, 'Grinder (from gems)'], 'Empty Waterskin': [1, 'Recipe from Keely'], 'Grave Dust': [2, 'Recipe from Goreswine'],
     'Whetstone': [2, 'Recipe from Grayson'], 'Greater Blood Essence': [2, 'Blood Press, from 4 Unsullied Hearts (from Tristan, also from Blood Essence)'],
     'Fish Bone': [3, `Fish with Finn's pole at ${L(C(6104), 'fishing spots')}`], 'Iron Ingot': [3, `Furnace (Quincey), from ${L(C(6093), 'Iron Ore')} (GL 12+ weapon)`],
     'Cotton Yarn': [3, `Loot in Dunley; ${L(M('432218,432220,432221,432222'), 'cotton patches')}; Loom recipe from Beatrice`],

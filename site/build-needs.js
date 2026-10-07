@@ -125,8 +125,10 @@ const MADE = {
   'Greater Blood Essence': { until: 4, from: { 'Unsullied Heart': 4 } },
   'Power Core': { from: { 'Radium Alloy': 4, 'Charged Battery': 2 } },
 };
-// Recipe names sometimes use a curly apostrophe (Hell’s Clarion); match the icon and resource names.
-const norm = n => n.replace(/’/g, "'");
+// Recipe names sometimes use a curly apostrophe (Hell’s Clarion) or lower case (Empty waterskin); match the icon
+// and resource names.
+const RENAME = { 'Empty waterskin': 'Empty Waterskin' };
+const norm = n => { const s = n.replace(/’/g, "'"); return RENAME[s] || s; };
 
 // The crafting recipe: some items list a vendor price (coins) first.
 const recipeOf = i => (i.recipes || []).find(r => r.ingredients && r.ingredients.length && !r.ingredients.some(([n]) => / Coin$/.test(n)));

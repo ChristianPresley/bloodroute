@@ -15,11 +15,17 @@
   const ICONS = window.VR_ICONS || {};
   const ALIAS = { 'Jewelcrafting Table': 'Regular jewel', 'Altar of Stygian Awakening': 'Stygian Shard', 'Fusion Forge': 'Ember Glass',
     'Ancestral Forge': 'Ancestral Crossbow Shards', 'Blood Homogenizer': 'Primal Blood Essence', 'Stygian Summoning Circle': 'Stygian Shard',
-    'Regular gem': 'Regular Topaz', 'Flawless gem': 'Flawless Amethyst', 'Empty waterskin': 'Empty Waterskin',
+    'Regular gem': 'Regular Topaz', 'Flawless gem': 'Flawless Amethyst',
     'Ancestral Pistols Shards': 'Sanguine Pistols' };
   const BOSS_NAMES = new Set();
   const srcOf = n => ICONS[n] || ICONS[ALIAS[n]] || null;
   const initials = n => n.replace(/^(The|General|Sir|Lord)\s+/i, '').split(/\s+/).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  // Slots with no item behind them: an empty slot, and the dash every vampire starts with.
+  const GLYPH = { '—': '—', 'Starting dash': '»' };
+  // Ancestral weapons are named after their icon's item ("Ancestral Reaper Shards"); show the weapon's name.
+  const display = n => String(n).replace(/^(Ancestral .+) Shards$/, '$1');
+  // A loadout slot's icon: the first spell the slot names ("Shadowbolt or Bone Explosion" → Shadowbolt).
+  const slotIcon = (names, s) => (names || []).filter(n => s.includes(n)).sort((a, b) => s.indexOf(a) - s.indexOf(b) || b.length - a.length)[0] || s;
   // Frame colour by spell school or item rarity.
   const SCHOOL = {
     '#b46bff': ['Chaos Volley', 'Rain of Chaos', 'Chaos Barrage', 'Aftershock', 'Void', 'Veil of Chaos', 'Chaos Kindling', 'Renewing Flames', 'Power Surge'],
@@ -50,17 +56,28 @@
     const s = srcOf(name);
     const round = BOSS_NAMES.has(name) ? ' round' : '';
     const fr = FRAME[name] ? ` framed" style="--fr:${FRAME[name]}` : '';
-    if (s) return `<img class="ic${round} ${cls}${fr}" src="${s}" alt="${name}" title="${name}" width="${size}" height="${size}" loading="lazy">`;
-    return `<span class="ic-fallback ${cls}" style="width:${size}px;height:${size}px" title="${name}" aria-label="${name}">${initials(name || '?')}</span>`;
+    const label = display(name);
+    if (s) return `<img class="ic${round} ${cls}${fr}" src="${s}" alt="${label}" title="${label}" width="${size}" height="${size}" loading="lazy">`;
+    const glyph = GLYPH[name];
+    return `<span class="ic-fallback${glyph ? ' glyph' : ''} ${cls}" style="width:${size}px;height:${size}px" title="${label}" aria-label="${label}">${glyph || initials(name || '?')}</span>`;
   }
-  const tiles = list => list && list.length ? `<div class="tiles">${list.map(n => `<span class="tile">${ic(n, 44)}<em>${n}</em></span>`).join('')}</div>` : '';
+  const tiles = list => list && list.length ? `<div class="tiles">${list.map(n => `<span class="tile">${ic(n, 44)}<em>${display(n)}</em></span>`).join('')}</div>` : '';
 
-  BR.h = { MG, M, C, L, CAMPS, ICONS, BOSS_NAMES, srcOf, ic, tiles };
+  BR.h = { MG, M, C, L, CAMPS, ICONS, BOSS_NAMES, srcOf, ic, tiles, display, slotIcon };
 
   // ---------- Saved data (this browser profile only) ----------
   // One localStorage entry: { v, active, prefs, routes: { [routeId]: { done, stock, updated } } }.
   const KEY = 'bloodroute:v1';
   const blank = () => ({ v: 1, active: null, prefs: {}, routes: {} });
+  // Stockpile counts are keyed by material name: keep them when a material is renamed.
+  const RENAMED = { 'Empty waterskin': 'Empty Waterskin' };
+  function migrate(routes) {
+    for (const r of Object.values(routes || {})) {
+      const st = r && r.stock;
+      if (!st || typeof st !== 'object') continue;
+      for (const [from, to] of Object.entries(RENAMED)) if (from in st) { if (!(to in st)) st[to] = st[from]; delete st[from]; }
+    }
+  }
   function load() {
     let s = null;
     try { s = JSON.parse(localStorage.getItem(KEY)); } catch { s = null; }
@@ -73,6 +90,7 @@
         s.active = s.active || 'spellcaster';
       }
     } catch {}
+    migrate(s.routes);
     return s;
   }
   const store = load();
@@ -98,6 +116,7 @@
       const d = JSON.parse(text);
       if (!d || d.app !== 'bloodroute' || typeof d.routes !== 'object') throw new Error('This is not a Bloodroute save file.');
       store.v = 1; store.active = d.active || null; store.prefs = d.prefs || {}; store.routes = d.routes;
+      migrate(store.routes);
       return persist();
     },
   };

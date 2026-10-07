@@ -50,7 +50,7 @@ function loadRoutes() {
       (ph.access || []).forEach(([n]) => icons.add(n));
       ph.bosses.forEach(b => { icons.add(b.name); b.gets.forEach(g => icons.add(g)); });
       if (ph.loadout) {
-        ph.loadout.slots.forEach(s => icons.add((def.slotIcons || []).find(n => s.includes(n)) || s));
+        ph.loadout.slots.forEach(s => icons.add(BR.h.slotIcon(def.slotIcons, s)));
         (ph.loadout.gear || []).forEach(g => icons.add(g));
       }
     }

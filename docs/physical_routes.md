@@ -5,8 +5,9 @@ locations, materials and reference views shared in `site/routes/shared.js`. Reci
 (`data/items.json`, vrising.gaming.tools data version 1790852702230). Wiki facts were read through the Fandom MediaWiki API;
 W/Page = https://vrising.fandom.com/wiki/Page, with the revision date used.
 
-These routes are **not scored by the damage simulator** (`calc/` models spells only). Weapon and gear choices follow the
-numbers below; the open questions at the end are what a player should test.
+These routes are **not scored by the damage simulator** (`calc/` scores only the Spellcaster build: its spells, crossbow,
+coating and Blood Key). Weapon and gear choices follow the numbers below; the open questions at the end are what a
+player should test.
 
 ## The three builds
 
