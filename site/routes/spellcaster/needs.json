@@ -351,9 +351,8 @@
  },
  "Greater Blood Essence": {
   "4": {
-   "qty": 3,
+   "qty": 1,
    "for": [
-    "Elixir of the Prowler",
     "Castle Heart level 3"
    ]
   },
@@ -368,7 +367,7 @@
   "6": {
    "qty": 2,
    "for": [
-    "Elixir of the Prowler"
+    "Elixir of the Bat"
    ]
   },
   "7": {
@@ -380,7 +379,7 @@
   "8": {
    "qty": 2,
    "for": [
-    "Elixir of the Blasphemous"
+    "Elixir of the Twisted"
    ]
   }
  },
@@ -464,12 +463,6 @@
   }
  },
  "Empty Glass Bottle": {
-  "4": {
-   "qty": 2,
-   "for": [
-    "Elixir of the Prowler"
-   ]
-  },
   "5": {
    "qty": 2,
    "for": [
@@ -481,7 +474,7 @@
    "for": [
     "Blood Merlot",
     "Silver Resistance Potion",
-    "Elixir of the Prowler"
+    "Elixir of the Bat"
    ]
   },
   "7": {
@@ -494,7 +487,7 @@
   "8": {
    "qty": 4,
    "for": [
-    "Elixir of the Blasphemous",
+    "Elixir of the Twisted",
     "Witch Potion"
    ]
   }
@@ -552,7 +545,7 @@
   "8": {
    "qty": 40,
    "for": [
-    "Elixir of the Blasphemous"
+    "Elixir of the Twisted"
    ]
   }
  },
@@ -569,9 +562,10 @@
  },
  "Flawless Sapphire": {
   "7": {
-   "qty": 4,
+   "qty": 8,
    "for": [
-    "Amulet of the Arch-Warlock"
+    "Amulet of the Arch-Warlock",
+    "Primal jewels ×3"
    ]
   }
  },
@@ -632,19 +626,7 @@
   }
  },
  "Sunflower": {
-  "4": {
-   "qty": 40,
-   "for": [
-    "Elixir of the Prowler"
-   ]
-  },
   "5": {
-   "qty": 40,
-   "for": [
-    "Elixir of the Prowler"
-   ]
-  },
-  "6": {
    "qty": 40,
    "for": [
     "Elixir of the Prowler"
@@ -652,38 +634,56 @@
   }
  },
  "Fire Blossom": {
-  "4": {
-   "qty": 40,
-   "for": [
-    "Elixir of the Prowler"
-   ]
-  },
   "5": {
    "qty": 40,
    "for": [
     "Elixir of the Prowler"
    ]
-  },
+  }
+ },
+ "Blood Rose": {
   "6": {
    "qty": 40,
    "for": [
-    "Elixir of the Prowler"
+    "Elixir of the Bat"
+   ]
+  }
+ },
+ "Bleeding Heart": {
+  "6": {
+   "qty": 40,
+   "for": [
+    "Elixir of the Bat"
    ]
   }
  },
  "Corrupted Flower": {
   "7": {
-   "qty": 40,
+   "qty": 72,
    "for": [
-    "Elixir of the Twisted"
+    "Elixir of the Twisted",
+    "Unholy Coating"
+   ]
+  },
+  "8": {
+   "qty": 72,
+   "for": [
+    "Elixir of the Twisted",
+    "Unholy Coating"
    ]
   }
  },
- "Hell's Clarion": {
-  "8": {
-   "qty": 40,
+ "Venom Sap": {
+  "7": {
+   "qty": 32,
    "for": [
-    "Elixir of the Blasphemous"
+    "Unholy Coating"
+   ]
+  },
+  "8": {
+   "qty": 32,
+   "for": [
+    "Unholy Coating"
    ]
   }
  },
@@ -716,12 +716,6 @@
    "qty": 4,
    "for": [
     "Greater jewels ×3"
-   ]
-  },
-  "7": {
-   "qty": 4,
-   "for": [
-    "Primal jewels ×3"
    ]
   }
  },

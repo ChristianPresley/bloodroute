@@ -4,7 +4,7 @@ Bloodroute: a V Rising progression planner. Step-by-step paths from fresh spawn 
 
 **Live site: https://christianpresley.github.io/bloodroute/**
 
-Pick an archetype, then follow its route. Four PvE routes are ready: **Spellcaster**, **Warrior** (Sword, then Reaper), **Rogue** (Axes, then Pistols) and **Brute** (Spear, then Twinblades). The Warrior, Rogue and Brute endgame builds follow the game data and the wiki's weapon numbers; the simulator only models spells, so they are not scored yet. Progress and stockpile counts are saved per archetype in your browser profile, and you can export or import a backup from the archetype page.
+Pick an archetype, then follow its route. Four PvE routes are ready: **Spellcaster**, **Warrior** (Sword, then Reaper), **Rogue** (Axes, then Pistols) and **Brute** (Spear, then Twinblades). The Warrior, Rogue and Brute endgame builds follow the game data and the wiki's weapon numbers; the simulator only models a caster's kit (spells plus the crossbow), so they are not scored yet. Progress and stockpile counts are saved per archetype in your browser profile, and you can export or import a backup from the archetype page.
 
 ## What's here
 
@@ -34,14 +34,15 @@ The site works without the icon bundle; icons fall back to initials.
 node --test
 ```
 
-`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades, and that each loadout wears the highest Gear Level weapon, magic source and armor crafted so far; every loadout item with a recipe crafted by that phase, and every consumable restocked in the phase that uses it; the full gear and station progression in the right phases; stockpile crafts that match the page, with Stygian Shards priced for every passive; no placeholder text; and an icon for everything shown. `test/store.test.js` covers saved progress and backups, and `test/calc.test.js` the simulator (cooldown timing, crit and Spell Power scaling, damage bookkeeping, step size). The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
+`test/routes.test.js` checks every route against the game: all 64 V Bloods hunted once, in level order, at the right map markers; spell points and Veil drops credited to the right boss; every loadout spell, piece of gear, blood and passive already unlocked by that phase; gear that never downgrades, and that each loadout wears the highest Gear Level weapon, magic source and armor crafted so far; every loadout item with a recipe crafted by that phase, and every consumable restocked in the phase that uses it; the full gear and station progression in the right phases; stockpile crafts that match the page, with Stygian Shards priced for every passive; no placeholder text; and an icon for everything shown. `test/store.test.js` covers saved progress and backups, and `test/calc.test.js` the simulator (cooldown timing, crit, Spell Power and Physical Power scaling, crossbow timing, Static, coatings, blood quality, damage bookkeeping, step size, and the curated results the guide and page quote). The checks that regenerate stockpiles from `data/items.json` are skipped when the game data isn't downloaded. CI runs the tests on every push (`.github/workflows/test.yml`).
 
 ### Simulator
 
 ```bash
 node calc/smoke.js                # quick sanity check
-node calc/run.js late             # optimize a stage: early | mid | late-pre | late (late takes about 10 minutes)
+node calc/run.js late out/out_late.json   # optimize a stage: early | p4 | p5 | mid | p7 | late-pre | late (late takes ~20 minutes)
 node calc/sens.js                 # scenario tables for calc/optimizer_results.json, or pass out_late.json out_late-pre.json
+node calc/curate.js out           # rebuild calc/optimizer_results.json from out/out_<stage>.json for every stage
 ```
 
 To run it in a browser, serve `calc/` over http and open `index.html`.

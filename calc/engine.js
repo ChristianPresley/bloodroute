@@ -1,11 +1,15 @@
 // V Rising PvE spellcaster damage model and build optimizer (patch 1.1.13).
-// Single-target boss fight simulation. Numbers come from research_sources.md or the
-// vrising.gaming.tools data in this repo; anything with no published source lives in ASSUME.
+// Single-target boss fight simulation: spells, Veils and ultimates, plus the crossbow's shots and skills.
+// Numbers come from research_sources.md or the vrising.gaming.tools data in this repo; anything with no
+// published source lives in ASSUME.
 (function (global) {
   'use strict';
 
   // ---------- Assumptions and unresolved mechanics ----------
   const ASSUME = {
+    weaponDamage: true,      // crossbow shots and skills deal physical damage (false = spells only, as before v6)
+    rainBoltsFrac: 1.0,      // share of Rain of Bolts' 5 bolts that hit one boss
+    bloodKeyBuff: true,      // the Blood Key's equip buff adds +4 Spell Power (in the game data; the wiki lists only +34)
     rainHitFrac: 0.6,        // chance each Rain of Chaos meteor hits one moving boss
     eyeHitFrac: 0.3,         // chance each Eye of the Storm strike hits one boss
     bloodStormBoltFrac: 1.0, // share of Blood Storm's 25 homing bolts that hit a lone boss
@@ -22,14 +26,30 @@
     bloodthirstSpells: true, // Dracula shard's Bloodthirst "+15% damage output" applies to spells (may be physical only)
     hungerPowerBreak: 'primary', // what breaks Hunger for Power's 6-spell chain: 'primary' (any weapon attack) or 'none'
     spFormula: 'total',      // 'total': (10 + flat) x (1 + bonus%); 'base': 10 x (1 + bonus%) + flat (unconfirmed which)
-    primaryTime: 0.6,        // seconds per primary attack
-    afDuration: 2.5,         // Agonizing Flames: 5 ticks, assumed 0.5s apart, refreshes rather than stacks
+    afDuration: 2.5,       // Agonizing Flames: 5 ticks, assumed 0.5s apart, refreshes rather than stacks
     lowHpFrac: 0.3,          // last 30% of the fight counts as "target below 30% HP"
     dt: 0.05,                // simulation step (s)
   };
 
   // Caps on permanent sources; temporary buffs may exceed them.
-  const CAP = { bSP: 30, cdr: 30, crit: 45, critPower: 180, ultPower: 50, charge: 30, eff: 50, ultCDR: 70, veilCDR: 35 };
+  const CAP = { bSP: 30, cdr: 30, crit: 45, critPower: 180, ultPower: 50, charge: 30, eff: 50, ultCDR: 70, veilCDR: 35,
+    bPP: 25, pCrit: 45, pCritPower: 180, aSpd: 40 };
+
+  // ---------- Crossbow (the caster's weapon) ----------
+  // Primary (W/Crossbow): one bolt, 100% physical; 1 s draw, then 0.55 s before the next shot; attack speed shortens both.
+  // A primary that hits a Marked target deals +25% and gives +7% attack speed for 10 s (3 stacks).
+  // Physical Power per tier (items.json, added to base 10). Physical crit: 5% base, 140% power (W/Attributes).
+  const CROSSBOW = {
+    shotCast: 1.0, shotCd: 0.55, markBonus: 25, markSpeed: 7, markStacks: 3, markDur: 10,
+    pp: { Iron: 13.84, 'Merciless Iron': 17.3, 'Dark Silver': 24.33, Sanguine: 29.34, Ancestral: 33.7 },
+  };
+  // Weapon skills (W/Crossbow): Rain of Bolts (Copper tier on) and Snapshot (Iron tier on); both Mark the target.
+  // Snapshot's bolt splits toward other enemies, so a lone boss takes the first 75% only.
+  const WEAPON_SKILLS = [
+    { kind: 'weapon', name: 'Rain of Bolts', cd: 8, cast: 0.4, fx: c => { for (let i = 0; i < 5; i++) if (c.chance(ASSUME.rainBoltsFrac)) c.phys(40); c.mark(); } },
+    { kind: 'weapon', name: 'Snapshot', cd: 8, cast: 0.3, fx: c => { c.phys(75); c.mark(); } },
+  ];
+  const PHYSICAL = ['Primary attack', ...WEAPON_SKILLS.map(w => w.name)];   // damage sources that scale with Physical Power
 
   // ---------- Spell points: boss levels that grant a point, per school and tier ----------
   const POINTS = {
@@ -72,11 +92,15 @@
   };
 
   const AMULET = {
+    'Gravedigger Ring': { flatSP: 9.7 },
     'Ring of the Sorcerer': { flatSP: 12.8 },
+    'Scourgestone Pendant': { flatSP: 16.5 },
+    'Pendant of the Sorcerer': { flatSP: 20.9 },
     'Blood Merlot Amulet': { flatSP: 27.9 },
     'Amulet of the Arch-Warlock': { flatSP: 34, crit: 8, flags: ['coldBlood'] },
     'Amulet of the Master Spellweaver': { flatSP: 34, cdr: 6 },
     'Amulet of the Wicked Prophet': { flatSP: 34, leech: 4 },
+    'Blood Key': { flatSP: 34, equipSP: 4 },   // Lord Styx (84); equipSP under ASSUME.bloodKeyBuff
     'Soul Shard of Dracula': { flatSP: 34, eff: 16, flags: ['bloodthirst'], ult: 'Blood Storm' },
     'Soul Shard of the Winged Horror': { flatSP: 34, ult: 'Voidquake Vortex' },
     'Soul Shard of the Monster': { flatSP: 34, ult: 'Eye of the Storm' },
@@ -102,7 +126,7 @@
     'Renewing Flames': { flags: ['renewing'] },
     'Spiritual Infusion': { flags: ['spiritual'] },
     'Arcane Animator': { minion: 12 },
-    'Lightning Fast Strikes': { flags: ['lfs'] },
+    'Lightning Fast Strikes': { aSpd: 7, flags: ['lfs'] },
     'Sanguine Mastery': { eff: 8 },
     'Wicked Power': { crit: 8, flags: ['wicked'], vampire: true },
     'Embrace Mayhem': { ultCDR: 14, ultPower: 10, vampire: true },
@@ -113,6 +137,7 @@
   const ARMOR = {
     'Warlock Vestment': { bSP: 7.2, cdr: 4 },
     'Dark Magus Vestment': { bSP: 6, cdr: 4, leech: 3 },
+    'Maleficer Scholar Vestment': { bSP: 6, cdr: 5, leech: 4 },
     "Dracula's Maleficer Regalia": { bSP: 6, cdr: 6, leech: 4, flags: ['veilCrit'] },
   };
 
@@ -121,26 +146,64 @@
     Chaos: [{ veilCDR: 5 }, { ultPower: 5 }, { flags: ['chaosMastery'] }],
     Illusion: [{ cdr: 5 }, {}, { flags: ['illusionMastery'] }],
     Frost: [{}, {}, { flags: ['frostMastery'] }],
-    Blood: [{}, {}, {}], Storm: [{}, {}, {}], Unholy: [{}, {}, {}],
+    Storm: [{ aSpd: 5 }, {}, {}],
+    Blood: [{}, {}, {}], Unholy: [{}, {}, {}],
   };
 
-  const WEAPON_ROLL = { bSP: 12, cdr: 12, crit: 16, critPower: 16, leech: 8, veilCDR: 14 }; // Ancestral weapon, tier 5
+  // Weapon coatings (Stavros, Lv 75): the next primary every 12 s carries the effect. Their damage is magic
+  // (it scales with Spell Power) and can't crit. Chain Lightning, novas and orbs that only reach other enemies are left out.
+  const COATING = {
+    none: { boss: 0, fx: () => {} },
+    'Blood Coating': { boss: 75, fx: c => { c.apply('leech'); c.flat(50, 'Blood Coating'); } },           // Vampiric Curse 50% after 2 s
+    'Chaos Coating': { boss: 75, fx: c => { c.flat(40, 'Chaos Coating'); c.ignite(); } },
+    'Frost Coating': { boss: 75, fx: c => { c.flat(30, 'Frost Coating'); c.apply('chill'); } },
+    'Illusion Coating': { boss: 75, fx: c => { c.flat(30, 'Illusion Coating'); c.apply('weaken'); c.phantasm(4); } },
+    'Storm Coating': { boss: 75, fx: c => { c.flat(40, 'Storm Coating'); } },
+    'Unholy Coating': { boss: 75, fx: c => { c.flat(40, 'Unholy Coating'); c.apply('condemn'); c.flat(50, 'Unholy Coating'); } },   // + bone spirit
+  };
+
+  // Blood quality (W/Blood): tiers I–IV unlock at 1/30/60/90%; I–III scale as max x (0.5 + 0.5 x quality), IV is fixed;
+  // Tier V (+20% Blood Efficiency) needs 100%.
+  const TIER_MIN = { 1: 0.01, 2: 0.3, 3: 0.6, 4: 0.9 };
+
+  // Ancestral weapon rolls, tier 5 (W/Ancestral_Forge): the spell stats plus the two physical ones that help a caster's
+  // crossbow most (physical crit and weapon-skill rolls are worth less here and are left out of the search).
+  const WEAPON_ROLL = { bSP: 12, cdr: 12, crit: 16, critPower: 16, leech: 8, veilCDR: 14, aSpd: 14, bPP: 10 };
 
   // ---------- Stages ----------
+  // weapon: crossbow tier worn. bloodQuality: early game has no Prison Cell (Vincent, 44), so ~60% Scholar blood
+  // from feeding (tiers I–III, no IV or V). Phases 4–5 keep a high-quality (90%) prisoner; Corrupted Fish lift it to
+  // 100% from Phase 6. p4 and p5 are the route's checkpoints between the early and mid game.
   const STAGES = {
     early: {
-      label: 'Early game (bosses up to Lv 40)', level: 40,
+      label: 'Early game (bosses up to Lv 40)', level: 40, weapon: 'Iron', bloodQuality: 0.6,
       amulets: ['Ring of the Sorcerer'], primaries: ['Scholar'], homogenizer: false,
       passiveSlots: 0, vampirePassives: false, jewelMods: 0, armor: 'Warlock Vestment', weaponRolls: 0, potion: 3,
     },
+    p4: {
+      label: 'Phase 4 (bosses up to Lv 50)', level: 50, weapon: 'Iron', bloodQuality: 0.9,
+      amulets: ['Scourgestone Pendant'], primaries: ['Scholar'], homogenizer: false,
+      passiveSlots: 0, vampirePassives: false, jewelMods: 0, armor: 'Warlock Vestment', weaponRolls: 0, potion: 3,
+    },
+    p5: {
+      label: 'Phase 5 (bosses up to Lv 60)', level: 60, weapon: 'Merciless Iron', bloodQuality: 0.9,
+      amulets: ['Pendant of the Sorcerer'], primaries: ['Scholar', 'Mutant'], homogenizer: false,
+      passiveSlots: 2, vampirePassives: false, jewelMods: 2, armor: 'Dark Magus Vestment', weaponRolls: 0, potion: 3,
+    },
     mid: {
-      label: 'Mid game (bosses up to Lv 70)', level: 70,
+      label: 'Mid game (bosses up to Lv 70)', level: 70, weapon: 'Dark Silver', bloodQuality: 1,
       amulets: ['Blood Merlot Amulet'], primaries: ['Scholar', 'Mutant'], homogenizer: false,
       passiveSlots: 3, vampirePassives: false, jewelMods: 3, armor: 'Dark Magus Vestment', weaponRolls: 0, potion: 3,
     },
+    p7: {
+      label: 'Phase 7 (bosses up to Lv 84: Maleficer Scholar, no Dracula\'s court shards)', level: 84, weapon: 'Ancestral', bloodQuality: 1,
+      amulets: ['Amulet of the Arch-Warlock', 'Amulet of the Master Spellweaver', 'Amulet of the Wicked Prophet', 'Blood Key'],
+      primaries: ['Scholar', 'Draculin', 'Mutant'], homogenizer: true,
+      passiveSlots: 5, vampirePassives: true, jewelMods: 4, armor: 'Maleficer Scholar Vestment', weaponRolls: 3, potion: 5,
+    },
     late: {
-      label: 'Late game (all content)', level: 91,
-      amulets: ['Amulet of the Arch-Warlock', 'Amulet of the Master Spellweaver', 'Amulet of the Wicked Prophet',
+      label: 'Late game (all content)', level: 91, weapon: 'Ancestral', bloodQuality: 1,
+      amulets: ['Amulet of the Arch-Warlock', 'Amulet of the Master Spellweaver', 'Amulet of the Wicked Prophet', 'Blood Key',
         'Soul Shard of Dracula', 'Soul Shard of the Winged Horror', 'Soul Shard of the Monster', 'Soul Shard of the Serpent'],
       primaries: ['Scholar', 'Draculin', 'Mutant'], homogenizer: true,
       passiveSlots: 5, vampirePassives: true, jewelMods: 4, armor: "Dracula's Maleficer Regalia", weaponRolls: 3, potion: 5,
@@ -174,8 +237,9 @@
   // Blood
   sp('Shadowbolt', 'Blood', null, { start: true, cd: 8, cast: 1.0, mods: ['+60% vs Leeched', '+24% cast rate', '-12% cooldown', 'explodes 30% + Leech'], castMod: [1, 24], cdMod: [2, 12] },
     c => { c.hit(200 * (1 + (c.m(0) && c.has('leech') ? 0.6 : 0))); if (c.m(3)) c.hit(30); c.apply('leech'); });
-  sp('Sanguine Coil', 'Blood', ['Blood', 2], { cd: 7, cast: 0.4, charges: 3, mods: ['+24% vs Leeched', '+16% damage', '+50% life drain', '+1 charge'], chargeMod: [3, 1] },
-    c => { c.hit(80 * (1 + (c.m(1) ? 0.16 : 0) + (c.m(0) && c.has('leech') ? 0.24 : 0))); c.hit(30 * (c.m(2) ? 1.5 : 1)); c.apply('leech'); });
+  // Its "drains 30% health" is healing, not damage.
+  sp('Sanguine Coil', 'Blood', ['Blood', 2], { cd: 7, cast: 0.4, charges: 3, mods: ['+24% vs Leeched', '+16% damage', '+1 charge', '+50% life drain (healing)'], chargeMod: [2, 1] },
+    c => { c.hit(80 * (1 + (c.m(1) ? 0.16 : 0) + (c.m(0) && c.has('leech') ? 0.24 : 0))); c.apply('leech'); });
   sp('Carrion Swarm', 'Blood', ['Blood', 2], { cd: 9, cast: 0.8, mods: ['+10% damage per bat', 'Lesser Vampiric Curse 50%'] },
     c => { for (let i = 0; i < 8; i++) c.hit(30 * (c.m(0) ? 1.1 : 1)); if (c.m(1)) c.hit(50); c.apply('leech'); });
   sp('Blood Fountain', 'Blood', ['Blood', 2], { cd: 10, cast: 0.4, mods: ['+32% eruption damage', 'recast lesser fountain 36%'], extraBusy: [1, 0.4] },
@@ -184,11 +248,12 @@
   // Frost (V Bloods are Freeze-immune: a Freeze instead deals 30% and Chills)
   sp('Crystal Lance', 'Frost', ['Frost', 2], { cd: 8, cast: 1.0, mods: ['+70% vs Chilled/Frozen', '+24% cast rate'], castMod: [1, 24] },
     c => { c.hit(170 * (1 + (c.m(0) && c.has('chill') ? 0.7 : 0))); c.freeze(); });
-  sp('Frost Bat', 'Frost', ['Frost', 1], { cd: 8, cast: 0.6, charges: 2, mods: ['impact blast 60%', '+32% vs Chilled/Frozen', '+24% cast rate'], castMod: [2, 24] },
-    c => { const ch = c.has('chill'); c.hit(120 * (1 + (c.m(1) && ch ? 0.32 : 0))); if (c.m(0)) c.hit(60); if (ch) c.freeze(); c.apply('chill'); });
+  // The impact-blast jewel hits only enemies around the target, so it does nothing to a lone boss.
+  sp('Frost Bat', 'Frost', ['Frost', 1], { cd: 8, cast: 0.6, charges: 2, mods: ['+32% vs Chilled/Frozen', '+24% cast rate', 'impact blast 60% (surrounding enemies)'], castMod: [1, 24] },
+    c => { const ch = c.has('chill'); c.hit(120 * (1 + (c.m(0) && ch ? 0.32 : 0))); if (ch) c.freeze(); c.apply('chill'); });
   sp('Ice Nova', 'Frost', ['Frost', 1], { cd: 9, cast: 0.4, mods: ['+50% vs Chilled/Frozen', 'recast lesser nova (50% of original)', '-12% cooldown'], cdMod: [2, 12], extraBusy: [1, 0.4] },
     c => { const ch = c.has('chill'); c.hit(150 * (1 + (c.m(0) && ch ? 0.5 : 0))); if (ch) c.freeze(); c.apply('chill'); if (c.m(1)) c.hit(75); });
-  sp('Arctic Storm', 'Frost', ['Frost', 2], { cd: 9, cast: 1.5, mods: ['+24% damage'] },
+  sp('Arctic Storm', 'Frost', ['Frost', 2], { cd: 9, cast: 1.5, noCrit: true, mods: ['+24% damage'] },
     c => { c.hit(210 * (c.m(0) ? 1.24 : 1)); c.apply('chill'); c.freeze(); });
 
   // Illusion
@@ -222,16 +287,28 @@
     c => { c.hit(60 * (c.m(0) ? 1.16 : 1)); c.apply('condemn'); });
 
   // Veils: fx on cast, onPrimary on the empowered primary attack ("Veil attack") that follows.
-  // Veil of Shadow stands in for the starting dash (no 1.1 unlock source; assumed default).
-  veil('Veil of Shadow', 'Shadow', 0, { cast: 0.5 }, () => {}, () => {});
-  veil('Veil of Blood', 'Blood', 40, { cast: 0.5 }, () => {}, c => { c.hit(20); c.hit(20); c.apply('leech'); });
-  veil('Veil of Frost', 'Frost', 44, { cast: 0.5 }, () => {}, c => c.apply('chill'));
-  veil('Veil of Bones', 'Unholy', 50, { cast: 0.5 }, () => {}, c => c.apply('condemn'));
-  veil('Veil of Storm', 'Storm', 50, { cast: 0.4 }, () => {}, c => c.apply('static'));
-  veil('Veil of Chaos', 'Chaos', 57, { cast: 0.4, mods: ['illusion explosion +24%', 'second illusion at 80%', 'Agonizing Flames on Veil attack'] },
+  // atk: % bonus damage on the Veil attack's shot; atkMod: [jewel mod, %] the "+X% Veil attack damage" jewel;
+  // atkLow: [jewel mod, %] bonus against a boss below 20% HP. Jewel mods are listed best first for one boss.
+  // Veil of Shadow stands in for the starting dash (no 1.1 unlock source; assumed default). Veil of Bones' Skeleton
+  // Warrior (30% per hit) is a minion with no documented lifetime and is left out.
+  veil('Veil of Shadow', 'Shadow', 0, { cast: 0.45, atk: 25 }, () => {}, () => {});
+  veil('Veil of Blood', 'Blood', 40, { cast: 0.5, mods: ['+24% Veil attack damage', '+16% physical damage for 4 s (Leeched target)', 'dashing through the boss inflicts Leech'], atkMod: [0, 24] },
+    c => { if (c.m(2)) c.apply('leech'); },
+    c => { c.hit(20); c.apply('leech'); if (c.m(1)) c.buff('veilPhys', 4); });   // its "drains 20% health" heals
+  // A V Blood is Freeze-immune, so the Freeze jewel gives the 30% proc and Chill instead (see Frost spells).
+  veil('Veil of Frost', 'Frost', 44, { cast: 0.5, mods: ['Veil attack nova 50% + Chill', 'illusion explodes 40% + Chill', '+24% Veil attack damage', 'Veil attack consumes Chill to Freeze'], atkMod: [2, 24] },
+    () => {}, c => { if (c.m(3) && c.has('chill')) c.freeze(); c.apply('chill'); if (c.m(0)) c.hit(50); if (c.m(1)) c.hit(40); });
+  veil('Veil of Bones', 'Unholy', 50, { cast: 0.5, mods: ['skeleton explodes 80% + Condemn', '+50% Veil attack vs <20% HP', '+24% Veil attack damage', 'dashing through the boss inflicts Condemn'], atkLow: [1, 50], atkMod: [2, 24] },
+    c => { if (c.m(3)) c.apply('condemn'); },
+    c => { c.apply('condemn'); if (c.m(0)) c.flat(80, 'Veil of Bones'); });
+  veil('Veil of Storm', 'Storm', 50, { cast: 0.4, mods: ['illusion shocks 20% + Static', '+24% Veil attack damage', 'dash applies Static'], atkMod: [1, 24] },
+    c => { c.buff('stormHaste', 4); if (c.m(0)) { c.hit(20); c.apply('static'); } if (c.m(2)) c.apply('static'); },   // +20% attack speed for 4 s
+    c => c.apply('static'));
+  veil('Veil of Chaos', 'Chaos', 57, { cast: 0.4, mods: ['illusion explosion +24%', 'second illusion at 80%', 'Agonizing Flames on Veil attack', '+24% Veil attack damage'], atkMod: [3, 24] },
     c => { c.hit(50 * (c.m(0) ? 1.24 : 1)); c.ignite(); },
     c => { c.ignite(); c.af(2); if (c.m(1)) { c.busy(0.4); c.hit(50 * (c.m(0) ? 1.24 : 1) * 0.8); c.ignite(); } });
-  veil('Veil of Illusion', 'Illusion', 65, { cast: 0.5 }, () => {}, c => { c.apply('weaken'); c.phantasm(); });
+  veil('Veil of Illusion', 'Illusion', 65, { cast: 0.5, mods: ['Veil attack grants 5 Phantasm', 'recast detonation 36% + Weaken', '+24% Veil attack damage'], atkMod: [2, 24] },
+    () => {}, c => { c.apply('weaken'); c.phantasm(c.m(0) ? 5 : 1); if (c.m(1)) c.hit(36); });
 
   // Ultimates: cannot crit, scale with Ultimate Power. cast = total busy time (cast + channel).
   ult('Chaos Barrage', 'Chaos', ['Chaos', 3], { cast: 1.0 }, c => { for (let i = 0; i < 4; i++) { c.hit(200); c.hit(100); } c.ignite(); });
@@ -254,7 +331,8 @@
   const byName = Object.fromEntries(ABILITIES.map(a => [a.name, a]));
 
   // ---------- Stats ----------
-  const STAT_KEYS = ['flatSP', 'bSP', 'crit', 'critPower', 'cdr', 'veilCDR', 'ultPower', 'ultCDR', 'charge', 'leech', 'minion', 'eff', 'dracCDR', 'veilUltCut'];
+  const STAT_KEYS = ['flatSP', 'bSP', 'crit', 'critPower', 'cdr', 'veilCDR', 'ultPower', 'ultCDR', 'charge', 'leech', 'minion', 'eff', 'dracCDR', 'veilUltCut',
+    'pp', 'bPP', 'pCrit', 'pCritPower', 'aSpd'];   // physical: Physical Power (base + weapon), bonus %, crit, crit power, attack speed
 
   function masteryTiers(level) {
     const pts = pointsAt(level), out = {};
@@ -270,7 +348,9 @@
     const S = STAGES[cfg.stage];
     const st = Object.fromEntries(STAT_KEYS.map(k => [k, 0]));
     const bypass = Object.fromEntries(STAT_KEYS.map(k => [k, 0]));
-    st.flatSP = 10 + S.potion; st.crit = 5; st.critPower = 140; st.eff = 20;
+    const q = S.bloodQuality;
+    st.flatSP = 10 + S.potion; st.crit = 5; st.critPower = 140; st.eff = q >= 1 ? 20 : 0;
+    st.pp = 10 + CROSSBOW.pp[S.weapon]; st.pCrit = 5; st.pCritPower = 140;
     st.flags = new Set();
     const add = (src, scale = 1, into = st) => {
       for (const [k, v] of Object.entries(src)) {
@@ -280,6 +360,7 @@
     };
     add(ARMOR[S.armor]);
     add(AMULET[cfg.amulet]);
+    if (ASSUME.bloodKeyBuff) st.flatSP += AMULET[cfg.amulet].equipSP || 0;
     add(ELIXIR[cfg.elixir]);
     cfg.passives.forEach(p => add(PASSIVE[p]));
     cfg.weapon.forEach(w => { st[w] += WEAPON_ROLL[w]; });
@@ -288,12 +369,13 @@
       for (let i = 0; i < t; i++) add(MASTERY[school][i], 1, ASSUME.capBypass ? bypass : st);
     st.eff = Math.min(CAP.eff, st.eff);
     const effMul = st.eff / 100;
-    for (const t of [1, 2, 3, 4]) {                               // primary at 100% quality
-      const tr = BLOOD[cfg.primary][t];
-      add(tr);
+    for (const t of [1, 2, 3, 4]) {                               // primary blood at the stage's quality
+      if (q < TIER_MIN[t]) continue;
+      const tr = BLOOD[cfg.primary][t], scale = t === 4 ? 1 : 0.5 + 0.5 * q;
+      add(tr, scale);
       const effPart = ASSUME.effScalesFixed ? tr                  // Blood Efficiency portion
         : Object.fromEntries(Object.entries(tr).filter(([k]) => k !== 'dracCDR' && k !== 'veilUltCut'));
-      add(effPart, effMul, ASSUME.capBypass ? bypass : st);
+      add(effPart, scale * effMul, ASSUME.capBypass ? bypass : st);
     }
     if (cfg.secondary && cfg.secondary.blood !== cfg.primary) {    // Blood Homogenizer, 100% donor
       for (const t of [cfg.secondary.tier, 4]) {
@@ -323,12 +405,12 @@
     full: PERMS.flatMap(order => [{ order, ultHold: true }, { order, ultHold: false }]),
   };
 
-  // build: { veil, s1, s2, ult } (names); opts: { duration, seed, policy }
+  // build: { veil, s1, s2, ult } (names); opts: { duration, seed, policy, trace } (trace: an array that gets [time, action] for every action)
   function simulate(build, st, cfg, opts) {
     const T = opts.duration, rng = mulberry32(opts.seed);
     const jm = STAGES[cfg.stage].jewelMods;
     const s = { t: 0, total: 0, by: {}, until: {}, meter: 0, phantasm: 0, coldIcd: 0, thirstIcd: 0, staticNext: 0,
-      curses: [], primed: null, chain: 0, hpPending: false, casts: {} };
+      curses: [], primed: null, chain: 0, hpPending: false, casts: {}, primReady: 0, marked: false, markStacks: 0, coatReady: 0 };
     const F = st.flags;
     const phantasmMax = F.has('illusionMastery') ? 12 : 10;
 
@@ -347,9 +429,17 @@
     const spells = [s1, s2];
     const policy = opts.policy || POLICIES.fast[0];
     const seq = policy.order.map(k => ({ veil: veilS, s1, s2 })[k]);
-    const all = [veilS, s1, s2, ultS];
+    // Crossbow skills fill the gaps between abilities. Stats with no Physical Power (the tests' blank stats) have no weapon.
+    const weapon = ASSUME.weaponDamage && st.pp > 0;
+    const wSkills = weapon ? WEAPON_SKILLS.map(def => ({ key: def.name, def, m: () => false, cd: def.cd, cast: def.cast, max: 1, charges: 1, timer: 0, recharge: 0 })) : [];
+    const all = [veilS, s1, s2, ultS, ...wSkills];
+    const coat = COATING[cfg.coating || 'none'];
+    const coatSlot = { def: { kind: 'coating' }, m: () => false };
+    const trace = opts.trace ? name => opts.trace.push([s.t, name]) : () => {};
 
-    const active = k => (s.until[k] || 0) > s.t;
+    // Times within 1e-9 s count as equal, so float noise from the step size can't decide whether a buff is still up.
+    const active = k => (s.until[k] || 0) - s.t > 1e-9;
+    const past = x => s.t >= x - 1e-9;
     const SP = () => {
       const bonus = st.bSP / 100 + (active('coldBlood') ? 0.15 : 0);
       return ASSUME.spFormula === 'base' ? 10 * (1 + bonus) + (st.flatSP - 10) : st.flatSP * (1 + bonus);
@@ -373,10 +463,35 @@
       if (active('hungerPower')) m *= 1.20;
       return m;
     };
+    // Physical hits get no "+X% spell damage" passives or spell crit; Bloodthirst always applies.
+    const physMult = () => {
+      let m = 1 + (F.has('coldSoul') && active('chill') ? 0.08 : 0);
+      if (active('condemn')) m *= 1.15;
+      if (F.has('hungerBlood')) m *= 1.08;
+      if (active('bloodthirst')) m *= 1.15;
+      if (active('hungerPower')) m *= 1.20;
+      if (active('veilPhys')) m *= 1.16;
+      return m;
+    };
+    const physPower = st.pp * (1 + st.bPP / 100);
+    const aspd = () => 1 + (st.aSpd + (active('stormHaste') ? 20 : 0) + (active('marks') ? s.markStacks * CROSSBOW.markSpeed : 0)) / 100;
+    const staticShock = () => {
+      if (!past(s.staticNext)) return;
+      add('Static shock', 0.10 * (F.has('lfs') ? 1.2 : 1) * SP() * targetMult(false));
+      s.staticNext = s.t + ASSUME.staticIcd;
+    };
+    // Physical damage against a Static target triggers a shock (W/Abilities); spell hits do too with Enhanced Conductivity.
+    function physHit(coef, src) {
+      let v = coef / 100 * physPower * physMult();
+      if (rng() < st.pCrit / 100) v *= st.pCritPower / 100;
+      add(src, v);
+      if (active('static')) staticShock();
+    }
     // Seconds of [s.t, s.t + dt] that effect k still covers, so effects that run out mid-step count only until they do.
     const overlap = (k, dt) => Math.max(0, Math.min(dt, (s.until[k] || 0) - s.t));
     // Cooldown rate now, or averaged over the next dt seconds.
     const rate = (a, dt = 0) => {
+      if (a.def.kind === 'weapon') return 1;   // a caster has no Weapon Skill Cooldown
       if (a.def.kind === 'veil') return 1 + st.veilCDR / 100;
       if (a.def.kind === 'ult') return ASSUME.ultCdrMode === 'works' ? 1 + st.ultCDR / 100 : 1;
       const drac = dt ? overlap('dracCDR', dt) / dt : active('dracCDR') ? 1 : 0;
@@ -396,7 +511,7 @@
       if (af > 0) add('Agonizing Flames', (0.06 * 5 / ASSUME.afDuration) * sp * tm * af);
       s.t += dt;
       // Curses stack (wiki); each pays out when it expires. Curses still running at fight end pay nothing.
-      for (const c of s.curses.filter(c => s.t >= c.until)) {
+      for (const c of s.curses.filter(c => past(c.until))) {
         s.curses.splice(s.curses.indexOf(c), 1);
         add('Curse', Math.min(c.mult * c.acc, 5 * SP()));   // accumulated damage already includes Condemn etc.
       }
@@ -418,7 +533,7 @@
           if (isUlt) v *= ultMult;
           if (o.minion) v *= minionMult;
           let wickedEffect = null;
-          if (!isUlt && !o.minion) {
+          if (!isUlt && !o.minion && !a.def.noCrit) {
             const p = st.crit / 100 + (active('veilCrit') ? 0.15 : 0);
             if (rng() < p) {
               v *= critMult;
@@ -427,12 +542,12 @@
             }
           }
           add(src, v);
-          if (active('static') && F.has('conductivity') && s.t >= s.staticNext) {
-            add('Static shock', 0.10 * (F.has('lfs') ? 1.2 : 1) * SP() * targetMult(false));
-            s.staticNext = s.t + ASSUME.staticIcd;
-          }
+          if (active('static') && F.has('conductivity')) staticShock();
           if (wickedEffect) c.apply(wickedEffect);   // applied after this hit resolves
         },
+        phys(coef) { physHit(coef, src); },
+        mark() { s.marked = true; },
+        buff(k, d) { s.until[k] = s.t + d; },
         flat(coef, label) { add(label, coef / 100 * SP() * targetMult(false)); },
         apply(k) {
           if (k === 'ignite') return c.ignite();
@@ -450,7 +565,7 @@
     function use(a) {
       if (a.def.kind === 'spell' && s.meter >= 100) { s.meter -= 100; s.phantasm = 0; }  // Spell Charge: free cast
       else { a.charges--; if (a.timer <= 0) a.timer = a.cd; }
-      if (a.def.kind !== 'veil') {
+      if (a.def.kind === 'spell' || a.def.kind === 'ult') {
         s.meter += st.charge + s.phantasm;                     // st.charge is already capped
         if (F.has('hungerPower') && ++s.chain >= 6) { s.hpPending = true; s.chain = 0; }  // buff starts after the 6th spell
       }
@@ -462,28 +577,53 @@
       return best;
     }
 
-    function primary(afterVeil) {
-      advance(ASSUME.primaryTime);
-      if (s.t >= T) return;
+    // One crossbow shot: waits out the last shot's cooldown, draws, then hits; bonus = % extra damage (Veil attack).
+    // Returns false if the fight ended first.
+    function shoot(bonus = 0) {
+      if (s.primReady > s.t) advance(s.primReady - s.t);
+      const as = aspd();
+      advance(CROSSBOW.shotCast / as);
+      if (s.t >= T) return false;
+      s.primReady = s.t + CROSSBOW.shotCd / as;
+      s.casts['Primary attack'] = (s.casts['Primary attack'] || 0) + 1; trace('Primary attack');
       if (ASSUME.hungerPowerBreak === 'primary') s.chain = 0;
-      const procs = () => {
-        if (F.has('coldBlood') && s.t >= s.coldIcd && rng() < 0.10) { s.until.coldBlood = s.t + 4; s.coldIcd = s.t + 10; }
-        if (F.has('bloodthirst') && s.t >= s.thirstIcd && rng() < 0.15) { s.until.bloodthirst = s.t + 6; s.thirstIcd = s.t + 10; }
-      };
-      procs();
-      if (afterVeil) {
-        const a = s.primed; s.primed = null;
-        a.def.onPrimary(ctxFor(a, a.def.name));
-        // Mutant T4 cut, in timer units: 'works' = 7 real seconds (x timer rate); 'cutOnly' = cut grows with the stat.
-        const mode = ASSUME.ultCdrMode;
-        const cut = () => { if (st.veilUltCut && ultS.charges < ultS.max) ultS.timer -= st.veilUltCut * (mode === 'none' || mode === 'twoCuts' ? 1 : 1 + st.ultCDR / 100); };
-        cut();
-        if (mode === 'twoCuts' && a.def.name === 'Veil of Chaos') {   // recast dash + a second Veil attack
-          advance((a.m(1) ? 0 : 0.4) + ASSUME.primaryTime);
-          if (s.t >= T) return;
-          procs(); cut();
-        }
+      if (F.has('coldBlood') && past(s.coldIcd) && rng() < 0.10) { s.until.coldBlood = s.t + 4; s.coldIcd = s.t + 10; }
+      if (F.has('bloodthirst') && past(s.thirstIcd) && rng() < 0.15) { s.until.bloodthirst = s.t + 6; s.thirstIcd = s.t + 10; }
+      if (!weapon) return true;
+      if (s.marked) {   // consuming the Mark: +25% on this shot and a +7% attack speed stack
+        bonus += CROSSBOW.markBonus; s.marked = false;
+        s.markStacks = Math.min(CROSSBOW.markStacks, (active('marks') ? s.markStacks : 0) + 1); s.until.marks = s.t + CROSSBOW.markDur;
       }
+      physHit(100 * (1 + bonus / 100), 'Primary attack');
+      if (coat !== COATING.none && past(s.coatReady)) { s.coatReady = s.t + 12; coat.fx(ctxFor(coatSlot, 'Coating')); }
+      return true;
+    }
+
+    function primary(afterVeil) {
+      if (!afterVeil) { shoot(); return; }
+      const a = s.primed, d = a.def; s.primed = null;
+      const bonus = (d.atk || 0) + (d.atkMod && a.m(d.atkMod[0]) ? d.atkMod[1] : 0)
+        + (d.atkLow && a.m(d.atkLow[0]) && s.t > T * 0.8 ? d.atkLow[1] : 0);
+      if (!shoot(bonus)) return;
+      d.onPrimary(ctxFor(a, d.name));
+      // Mutant T4 cut, in timer units: 'works' = 7 real seconds (x timer rate); 'cutOnly' = cut grows with the stat.
+      const mode = ASSUME.ultCdrMode;
+      const cut = () => { if (st.veilUltCut && ultS.charges < ultS.max) ultS.timer -= st.veilUltCut * (mode === 'none' || mode === 'twoCuts' ? 1 : 1 + st.ultCDR / 100); };
+      cut();
+      if (mode === 'twoCuts' && d.name === 'Veil of Chaos') {   // recast dash + a second Veil attack
+        advance(a.m(1) ? 0 : 0.4);
+        if (!shoot(bonus)) return;
+        cut();
+      }
+    }
+
+    function useWeapon(w) {
+      w.charges--; if (w.timer <= 0) w.timer = w.cd;
+      if (ASSUME.hungerPowerBreak === 'primary') s.chain = 0;
+      advance(w.cast);
+      if (s.t >= T) return;
+      w.def.fx(ctxFor(w, w.def.name));
+      s.casts[w.def.name] = (s.casts[w.def.name] || 0) + 1; trace(w.def.name);
     }
 
     while (s.t < T) {
@@ -493,10 +633,14 @@
       if (ultS.charges > 0 && !(policy.ultHold && spellReady)) a = ultS;
       else a = seq.find(x => x.charges > 0) || (ultS.charges > 0 ? ultS : null);
       if (!a) {
-        // Filler: attack, unless the next ability is about to be ready or an attack would break Hunger for Power's chain.
+        // Filler: a crossbow skill that fits before the next ability, else a shot. Wait instead if the next ability
+        // would be ready mid-shot, or if any attack would break Hunger for Power's chain.
         const wait = nextReady();
         const keepChain = F.has('hungerPower') && ASSUME.hungerPowerBreak === 'primary';
-        if (wait < ASSUME.primaryTime || keepChain) advance(Math.max(1e-6, Math.min(wait, ASSUME.primaryTime))); else primary(false);
+        const w = keepChain ? null : wSkills.find(x => x.charges > 0 && x.cast <= wait + 1e-9);
+        if (w) { useWeapon(w); continue; }
+        const shotTime = Math.max(0, s.primReady - s.t) + CROSSBOW.shotCast / aspd();
+        if (wait < shotTime || keepChain) advance(Math.max(1e-6, Math.min(wait, shotTime))); else primary(false);
         continue;
       }
       use(a);
@@ -505,7 +649,7 @@
       if (a.def.kind === 'veil' && F.has('veilCrit')) s.until.veilCrit = s.t + 4;
       a.def.fx(ctxFor(a, a.def.name));
       if (s.hpPending) { s.until.hungerPower = s.t + 6; s.hpPending = false; }
-      s.casts[a.def.name] = (s.casts[a.def.name] || 0) + 1;
+      s.casts[a.def.name] = (s.casts[a.def.name] || 0) + 1; trace(a.def.name);
       if (a.def.kind === 'veil') s.primed = a;
       if (a.def.kind === 'ult' && F.has('ultReset')) for (const x of [s1, s2]) { x.charges = x.max; x.timer = 0; }
     }
@@ -571,6 +715,9 @@
   function elixirsFor(stage) {
     return Object.keys(ELIXIR).filter(e => ELIXIR[e].boss <= STAGES[stage].level);
   }
+  function coatingsFor(stage) {
+    return Object.keys(COATING).filter(k => COATING[k].boss <= STAGES[stage].level);
+  }
 
   // ---------- Optimizer ----------
   // Identifies a config regardless of passive and weapon-roll order.
@@ -583,8 +730,10 @@
 
   function defaultCfg(stage, amulets) {
     const S = STAGES[stage];
-    const cfg = { stage, primary: S.primaries[0], secondary: null, amulet: amulets[0], elixir: elixirsFor(stage).slice(-1)[0], passives: [], weapon: [] };
-    if (stage === 'late') Object.assign(cfg, { primary: 'Mutant', secondary: { blood: 'Draculin', tier: 2 }, passives: ['Enhanced Conductivity', 'Wicked Power', 'Cold Soul', 'Flowing Sorcery', 'Chaos Kindling'], weapon: ['crit', 'critPower', 'cdr'] });
+    const coatings = coatingsFor(stage);
+    const cfg = { stage, primary: S.primaries[0], secondary: null, amulet: amulets[0], elixir: elixirsFor(stage).slice(-1)[0],
+      coating: coatings.includes('Unholy Coating') ? 'Unholy Coating' : 'none', passives: [], weapon: [] };
+    if (stage === 'late' || stage === 'p7') Object.assign(cfg, { primary: 'Mutant', secondary: { blood: 'Draculin', tier: 2 }, passives: ['Enhanced Conductivity', 'Wicked Power', 'Cold Soul', 'Flowing Sorcery', 'Chaos Kindling'], weapon: ['crit', 'critPower', 'cdr'] });
     if (stage === 'mid') cfg.passives = ['Enhanced Conductivity', 'Flowing Sorcery', 'Chaos Kindling'];
     return cfg;
   }
@@ -602,7 +751,7 @@
     const primary = pick(S.primaries);
     const secondary = S.homogenizer && rng() < 0.85
       ? { blood: pick(Object.keys(BLOOD).filter(b => b !== primary)), tier: 1 + Math.floor(rng() * 3) } : null;
-    return { stage, primary, secondary, amulet: pick(amulets), elixir: pick(elixirsFor(stage)),
+    return { stage, primary, secondary, amulet: pick(amulets), elixir: pick(elixirsFor(stage)), coating: pick(coatingsFor(stage)),
       passives: shuffle(passivesFor(stage)).slice(0, S.passiveSlots), weapon: shuffle(Object.keys(WEAPON_ROLL)).slice(0, S.weaponRolls) };
   }
 
@@ -637,12 +786,12 @@
     });
     const passiveSets = S.passiveSlots ? combos(P, S.passiveSlots) : [[]];
     const weaponSets = S.weaponRolls ? combos(Object.keys(WEAPON_ROLL), S.weaponRolls) : [[]];
-    const elixirs = elixirsFor(stage);
+    const elixirs = elixirsFor(stage), coatings = coatingsFor(stage);
 
-    const space = bloodSets.length * amuletOpts.length * elixirs.length * passiveSets.length * weaponSets.length;
+    const space = bloodSets.length * amuletOpts.length * elixirs.length * coatings.length * passiveSets.length * weaponSets.length;
     if (space <= 1500) {
-      for (const b of bloodSets) for (const a of amuletOpts) for (const e of elixirs) for (const ps of passiveSets) for (const w of weaponSets)
-        score({ stage, ...b, amulet: a, elixir: e, passives: ps, weapon: w });
+      for (const b of bloodSets) for (const a of amuletOpts) for (const e of elixirs) for (const co of coatings) for (const ps of passiveSets) for (const w of weaponSets)
+        score({ stage, ...b, amulet: a, elixir: e, coating: co, passives: ps, weapon: w });
       return finish();
     }
 
@@ -654,6 +803,7 @@
       for (let round = 0; round < 3; round++) {
         let changed = false;
         for (const e of elixirs) changed = tryCfg({ ...best, elixir: e }) || changed;
+        for (const co of coatings) changed = tryCfg({ ...best, coating: co }) || changed;
         for (const w of weaponSets) changed = tryCfg({ ...best, weapon: w }) || changed;
         if (S.passiveSlots) {
           if (best.passives.length < S.passiveSlots) {          // greedy fill
@@ -750,7 +900,7 @@
 
   // Named optimizer runs (run.js, index.html): a stage, or 'late-pre' = late game before the Dracula kill (no Dracula shard).
   const RUNS = {
-    early: { stage: 'early' }, mid: { stage: 'mid' }, late: { stage: 'late' },
+    early: { stage: 'early' }, p4: { stage: 'p4' }, p5: { stage: 'p5' }, mid: { stage: 'mid' }, p7: { stage: 'p7' }, late: { stage: 'late' },
     'late-pre': { stage: 'late', amulets: PRE_DRACULA, label: 'Late game before Dracula (no Soul Shard of Dracula)' },
   };
   function optimizeRun(which, log) {
@@ -777,7 +927,7 @@
     return { build, ...main, dps, se: sd / Math.sqrt(runs), dps600: main.dps, se600: main.se, byLen };
   }
 
-  global.VRCalc = { ASSUME, CAP, POINTS, BLOOD, AMULET, ELIXIR, PASSIVE, ARMOR, MASTERY, WEAPON_ROLL, STAGES, PRE_DRACULA, ABILITIES, byName,
-    POLICIES, FIGHT_LENGTHS, RUNS, cfgKey, confirm, rankPolicies, randomCfg, pointsAt, masteryTiers, buildStats, simulate, evaluate, optimize, optimizeRun, optimizeCfg, available, feasible, passivesFor, elixirsFor, defaultCfg, fixAmulet };
+  global.VRCalc = { ASSUME, CAP, STAT_KEYS, POINTS, BLOOD, AMULET, ELIXIR, PASSIVE, ARMOR, MASTERY, COATING, CROSSBOW, WEAPON_SKILLS, PHYSICAL, WEAPON_ROLL, STAGES, PRE_DRACULA, ABILITIES, byName,
+    POLICIES, FIGHT_LENGTHS, RUNS, cfgKey, confirm, rankPolicies, randomCfg, pointsAt, masteryTiers, buildStats, simulate, evaluate, optimize, optimizeRun, optimizeCfg, available, feasible, passivesFor, elixirsFor, coatingsFor, defaultCfg, fixAmulet };
   if (typeof module !== 'undefined') module.exports = global.VRCalc;
 })(typeof window !== 'undefined' ? window : globalThis);

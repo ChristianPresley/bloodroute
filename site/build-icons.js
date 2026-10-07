@@ -87,6 +87,7 @@ const ITEMS = {
   'Regular Amethyst': 'stunlock_icon_item_gem_amethyst2.webp', 'Regular Emerald': 'stunlock_icon_item_gem_emerald2.webp',
   'Flawless Sapphire': 'stunlock_icon_item_gem_sapphire3.webp', 'Flawless Topaz': 'stunlock_icon_item_gem_topaz3.webp',
   'Flawless Emerald': 'stunlock_icon_item_gem_emerald3.webp', 'Corrupted Flower': 'stunlock_icon_item_ingredient_plant_corruptedflower.webp',
+  'Blood Rose': 'stunlock_icon_bloodrose.webp',
   'Plague Brier': 'stunlock_icon_plaguebrier.webp', "Hell's Clarion": 'stunlock_icon_hellsclarion.webp',
   'Regular jewel': 'stunlock_icon_item_jewel_topaz2.webp', 'Greater jewel': 'stunlock_icon_item_jewel_topaz3.webp',
   'Primal jewel': 'stunlock_icon_item_jewel_topaz4.webp',

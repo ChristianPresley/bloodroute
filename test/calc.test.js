@@ -22,27 +22,28 @@ ability('T_veil', { kind: 'veil', cd: 1e9 });
 ability('T_veilHit', { kind: 'veil', cd: 1e9, fx: c => c.hit(100) });
 ability('T_ult', { kind: 'ult', cd: 1e9 });
 
-// Bare stats: 100 Spell Power, no crit, no bonuses, no flags.
+// Bare stats: 100 Spell Power, no crit, no bonuses, no flags, no Physical Power (so no weapon damage).
 const blank = (o = {}) => {
-  const st = Object.fromEntries(['flatSP', 'bSP', 'crit', 'critPower', 'cdr', 'veilCDR', 'ultPower', 'ultCDR', 'charge', 'leech', 'minion', 'eff', 'dracCDR', 'veilUltCut'].map(k => [k, 0]));
+  const st = Object.fromEntries(V.STAT_KEYS.map(k => [k, 0]));
   return Object.assign(st, { flatSP: 100, critPower: 150, flags: new Set() }, o);
 };
 const SPELLS_FIRST = { order: ['s1', 's2', 'veil'], ultHold: true };
 const sim = (build, st, duration, o = {}) => V.simulate({ veil: 'T_veil', s2: 'T_none', ult: 'T_ult', ...build }, st, { stage: 'mid' }, { duration, seed: 1, policy: SPELLS_FIRST, ...o });
 
-// Real loadouts from calc/optimizer_results.json (early #1, mid #1, late #1).
-const LATE = { stage: 'late', primary: 'Mutant', secondary: { blood: 'Draculin', tier: 2 }, amulet: 'Soul Shard of Dracula', elixir: 'Elixir of the Blasphemous',
-  passives: ['Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], weapon: ['crit', 'critPower', 'veilCDR'] };
+// Real loadouts from calc/optimizer_results.json (early #1, mid #1, late #1, mid #2 for Curse), and the old Chains core.
+const LATE = { stage: 'late', primary: 'Draculin', secondary: { blood: 'Scholar', tier: 2 }, amulet: 'Soul Shard of Dracula', elixir: 'Elixir of the Twisted', coating: 'Unholy Coating',
+  passives: ['Enhanced Conductivity', 'Hunger for Blood', 'Cold Soul', 'Wicked Power', 'Renewing Flames'], weapon: ['crit', 'critPower', 'cdr'] };
+const MID = { stage: 'mid', primary: 'Scholar', secondary: null, amulet: 'Blood Merlot Amulet', elixir: 'Elixir of the Bat', coating: 'none',
+  passives: ['Enhanced Conductivity', 'Renewing Flames', 'Lightning Fast Strikes'], weapon: [] };
 const REAL = [
-  [{ veil: 'Veil of Blood', s1: 'Chaos Volley', s2: 'Bone Explosion', ult: 'Chaos Barrage' },
-    { stage: 'early', primary: 'Scholar', secondary: null, amulet: 'Ring of the Sorcerer', elixir: 'none', passives: [], weapon: [] }, { order: ['s1', 's2', 'veil'], ultHold: true }],
+  [{ veil: 'Veil of Shadow', s1: 'Chaos Volley', s2: 'Bone Explosion', ult: 'Chaos Barrage' },
+    { stage: 'early', primary: 'Scholar', secondary: null, amulet: 'Ring of the Sorcerer', elixir: 'none', coating: 'none', passives: [], weapon: [] }, { order: ['s2', 'veil', 's1'], ultHold: true }],
+  [{ veil: 'Veil of Bones', s1: 'Chaos Volley', s2: 'Lightning Tendrils', ult: 'Chaos Barrage' }, MID, { order: ['s1', 's2', 'veil'], ultHold: true }],
+  [{ veil: 'Veil of Frost', s1: 'Chaos Volley', s2: 'Lightning Tendrils', ult: 'Blood Storm' }, LATE, { order: ['s1', 's2', 'veil'], ultHold: true }],
+  [{ veil: 'Veil of Bones', s1: 'Curse', s2: 'Lightning Tendrils', ult: 'Chaos Barrage' },
+    { ...MID, elixir: 'Elixir of the Prowler', passives: ['Enhanced Conductivity', 'Spiritual Infusion', 'Lightning Fast Strikes'] }, { order: ['s1', 's2', 'veil'], ultHold: true }],
   [{ veil: 'Veil of Chaos', s1: 'Lightning Tendrils', s2: 'Unholy Chains', ult: 'Chaos Barrage' },
-    { stage: 'mid', primary: 'Scholar', secondary: null, amulet: 'Blood Merlot Amulet', elixir: 'Elixir of the Prowler', passives: ['Enhanced Conductivity', 'Chaos Kindling', 'Renewing Flames'], weapon: [] },
-    { order: ['s1', 'veil', 's2'], ultHold: true }],
-  [{ veil: 'Veil of Chaos', s1: 'Lightning Tendrils', s2: 'Unholy Chains', ult: 'Blood Storm' }, LATE, { order: ['veil', 's1', 's2'], ultHold: true }],
-  [{ veil: 'Veil of Chaos', s1: 'Curse', s2: 'Unholy Chains', ult: 'Chaos Barrage' },
-    { stage: 'mid', primary: 'Scholar', secondary: null, amulet: 'Blood Merlot Amulet', elixir: 'Elixir of the Bat', passives: ['Enhanced Conductivity', 'Renewing Flames', 'Spiritual Infusion'], weapon: [] },
-    { order: ['s1', 's2', 'veil'], ultHold: true }],
+    { ...MID, elixir: 'Elixir of the Prowler', passives: ['Enhanced Conductivity', 'Chaos Kindling', 'Renewing Flames'] }, { order: ['s1', 'veil', 's2'], ultHold: true }],
 ];
 const runReal = ([build, cfg, policy], o = {}) => V.simulate(build, o.st || V.buildStats(cfg), cfg, { duration: o.duration || 300, seed: o.seed || 1, policy });
 
@@ -90,11 +91,27 @@ describe('damage scaling', () => {
     const all = sim({ s1: 'T_hit' }, blank({ crit: 100, critPower: 172 }), 300);
     assert.ok(Math.abs(all.dps / no.dps - 1.72) < 1e-9);
   });
-  it('doubling flat Spell Power doubles DPS', () => {
+  it('doubling flat Spell Power doubles every magic source and leaves the crossbow\'s physical damage alone', () => {
     for (const r of REAL) {
       const st = V.buildStats(r[1]);
       const one = runReal(r, { st }), two = runReal(r, { st: { ...st, flatSP: 2 * st.flatSP } });
-      assert.ok(Math.abs(two.dps / one.dps - 2) < 1e-9, `${r[0].s1} + ${r[0].s2}: x${two.dps / one.dps}`);
+      assert.ok(V.PHYSICAL.some(k => one.by[k] > 0), `${r[0].s1} + ${r[0].s2}: no weapon damage`);
+      for (const [src, v] of Object.entries(one.by)) {
+        if (src === 'Curse') continue;   // pays back a share of all damage taken, physical too, capped by Spell Power
+        const want = V.PHYSICAL.includes(src) ? 1 : 2;
+        assert.ok(Math.abs(two.by[src] / v - want) < 1e-9, `${r[0].s1} + ${r[0].s2}, ${src}: x${two.by[src] / v}, expected x${want}`);
+      }
+    }
+  });
+  it('doubling Physical Power doubles the crossbow\'s physical damage and nothing else', () => {
+    for (const r of REAL) {
+      const st = V.buildStats(r[1]);
+      const one = runReal(r, { st }), two = runReal(r, { st: { ...st, pp: 2 * st.pp } });
+      for (const [src, v] of Object.entries(one.by)) {
+        if (src === 'Curse') continue;
+        const want = V.PHYSICAL.includes(src) ? 2 : 1;
+        assert.ok(Math.abs(two.by[src] / v - want) < 1e-9, `${r[0].s1} + ${r[0].s2}, ${src}: x${two.by[src] / v}, expected x${want}`);
+      }
     }
   });
 });
@@ -126,6 +143,45 @@ describe('damage bookkeeping', () => {
   });
 });
 
+describe('crossbow', () => {
+  it('fires one shot per 1.55 s with nothing else to cast, faster with attack speed', () => {
+    // s1 = s2 = a spell that is never ready again; the Veil is cast once at the start.
+    for (const aSpd of [0, 20, 40]) {
+      const T = 600, cycle = (V.CROSSBOW.shotCast + V.CROSSBOW.shotCd) / (1 + aSpd / 100);
+      const shots = sim({ s1: 'T_none' }, blank({ aSpd }), T).casts['Primary attack'];
+      assert.ok(Math.abs(shots - (T + V.CROSSBOW.shotCd / (1 + aSpd / 100)) / cycle) <= 1, `+${aSpd}% attack speed: ${shots} shots`);
+    }
+  });
+  it('physical hits on a Static target shock for 10% of Spell Power, without Enhanced Conductivity', () => {
+    ability('T_static', { kind: 'spell', cd: 1e9, fx: c => c.apply('static') });
+    const r = sim({ s1: 'T_static' }, blank({ pp: 100 }), 4.9);   // Static lasts the whole fight
+    const hits = (r.casts['Primary attack'] || 0) + 5 * (r.casts['Rain of Bolts'] || 0) + (r.casts.Snapshot || 0);
+    assert.ok(hits >= 3);
+    assert.ok(Math.abs(r.by['Static shock'] - 10 * hits) < 1e-9, `${r.by['Static shock']} from ${hits} physical hits`);
+  });
+  it('a coating fires on at most one shot every 12 s', () => {
+    const T = 120;
+    const r = V.simulate({ veil: 'T_veil', s1: 'T_none', s2: 'T_none', ult: 'T_ult' }, blank({ pp: 100 }), { stage: 'late', coating: 'Storm Coating' }, { duration: T, seed: 1, policy: SPELLS_FIRST });
+    const procs = r.by['Storm Coating'] / 40;   // 40% of 100 Spell Power each
+    assert.ok(Number.isInteger(Math.round(procs)) && procs <= Math.ceil(T / 12) && procs >= Math.floor(T / 12) - 1, `${procs} procs`);
+  });
+});
+
+describe('stages', () => {
+  it('early game uses ~60% Scholar blood: tiers I–III at 80% strength, no Tier IV or V', () => {
+    const st = V.buildStats(REAL[0][1]);
+    assert.ok(Math.abs(st.bSP - (7.2 + 12 * 0.8)) < 1e-9, `bSP ${st.bSP}`);   // Warlock 7.2 + Scholar I
+    assert.equal(st.charge, 0);
+    assert.equal(st.eff, 0);
+  });
+  it('Phase 7 wears Maleficer Scholar, can take the Blood Key, and has no Dracula\'s court shard', () => {
+    const av = V.available('p7');
+    assert.ok(!av.ults.some(u => V.byName[u].shard), av.ults.join());
+    assert.ok(V.STAGES.p7.amulets.includes('Blood Key') && !V.STAGES.p7.amulets.some(a => /Soul Shard/.test(a)));
+    assert.equal(V.STAGES.p7.armor, 'Maleficer Scholar Vestment');
+  });
+});
+
 describe('step size', () => {
   it('real loadouts score the same at dt 0.05 and 0.005', () => {
     for (const r of REAL.slice(0, 2)) {
@@ -141,7 +197,8 @@ describe('optimizer helpers', () => {
   it('config keys ignore passive and weapon-roll order', () => {
     const a = { ...LATE }, b = { ...LATE, passives: [...LATE.passives].reverse(), weapon: [...LATE.weapon].reverse() };
     assert.equal(V.cfgKey(a), V.cfgKey(b));
-    assert.notEqual(V.cfgKey(a), V.cfgKey({ ...LATE, elixir: 'Elixir of the Twisted' }));
+    assert.notEqual(V.cfgKey(a), V.cfgKey({ ...LATE, elixir: 'Elixir of the Bat' }));
+    assert.notEqual(V.cfgKey(a), V.cfgKey({ ...LATE, coating: 'Chaos Coating' }));
   });
   it('a late-pre run is labelled as before Dracula and never wears the Dracula shard', () => {
     assert.match(V.RUNS['late-pre'].label, /before Dracula/);
@@ -161,24 +218,34 @@ describe('curated results (calc/optimizer_results.json)', () => {
   const late = R.stages.late.top;
   // The endgame ladder: the best late finalist of each kind.
   const LADDER = {
-    A: late.find(r => pair(r, 'Lightning Tendrils', 'Unholy Chains') && r.build.ult === 'Blood Storm' && r.cfg.primary === 'Mutant'),
-    A2: late.find(r => pair(r, 'Shadowbolt', 'Lightning Tendrils') && r.build.ult === 'Blood Storm'),
-    A3: late.find(r => pair(r, 'Chaos Volley', 'Shadowbolt') && r.build.ult === 'Blood Storm'),
-    'B+': late.find(r => pair(r, 'Lightning Tendrils', 'Unholy Chains') && r.build.ult === 'Chaos Barrage' && r.cfg.amulet === 'Soul Shard of Dracula'),
+    A: late.find(r => pair(r, 'Chaos Volley', 'Lightning Tendrils') && r.build.ult === 'Blood Storm' && r.build.veil === 'Veil of Frost'),
+    A2: late.find(r => pair(r, 'Chaos Volley', 'Shadowbolt') && r.build.ult === 'Blood Storm'),
+    'B+': late.find(r => pair(r, 'Chaos Volley', 'Lightning Tendrils') && r.build.ult === 'Chaos Barrage' && r.cfg.amulet === 'Soul Shard of Dracula'),
   };
   const cells = line => line.split('|').slice(1, -1).map(c => c.trim());
-  const guideRow = start => cells(guide.split('\n').find(l => l.startsWith(start)));
+  const guideRow = start => { const l = guide.split('\n').find(x => x.startsWith(start)); assert.ok(l, `guide row ${start}`); return cells(l); };
 
   it('were generated with the engine\'s current assumptions', () => {
     assert.deepEqual(R.assumptions, { ...V.ASSUME });
     assert.deepEqual(R.fightLengths, V.FIGHT_LENGTHS);
   });
   it('the guide\'s stage summary quotes each stage\'s winner', () => {
-    const early = R.stages.early.top, shadowbolt = early.find(r => pair(r, 'Chaos Volley', 'Shadowbolt') && r.build.veil === early[0].build.veil && r.build.ult === early[0].build.ult);
-    assert.deepEqual(nums(guideRow('| Early (').pop()), [f1(early[0]), f1(shadowbolt)]);
-    assert.deepEqual(nums(guideRow('| Mid (').pop()), [f1(R.stages.mid.top[0])]);
-    assert.deepEqual(nums(guideRow('| Late, before Dracula').pop()), [f1(R.stages['late-pre'].top[0])]);
+    const early = R.stages.early.top, w = early[0];
+    const veilOfBlood = early.find(r => r.build.veil === 'Veil of Blood' && pair(r, w.build.s1, w.build.s2) && r.build.ult === w.build.ult);
+    assert.deepEqual(nums(guideRow('| Early (').pop()), [f1(w), f1(veilOfBlood)]);
+    for (const [row, stage] of [['| Phase 4 (', 'p4'], ['| Phase 5 (', 'p5'], ['| Mid (', 'mid'], ['| Phase 7 (', 'p7'], ['| Late, before Dracula', 'late-pre']])
+      assert.deepEqual(nums(guideRow(row).pop()), [f1(R.stages[stage].top[0])], row);
     assert.deepEqual(nums(guideRow('| Endgame').pop()), [f1(LADDER.A)]);
+  });
+  it('each phase loadout on the page quotes its stage\'s winner', () => {
+    const phases = loadRoutes().find(r => r.arch.id === 'spellcaster').def.phases;
+    const dps = id => phases.find(p => p.id === id).loadout.dps;
+    for (const [id, stage] of [['p3', 'early'], ['p4', 'p4'], ['p5', 'p5'], ['p6', 'mid'], ['p7', 'p7']]) {
+      const want = `≈${Math.round(R.stages[stage].top[0].dps)} DPS`;
+      assert.ok(dps(id).includes(want), `${id}: "${dps(id)}" should quote ${want}`);
+    }
+    const ends = Object.values(LADDER).map(r => r.dps), span = `${Math.round(Math.min(...ends))} – ${Math.round(Math.max(...ends))} DPS`;
+    assert.ok(dps('p8').includes(span), `p8: "${dps('p8')}" should be ${span}`);
   });
   it('the endgame ladder on the page and in the guide quotes the late finalists', () => {
     for (const [k, r] of Object.entries(LADDER)) {
@@ -192,8 +259,8 @@ describe('curated results (calc/optimizer_results.json)', () => {
     const label = r => `${r.build.veil} | ${r.build.s1} + ${r.build.s2} | ${r.build.ult} | ${r.cfg.amulet} | ${blood(r)} | ${r.cfg.elixir}`;
     const cols = Object.entries(LADDER).map(([k, r]) => { const i = R.sensitivity.builds.indexOf(label(r)); assert.ok(i >= 0, `${k} is not in the sensitivity table`); return i; });
     const known = Object.values(R.sensitivity.scenarios).map(v => cols.map(i => v[i]).join());
-    const pageRows = [...endgame.matchAll(/<tr><td>([^<]+)<\/td>((?:<td class="num">.*?<\/td>){4})<\/tr>/g)].map(m => [m[1], nums(m[2])]);
-    const at = guide.indexOf('| Scenario | A | A2 | A3 | B+ |');
+    const pageRows = [...endgame.matchAll(/<tr><td>([^<]+)<\/td>((?:<td class="num">.*?<\/td>){3})<\/tr>/g)].map(m => [m[1], nums(m[2])]);
+    const at = guide.indexOf('| Scenario | A | A2 | B+ |');
     const guideRows = guide.slice(at, guide.indexOf('\n\n', at)).split('\n').slice(2).map(l => [cells(l)[0], nums(cells(l).slice(1).join(' '))]);
     assert.ok(pageRows.length >= 5 && guideRows.length >= 5);
     for (const [name, v] of [...pageRows, ...guideRows]) assert.ok(known.includes(v.join()), `"${name}" ${v.join(' / ')} matches no sensitivity scenario`);

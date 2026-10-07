@@ -4,7 +4,7 @@
 window.BR.ARCHETYPES = [
   {
     id: 'spellcaster', name: 'Spellcaster', status: 'ready', patch: '1.1.13',
-    tagline: 'Chaos, Storm and Blood spells with a Scholar-blood core. Every loadout was picked by the damage simulator.',
+    tagline: 'Chaos Volley and Lightning Tendrils between crossbow shots, on Scholar then Draculin blood. Every loadout was picked by the damage simulator.',
     icons: ['Chaos Volley', 'Lightning Tendrils', 'Blood Storm'], blood: 'Scholar', color: '#b46bff',
     files: ['routes/spellcaster/needs.js', 'routes/spellcaster/route.js'],
   },

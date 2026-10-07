@@ -40,7 +40,7 @@ const BLOODS = ['Scholar', 'Draculin', 'Mutant', 'Warrior', 'Rogue', 'Brute', 'C
 const WEAPON = /(Crossbow|Longbow|Sword|Greatsword|Axes|Mace|Spear|Reaper|Twinblade|Pistols|Slashers|Claws|Whip|Daggers)( Shards)?$/;
 const WEAPON_TIERS = ['Bone', 'Reinforced Bone', 'Copper', 'Merciless Copper', 'Iron', 'Merciless Iron', 'Dark Silver', 'Sanguine', 'Ancestral'];
 const MAGIC_TIERS = [['Bone Ring', 3], ['Blood Bone Ring', 6], ['Gravedigger Ring', 9], ['Ring of the ', 12], ['Scourgestone Pendant', 15],
-  ['Pendant of the ', 18], ['Blood Merlot Amulet', 22], ['Amulet of the ', 25], ['Soul Shard of ', 25]];
+  ['Pendant of the ', 18], ['Blood Merlot Amulet', 22], ['Amulet of the ', 25], ['Blood Key', 25], ['Soul Shard of ', 25]];
 const ARMOR_TIERS = { 'Boneguard': 1, 'Plated Boneguard': 2, 'Nightstalker': 3, 'Warlock': 4, 'Grim Ranger': 4, 'Marauder': 4, 'Shadewalker': 4,
   'Hollowfang': 5, 'Dark Magus': 6, 'Blood Hunter': 6, 'Crimson Templar': 6, 'Duskwatcher': 6, 'Dawnthorn': 7, 'Maleficer Scholar': 8,
   'Dread Plate': 8, 'Grim Knight': 8, 'Shadowmoon': 8, "Dracula's": 9 };
@@ -268,7 +268,9 @@ for (const { arch, def, icons, endgame, ref } of ROUTES) describe(`${arch.name} 
         if (JEWEL.test(g)) {
           const tier = g.split(' ')[0];
           assert.ok(extra.some(([ph, what]) => ph <= n && what.startsWith(`${tier} jewels`)), `${p.id}: ${g} is crafted by phase ${n}`);
-        } else if (hasRecipe(g)) assert.ok(crafts.some(([ph, name]) => ph <= n && name === g), `${p.id}: ${g} is crafted by phase ${n}`);
+        } else if (hasRecipe(g)) {   // extra holds crafts whose inputs are stockpiled separately (the Blood Key's Onyx Tears)
+          assert.ok([...crafts, ...extra].some(([ph, name]) => ph <= n && name === g), `${p.id}: ${g} is crafted by phase ${n}`);
+        }
       }
     });
   });

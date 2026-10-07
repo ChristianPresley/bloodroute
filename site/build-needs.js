@@ -79,17 +79,19 @@ const ROUTES = {
       ...set(7, ['Maleficer Scholar Chestguard', 'Maleficer Scholar Leggings', 'Maleficer Scholar Gloves', 'Maleficer Scholar Boots']),
       [7, 'Amulet of the Arch-Warlock', 1], [7, 'Sanguine Crossbow', 1],
       ...set(8, ["Dracula's Maleficer Chestguard", "Dracula's Maleficer Leggings", "Dracula's Maleficer Gloves", "Dracula's Maleficer Boots"]),
-      ...drinks({ 4: 'Elixir of the Prowler', 5: 'Elixir of the Prowler', 6: 'Elixir of the Prowler', 7: 'Elixir of the Twisted', 8: 'Elixir of the Blasphemous' }),
+      ...drinks({ 5: 'Elixir of the Prowler', 6: 'Elixir of the Bat', 7: 'Elixir of the Twisted', 8: 'Elixir of the Twisted' }),
       ...drinks({ 4: 'Enchanted Brew', 5: 'Enchanted Brew', 6: 'Enchanted Brew', 7: 'Witch Potion', 8: 'Witch Potion' }),
+      ...drinks({ 7: 'Unholy Coating', 8: 'Unholy Coating' }),
     ],
     // Recipes not in items.json (structures, jewels, intermediates), from research_sources.md.
-    // Jewels: Lightning Tendrils (Topaz), Unholy Chains (Emerald), Veil of Chaos (Amethyst), 4 gems each.
+    // Jewels, 4 gems each: Chaos Volley (Amethyst), Lightning Tendrils (Topaz), Veil of Bones (Emerald) in Phases 5–6,
+    // Veil of Frost (Sapphire) for the Primal set.
     extra: [
       ...castle,
       [5, 'Regular jewels ×3', { 'Regular Topaz': 4, 'Regular Emerald': 4, 'Regular Amethyst': 4, 'Iron Ingot': 12 }],
       [6, 'Greater jewels ×3', { 'Flawless Topaz': 4, 'Flawless Emerald': 4, 'Flawless Amethyst': 4, 'Dark Silver Ingot': 12 }],
       ...key,
-      [7, 'Primal jewels ×3', { 'Flawless Topaz': 4, 'Flawless Emerald': 4, 'Flawless Amethyst': 4, 'Greater Stygian Shard': 960 }],
+      [7, 'Primal jewels ×3', { 'Flawless Topaz': 4, 'Flawless Sapphire': 4, 'Flawless Amethyst': 4, 'Greater Stygian Shard': 960 }],
       ...passives(4, 2),
     ],
   },
