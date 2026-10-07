@@ -38,7 +38,8 @@
   --shadow: 0 1px 2px rgba(40,20,40,.08), 0 4px 14px rgba(40,20,40,.06);
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 128px; }
+/* --appbar-h is the app bar's measured height (js/app.js); it wraps taller on narrow screens. */
+html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + var(--appbar-h, 117px) + 11px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 var(--font-body); }
 a { color: var(--blood); }
@@ -53,7 +54,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .tiles { display: flex; flex-wrap: wrap; gap: 8px; }
 .tile { display: grid; justify-items: center; gap: 4px; width: 68px; text-align: center; }
 .tile .ic { width: 44px; height: 44px; padding: 3px; border: 1px solid var(--line); }
-.tile em { font-style: normal; font-size: 11px; line-height: 1.2; color: var(--muted); }
+.tile em { font-style: normal; font-size: 11px; line-height: 1.2; color: var(--muted); max-width: 100%; overflow-wrap: anywhere; hyphens: auto; }
 
 /* App bar */
 .appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
@@ -78,7 +79,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 @media (max-width: 900px) { .path { grid-template-columns: 1fr; } }
 
 /* Stepper rail */
-.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 128px); display: grid; gap: 2px; }
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--appbar-h, 117px) + 11px); display: grid; gap: 2px; }
 .step { display: grid; grid-template-columns: 44px 1fr; gap: 10px; padding: 8px 10px; border-radius: 10px; color: var(--text); text-decoration: none; align-items: center; }
 .step:hover { background: var(--surface-2); }
 .step.active { background: var(--blood-soft); }
@@ -96,6 +97,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .rail-tools { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px 10px 0; }
 @media (max-width: 900px) {
   .rail { position: static; grid-auto-flow: column; grid-auto-columns: minmax(170px, 1fr); overflow-x: auto; padding-bottom: 6px; }
+  .rail .step { grid-row: 1; }   /* one scrolling row of phases; the tools sit below */
   .rail-tools { grid-row: 2; grid-column: 1 / span 2; align-items: center; padding: 6px 4px 0; position: sticky; left: 0; }
 }
 
@@ -164,7 +166,6 @@ details.sec > summary .count { margin-left: auto; font: 500 12px var(--font-mono
 .boss .name { font-weight: 600; line-height: 1.25; padding-right: 28px; }
 .boss .where { font-size: 12.5px; color: var(--muted); }
 .boss .take { font-size: 13.5px; }
-.boss .tiles .tile { width: 58px; }
 .boss .tiles .tile .ic { width: 38px; height: 38px; }
 .boss .tools { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .boss .defeat { position: absolute; top: 10px; right: 10px; }
@@ -190,6 +191,7 @@ details.sec > summary .count { margin-left: auto; font: 500 12px var(--font-mono
 @media (max-width: 640px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .slot { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--surface-2); display: grid; justify-items: center; gap: 6px; text-align: center; }
 .slot .ic, .slot .ic-fallback { width: 56px; height: 56px; border: 2px solid var(--blood); }
+.ic-fallback.glyph { border-style: solid; font-size: 22px; font-weight: 500; }
 .slot .k { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); }
 .slot .v { font-weight: 600; font-size: 13.5px; line-height: 1.25; }
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; font-size: 14px; }
@@ -320,12 +322,13 @@ body.picking .tabs, body.picking .overall, body.picking .topbar, body.picking .a
 .arch { --ac: var(--blood); position: relative; display: grid; gap: 12px; align-content: start; padding: 18px; border-radius: var(--radius); background: linear-gradient(160deg, color-mix(in srgb, var(--ac) 16%, var(--surface)), var(--surface) 55%); border: 1px solid color-mix(in srgb, var(--ac) 45%, var(--line)); color: var(--text); text-decoration: none; transition: transform .18s, box-shadow .18s, border-color .18s; }
 a.arch:hover, a.arch:focus-visible { transform: translateY(-3px); border-color: var(--ac); box-shadow: 0 10px 28px color-mix(in srgb, var(--ac) 30%, transparent); outline: none; }
 .arch.soon { opacity: .62; filter: saturate(.55); }
+.arch .top { display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
 .arch .icons { display: flex; gap: 8px; }
 .arch .icons .ic, .arch .icons .ic-fallback { width: 52px; height: 52px; }
 .arch h3 { font: 700 30px/1 var(--font-display); }
 .arch p { margin: 0; color: var(--muted); font-size: 14px; }
 .arch .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 13px; }
-.arch .status { position: absolute; top: 14px; right: 14px; }
+.arch .status { margin-left: auto; }
 .arch .chip.ready { background: color-mix(in srgb, var(--ac) 22%, transparent); color: var(--text); border-color: transparent; }
 .arch .cta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
 .arch .prog { flex: 1; height: 6px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }

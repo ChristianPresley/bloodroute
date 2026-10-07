@@ -4,7 +4,7 @@
 // (research tiers, blood carriers, weapon skills, stat caps) and docs/research_sources.md.
 (() => {
   'use strict';
-  const { ic, tiles, srcOf, L, M, C, CAMPS } = BR.h;
+  const { ic, tiles, display, srcOf, L, M, C, CAMPS } = BR.h;
 
   // ---------- V Bloods: name → [level, Map Genie marker, where] ----------
   const VB = {
@@ -144,7 +144,7 @@
     'Unsullied Heart': [1, 'V Blood drops (25% from the first few, guaranteed from Grayson to Gaius)'], 'Mourning Lily': [1, L(C(6116), 'Mourning Lily map layer')],
     'Snow Flower': [1, L(C(6090), 'Snow Flower map layer')], "Hell's Clarion": [1, `${L(C(6106), "Hell's Clarion map layer")}: caves and underground areas; Mantraps drop it`],
     ...gems('Crude', GEMS, 1, L(C(6098), 'Gem nodes')),
-    'Gem Dust': [1, 'Grinder (from gems)'], 'Empty waterskin': [1, 'Recipe from Keely'], 'Grave Dust': [2, 'Recipe from Goreswine'],
+    'Gem Dust': [1, 'Grinder (from gems)'], 'Empty Waterskin': [1, 'Recipe from Keely'], 'Grave Dust': [2, 'Recipe from Goreswine'],
     'Whetstone': [2, 'Recipe from Grayson'], 'Greater Blood Essence': [2, 'Blood Press, from 4 Unsullied Hearts (from Tristan, also from Blood Essence)'],
     'Fish Bone': [3, `Fish with Finn's pole at ${L(C(6104), 'fishing spots')}`], 'Iron Ingot': [3, `Furnace (Quincey), from ${L(C(6093), 'Iron Ore')} (GL 12+ weapon)`],
     'Cotton Yarn': [3, `Loot in Dunley; ${L(M('432218,432220,432221,432222'), 'cotton patches')}; Loom recipe from Beatrice`],
@@ -241,14 +241,14 @@
     return `
       <div class="card"><h2>Pick your endgame build</h2><p>${cfg.intro}</p>
         <ol class="ladder">${cfg.steps.map(s => `<li><div>${s}</div></li>`).join('')}</ol>
-        <div class="note" style="margin-top:14px">These builds are not scored by the damage simulator yet; it only models spells. They follow the game data, set bonuses and the wiki's weapon numbers (Reference tab), so test the alternatives on a Grayson target dummy.</div>
+        <div class="note" style="margin-top:14px">The damage simulator scores only the Spellcaster build so far, so these builds aren't simulated. They follow the game data, set bonuses and the wiki's weapon numbers (Reference tab), so test the alternatives on a Grayson target dummy.</div>
       </div>
       <div class="card"><h2>The builds</h2>
         <div class="builds">${cfg.builds.map(b => `<div class="build${b.top ? ' top' : ''}">
           <div class="head"><b>${b.k}</b><span>${b.label}</span></div>
           <div class="spells">${b.spells.map(s => ic(s, 46)).join('')}</div>
           <div style="font-size:13px">${b.spells.join(' · ')}</div>
-          <dl><dt>Weapon</dt><dd><span class="cell" style="gap:6px">${ic(b.weapon, 26)}${b.weapon.replace(' Shards', '')}</span></dd>
+          <dl><dt>Weapon</dt><dd><span class="cell" style="gap:6px">${ic(b.weapon, 26)}${display(b.weapon)}</span></dd>
           <dt>Blood</dt><dd><span class="cell" style="gap:6px">${b.blood.map(x => ic(x, 26)).join('')}${b.bloodText}</span></dd>
           <dt>Elixir</dt><dd><span class="cell" style="gap:6px">${ic(b.elixir, 26)}${b.elixir.replace('Elixir of the ', '')}</span></dd>
           <dt>Rolls</dt><dd>${b.rolls}</dd><dt>Pick when</dt><dd>${b.when}</dd></dl></div>`).join('')}</div>

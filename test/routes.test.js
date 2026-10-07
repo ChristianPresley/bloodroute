@@ -424,6 +424,15 @@ describe('shared route data', () => {
     }
   });
 
+  it('labels loadout slots and weapons the way the player reads them', () => {
+    const { slotIcon, display, ic } = p.window.BR.h;
+    assert.equal(slotIcon(['Bone Explosion', 'Shadowbolt'], 'Shadowbolt or Bone Explosion'), 'Shadowbolt');
+    assert.equal(slotIcon(['Chaos Volley'], 'Veil of Storm'), 'Veil of Storm');
+    assert.equal(display('Ancestral Twinblade Shards'), 'Ancestral Twinblade');
+    assert.equal(display('Greater Stygian Shard'), 'Greater Stygian Shard');
+    for (const s of ['Starting dash', '—']) assert.match(ic(s, 56), /class="ic-fallback glyph/, `${s} is drawn as a glyph, not initials`);
+  });
+
   it('computes weapon skill rates from their parts', () => {
     for (const w of S.WEAPONS) {
       assert.equal(w.skills.length, 2, `${w.w} has two skills`);

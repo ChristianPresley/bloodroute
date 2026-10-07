@@ -68,6 +68,16 @@ describe('saved data', () => {
     assert.deepEqual(Object.keys(s.data.routes), []);
   });
 
+  it('keeps stockpile counts for renamed materials, from a save or a backup', () => {
+    const old = { v: 1, active: 'brute', prefs: {}, routes: { brute: { done: {}, stock: { 'Empty waterskin': 6, Bone: 3 } }, rogue: { done: {} } } };
+    const s = open({ [KEY]: JSON.stringify(old) });
+    assert.deepEqual(JSON.parse(JSON.stringify(s.route('brute').stock)), { Bone: 3, 'Empty Waterskin': 6 });
+    const other = open({});
+    other.importJSON(JSON.stringify({ app: 'bloodroute', ...old }));
+    assert.equal(other.route('brute').stock['Empty Waterskin'], 6);
+    assert.ok(!('Empty waterskin' in other.route('brute').stock));
+  });
+
   it('carries over progress from the old single-route caster page', () => {
     const s = open({ 'vardoran-caster-path-v1': '{"p1-b1":1}', 'vardoran-caster-stock-v1': '{"Bone":32}' });
     assert.equal(s.data.active, 'spellcaster');

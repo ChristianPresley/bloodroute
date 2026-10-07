@@ -2,10 +2,15 @@
 // The active route is chosen by ?route=<id>, else the last route used in this browser; ?pick shows the picker.
 (() => {
   'use strict';
-  const { ic, tiles, M, BOSS_NAMES } = BR.h;
+  const { ic, tiles, M, BOSS_NAMES, slotIcon } = BR.h;
   const ARCH = BR.ARCHETYPES;
   const $ = id => document.getElementById(id);
   const ready = a => a && a.status === 'ready';
+
+  // Anchor jumps (scroll-padding-top) and the sticky rail sit below the app bar, whose height changes as it wraps.
+  const appbar = document.querySelector('.appbar');
+  const syncAppbar = () => document.documentElement.style.setProperty('--appbar-h', appbar.offsetHeight + 'px');
+  if (appbar) { syncAppbar(); if (window.ResizeObserver) new ResizeObserver(syncAppbar).observe(appbar); }
 
   const params = new URLSearchParams(location.search);
   const asked = params.get('route');
@@ -40,16 +45,17 @@
       const r = routes[a.id], s = r && r.summary;
       const icons = a.icons.map(n => ic(n, 52)).join('');
       if (!ready(a)) {
-        return `<div class="arch soon" style="--ac:${a.color}" aria-disabled="true"><span class="status chip">Coming soon</span>
-          <div class="icons">${icons}</div><h3>${a.name}</h3><p>${a.tagline}</p>
+        return `<div class="arch soon" style="--ac:${a.color}" aria-disabled="true"><div class="top"><div class="icons">${icons}</div><span class="status chip">Coming soon</span></div>
+          <h3>${a.name}</h3><p>${a.tagline}</p>
           <div class="meta"><span class="cell" style="gap:6px">${ic(a.blood, 22)}${a.blood} blood</span></div></div>`;
       }
-      const pct = s ? s.pct : 0;
-      return `<a class="arch${a.id === active ? ' current' : ''}" href="?route=${a.id}" style="--ac:${a.color}"><span class="status chip ready">${s ? (pct === 100 ? 'Complete' : 'In progress') : 'Ready'}</span>
-        <div class="icons">${icons}</div><h3>${a.name}</h3><p>${a.tagline}</p>
+      // Opening a route saves a summary, so only ticked items count as started.
+      const started = s && s.n > 0, pct = started ? s.pct : 0;
+      return `<a class="arch${a.id === active ? ' current' : ''}" href="?route=${a.id}" style="--ac:${a.color}"><div class="top"><div class="icons">${icons}</div><span class="status chip ready">${started ? (pct === 100 ? 'Complete' : 'In progress') : 'Ready'}</span></div>
+        <h3>${a.name}</h3><p>${a.tagline}</p>
         <div class="meta"><span class="cell" style="gap:6px">${ic(a.blood, 22)}${a.blood} blood</span>${a.patch ? `<span class="chip">patch ${a.patch}</span>` : ''}</div>
-        ${s ? `<div class="meta" style="color:var(--muted)">Phase ${s.phase}: ${s.phaseTitle} · ${s.n} / ${s.total} done</div>` : ''}
-        <div class="cta"><div class="prog" aria-label="${pct}% done"><i style="width:${pct}%"></i></div><span class="go">${s ? `${pct}% · Continue →` : 'Start this route →'}</span></div></a>`;
+        ${started ? `<div class="meta" style="color:var(--muted)">Phase ${s.phase}: ${s.phaseTitle} · ${s.n} / ${s.total} done</div>` : ''}
+        <div class="cta"><div class="prog" aria-label="${pct}% done"><i style="width:${pct}%"></i></div><span class="go">${started ? `${pct}% · Continue →` : 'Start this route →'}</span></div></a>`;
     };
     $('view-pick').innerHTML = `
       <div class="pick-hero"><h2>Choose your route</h2>
@@ -91,7 +97,6 @@
     PHASES.forEach(p => p.bosses.forEach(b => BOSS_NAMES.add(b.name)));
     const RES = def.resources || {};
     const NEEDS = def.needs || {};
-    const slotIcon = s => (def.slotIcons || []).find(n => s.includes(n)) || s;
 
     // Region colour per phase.
     const HUES = def.hues || ['#55c46a', '#9ad44f', '#ff8a3d', '#f2c24b', '#35d0e0', '#9db4ff', '#c07bff', '#ff3d63'];
@@ -197,7 +202,7 @@
       const keys = ['Veil', 'Spell 1', 'Spell 2', 'Ultimate'];
       return `<div class="loadout">
         ${l.label || l.dps ? `<div class="dps">${[l.label, l.dps].filter(Boolean).join(' · ')}</div>` : ''}
-        <div class="slots">${l.slots.map((s, i) => `<div class="slot">${s === '—' ? ic('—', 56) : ic(slotIcon(s), 56)}<span class="k">${keys[i]}</span><span class="v">${s}</span></div>`).join('')}</div>
+        <div class="slots">${l.slots.map((s, i) => `<div class="slot">${ic(slotIcon(def.slotIcons, s), 56)}<span class="k">${keys[i]}</span><span class="v">${s}</span></div>`).join('')}</div>
         ${l.gear ? `<div><div class="dps" style="color:var(--muted);margin-bottom:8px">Gear, blood and passives</div>${tiles(l.gear)}</div>` : ''}
         ${l.kv && l.kv.length ? `<dl class="kv">${l.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}
       </div>`;
@@ -369,6 +374,6 @@
     document.querySelectorAll('.phase').forEach(p => spy.observe(p));
     const first = items.find(i => !done[i.id]);
     if (first) steps.forEach(s => s.classList.toggle('active', s.dataset.step === first.phase.id));
-    if (location.hash) { const t = document.querySelector(location.hash.replace(/[^\w#-]/g, '')); if (t) t.scrollIntoView(); }
+    if (location.hash) { const t = document.querySelector(location.hash.replace(/[^\w#-]/g, '')); if (t) { syncAppbar(); t.scrollIntoView(); } }
   }
 })();
