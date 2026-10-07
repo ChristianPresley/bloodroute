@@ -124,7 +124,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 - **Abilities:** Veil of Blood · Chaos Volley + **Bone Explosion** or **Shadowbolt** · Chaos Barrage.
 - **Gear:** Warlock Vestment, Ring of the Sorcerer, Merciless Copper Crossbow.
 - **Blood and potion:** Scholar 100%, Enchanted Brew.
-- **Spell 2:** Bone Explosion's lead (33.3 vs 32.7) comes only from short fights; at 10 minutes they tie.
+- **Spell 2:** Bone Explosion's lead (33.4 vs 32.7) comes mostly from short fights; at 10 minutes it's 31.6 vs 31.4.
 - **Rotation:** Volley → spell 2 → Veil; ultimate when both spells are on cooldown.
 - **Leaving Farbane:** the journal's "Broaden Horizons" (Lv 40) sends you to **Dunley Farmlands**.
 
@@ -362,10 +362,10 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
 | Build | Spells + ultimate | Blood (100%) | Elixir | Weapon rolls | DPS |
 |---|---|---|---|---|---|
-| **A** | Tendrils + Chains + Blood Storm | **Mutant** + Draculin T2 | **Blasphemous** | Crit · Crit Power · **Veil Cooldown** | 275 |
-| **A2** | Chaos Volley (or Shadowbolt) + Tendrils + Blood Storm | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 267 |
-| **A3** | Chaos Volley + Shadowbolt + Blood Storm | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 265 |
-| **B+** | Tendrils + Chains + Chaos Barrage (shard still worn) | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 264 |
+| **A** | Tendrils + Chains + Blood Storm | **Mutant** + Draculin T2 | **Blasphemous** | Crit · Crit Power · **Veil Cooldown** | 276 |
+| **A2** | Shadowbolt (or Chaos Volley) + Tendrils + Blood Storm | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 270 |
+| **A3** | Chaos Volley + Shadowbolt + Blood Storm | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 268 |
+| **B+** | Tendrils + Chains + Chaos Barrage (shard still worn) | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 265 |
 
 **All four share:**
 - Veil of Chaos.

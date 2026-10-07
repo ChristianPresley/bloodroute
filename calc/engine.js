@@ -357,7 +357,8 @@
     const critMult = st.critPower / 100;
     const ultMult = 1 + st.ultPower / 100;
     const minionMult = 1 + st.minion / 100;
-    const add = (src, v) => { s.total += v; s.by[src] = (s.by[src] || 0) + v; for (const c of s.curses) c.acc += v; };
+    // Running curses accumulate the damage dealt meanwhile, except other curses' payouts.
+    const add = (src, v) => { s.total += v; s.by[src] = (s.by[src] || 0) + v; if (src !== 'Curse') for (const c of s.curses) c.acc += v; };
     // Damage multiplier from target debuffs and own temporary buffs. spell = false for DoT ticks, shocks,
     // procs and ground effects, which don't get "+X% spell damage" passives.
     const targetMult = (spell = true) => {
@@ -372,21 +373,27 @@
       if (active('hungerPower')) m *= 1.20;
       return m;
     };
-    const rate = a => {
+    // Seconds of [s.t, s.t + dt] that effect k still covers, so effects that run out mid-step count only until they do.
+    const overlap = (k, dt) => Math.max(0, Math.min(dt, (s.until[k] || 0) - s.t));
+    // Cooldown rate now, or averaged over the next dt seconds.
+    const rate = (a, dt = 0) => {
       if (a.def.kind === 'veil') return 1 + st.veilCDR / 100;
       if (a.def.kind === 'ult') return ASSUME.ultCdrMode === 'works' ? 1 + st.ultCDR / 100 : 1;
-      return 1 + st.cdr / 100 + (active('dracCDR') ? st.dracCDR / 100 : 0) + s.phantasm * 0.01 + a.recharge;
+      const drac = dt ? overlap('dracCDR', dt) / dt : active('dracCDR') ? 1 : 0;
+      return 1 + st.cdr / 100 + drac * st.dracCDR / 100 + s.phantasm * 0.01 + a.recharge;
     };
 
     function tick(dt) {
       for (const a of all) {
         if (a.charges >= a.max) continue;
-        a.timer -= dt * rate(a);
-        while (a.timer <= 0 && a.charges < a.max) { a.charges++; if (a.charges < a.max) a.timer += a.cd; else a.timer = 0; }
+        a.timer -= dt * rate(a, dt);
+        // Tolerance: advancing by timer / rate can leave float residue (~1e-15) that would delay the charge a whole step.
+        while (a.timer <= 1e-9 * a.cd && a.charges < a.max) { a.charges++; if (a.charges < a.max) a.timer += a.cd; else a.timer = 0; }
       }
       const sp = SP(), tm = targetMult(false);
-      if (active('ignite')) add('Ignite', 0.10 * (F.has('kindling') ? 1.25 : 1) * sp * tm * dt);
-      if (active('af')) add('Agonizing Flames', (0.06 * 5 / ASSUME.afDuration) * sp * tm * dt);
+      const ig = overlap('ignite', dt), af = overlap('af', dt);
+      if (ig > 0) add('Ignite', 0.10 * (F.has('kindling') ? 1.25 : 1) * sp * tm * ig);
+      if (af > 0) add('Agonizing Flames', (0.06 * 5 / ASSUME.afDuration) * sp * tm * af);
       s.t += dt;
       // Curses stack (wiki); each pays out when it expires. Curses still running at fight end pay nothing.
       for (const c of s.curses.filter(c => s.t >= c.until)) {
@@ -394,8 +401,8 @@
         add('Curse', Math.min(c.mult * c.acc, 5 * SP()));   // accumulated damage already includes Condemn etc.
       }
     }
-    function advance(d) {
-      while (d > 1e-9 && s.t < T) { const step = Math.min(ASSUME.dt, d); tick(step); d -= step; }
+    function advance(d) {   // the last step is clipped so nothing happens after T
+      while (d > 1e-9 && s.t < T) { const step = Math.min(ASSUME.dt, d, T - s.t); tick(step); d -= step; }
     }
 
     function ctxFor(a, src) {
@@ -489,7 +496,7 @@
         // Filler: attack, unless the next ability is about to be ready or an attack would break Hunger for Power's chain.
         const wait = nextReady();
         const keepChain = F.has('hungerPower') && ASSUME.hungerPowerBreak === 'primary';
-        if (wait < ASSUME.primaryTime || keepChain) advance(Math.max(ASSUME.dt, Math.min(wait, ASSUME.primaryTime))); else primary(false);
+        if (wait < ASSUME.primaryTime || keepChain) advance(Math.max(1e-6, Math.min(wait, ASSUME.primaryTime))); else primary(false);
         continue;
       }
       use(a);
@@ -529,7 +536,7 @@
       }
       const dps = vals.reduce((a, b) => a + b, 0) / runs;
       const sd = Math.sqrt(vals.reduce((a, b) => a + (b - dps) ** 2, 0) / Math.max(1, runs - 1));
-      if (!best || dps > best.dps) best = { dps, se: sd / Math.sqrt(runs), by, casts, policy, cfg, st };
+      if (!best || dps > best.dps) best = { dps, se: sd / Math.sqrt(runs), vals, by, casts, policy, cfg, st };
     }
     return best;
   }
@@ -566,6 +573,8 @@
   }
 
   // ---------- Optimizer ----------
+  // Identifies a config regardless of passive and weapon-roll order.
+  const cfgKey = c => JSON.stringify({ ...c, passives: [...c.passives].sort(), weapon: [...c.weapon].sort() });
   function combos(arr, k) {
     const out = [];
     const rec = (i, cur) => { if (cur.length === k) { out.push(cur.slice()); return; } for (let j = i; j < arr.length; j++) { cur.push(arr[j]); rec(j + 1, cur); cur.pop(); } };
@@ -604,7 +613,6 @@
     const S = STAGES[stage];
     const policyList = rankPolicies(build, cfg).slice(0, 2).map(r => r.policy);
     const seen = new Map();   // every scored config, so the best few can be re-scored more precisely at the end
-    const cfgKey = c => JSON.stringify({ ...c, passives: [...c.passives].sort(), weapon: [...c.weapon].sort() });
     const score = c => {
       const k = cfgKey(c);
       if (!seen.has(k)) seen.set(k, { cfg: c, dps: evaluate(build, c, runs, duration, { policyList }).dps });
@@ -722,9 +730,8 @@
     // D: re-rank all loadouts with each of the 3 best distinct configs. Every (loadout, config) pair from
     // that re-rank and from C is a candidate; candidates are screened, then the best are confirmed.
     const cfgs = []; const seenCfg = new Set();
-    for (const r of C) { const k = JSON.stringify(r.cfg); if (!seenCfg.has(k) && cfgs.length < 3) { seenCfg.add(k); cfgs.push(r.cfg); } }
+    for (const r of C) { const k = cfgKey(r.cfg); if (!seenCfg.has(k) && cfgs.length < 3) { seenCfg.add(k); cfgs.push(r.cfg); } }
     const cand = new Map();
-    const cfgKey = c => JSON.stringify({ ...c, passives: [...c.passives].sort(), weapon: [...c.weapon].sort() });
     const addCand = (build, cfg, score) => {
       cfg = fixAmulet(build, cfg);
       const k = key(build) + '#' + cfgKey(cfg);
@@ -741,21 +748,36 @@
     return { stage, pairs: topPairs, final };
   }
 
+  // Named optimizer runs (run.js, index.html): a stage, or 'late-pre' = late game before the Dracula kill (no Dracula shard).
+  const RUNS = {
+    early: { stage: 'early' }, mid: { stage: 'mid' }, late: { stage: 'late' },
+    'late-pre': { stage: 'late', amulets: PRE_DRACULA, label: 'Late game before Dracula (no Soul Shard of Dracula)' },
+  };
+  function optimizeRun(which, log) {
+    const R = RUNS[which];
+    if (!R) throw new Error(`Unknown run "${which}"; use ${Object.keys(RUNS).join(', ')}`);
+    return { ...optimize(R.stage, log, R.amulets ? { amulets: R.amulets } : {}), run: which, label: R.label || STAGES[R.stage].label };
+  }
+
   // Confirmation: pick the loadout's best rotation once (on separate seeds), then score it on fresh seeds
   // over a mix of fight lengths. The damage breakdown and casts returned are from the 600 s fights.
+  // Every length uses the same seeds, so se is the standard error of the per-seed mix, not of each length.
   const FIGHT_LENGTHS = [90, 180, 300, 600];
   function confirm(build, cfg, runs = 32) {
     const policy = rankPolicies(build, cfg, 8, 300, 700000)[0].policy;
-    const byLen = {}; let main = null, sum = 0;
+    const byLen = {}, mixVals = Array(runs).fill(0); let main = null;
     for (const d of FIGHT_LENGTHS) {
       const r = evaluate(build, cfg, runs, d, { policyList: [policy], seedBase: 500000 });
-      byLen[d] = r.dps; sum += r.dps;
+      byLen[d] = r.dps;
+      r.vals.forEach((v, i) => { mixVals[i] += v / FIGHT_LENGTHS.length; });
       if (d === 600) main = r;
     }
-    return { build, ...main, dps: sum / FIGHT_LENGTHS.length, dps600: main.dps, byLen };
+    const dps = mixVals.reduce((a, b) => a + b, 0) / runs;
+    const sd = Math.sqrt(mixVals.reduce((a, b) => a + (b - dps) ** 2, 0) / Math.max(1, runs - 1));
+    return { build, ...main, dps, se: sd / Math.sqrt(runs), dps600: main.dps, se600: main.se, byLen };
   }
 
   global.VRCalc = { ASSUME, CAP, POINTS, BLOOD, AMULET, ELIXIR, PASSIVE, ARMOR, MASTERY, WEAPON_ROLL, STAGES, PRE_DRACULA, ABILITIES, byName,
-    POLICIES, FIGHT_LENGTHS, confirm, rankPolicies, randomCfg, pointsAt, masteryTiers, buildStats, simulate, evaluate, optimize, optimizeCfg, available, feasible, passivesFor, elixirsFor, defaultCfg, fixAmulet };
+    POLICIES, FIGHT_LENGTHS, RUNS, cfgKey, confirm, rankPolicies, randomCfg, pointsAt, masteryTiers, buildStats, simulate, evaluate, optimize, optimizeRun, optimizeCfg, available, feasible, passivesFor, elixirsFor, defaultCfg, fixAmulet };
   if (typeof module !== 'undefined') module.exports = global.VRCalc;
 })(typeof window !== 'undefined' ? window : globalThis);
