@@ -37,7 +37,8 @@ for (const { arch, def } of ROUTES) describe(`${arch.name} route content`, () =>
 
   it('lists every region each phase takes you to', () => {
     const R = LEX.data.REGIONS, V = LEX.data.VBLOOD, MAT = LEX.data.MATERIALS;
-    for (const p of def.phases) {
+    def.phases.forEach((p, i) => {
+      const n = i + 1;
       const mine = new Set(p.regions.map(regionOf));
       for (const r of mine) assert.ok(R[r], `${p.id}: "${r}" is a known region`);
       for (const b of p.bosses) {
@@ -46,9 +47,9 @@ for (const { arch, def } of ROUTES) describe(`${arch.name} route content`, () =>
       }
       for (const [m, [ph]] of Object.entries(def.resources)) {
         const r = MAT[m] && MAT[m].region;
-        if (ph === p.n && r && def.needs[m] && R[r]) assert.ok(mine.has(r) || def.phases.slice(0, p.n - 1).some(q => q.regions.map(regionOf).includes(r)), `${p.id}: ${m} is gathered in ${r}`);
+        if (ph === n && r && def.needs[m] && R[r]) assert.ok(mine.has(r) || def.phases.slice(0, n - 1).some(q => q.regions.map(regionOf).includes(r)), `${p.id}: ${m} is gathered in ${r}`);
       }
-    }
+    });
   });
 
   it('says why every loadout item is there, and when to use every consumable', () => {

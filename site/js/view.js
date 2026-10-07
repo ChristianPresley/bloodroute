@@ -142,7 +142,9 @@
     for (const g of l.gear || []) boxes.get(L().containerOf(L().kindOf(g))).names.push(g);
     // The weapon brings its two skills.
     const weapon = boxes.get('weapon').names.find(n => L().kindOf(n) === 'weapon');
-    const skills = weapon ? (L().WEAPON_SKILLS[L().weaponType(weapon)] || []) : [];
+    // Its skills per the game data (Bone and Copper weapons have only the first), else the weapon type's two.
+    const gw = weapon && G().items && G().items[weapon];
+    const skills = weapon ? ((gw && gw.skills) || L().WEAPON_SKILLS[L().weaponType(weapon)] || []) : [];
     const box = (k, inner) => {
       const b = boxes.get(k), notes = noteHtml(notesFor(k));
       if (!inner && !b.names.length && !notes) return '';
