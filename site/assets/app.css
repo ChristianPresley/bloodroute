@@ -18,6 +18,7 @@
   --font-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
   --radius: 12px;
+  --page: 1240px;   /* content width; grows on wide screens (bottom of this file) */
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme="dark"]) {
@@ -58,7 +59,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 
 /* App bar */
 .appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: var(--shadow); }
-.appbar-inner { max-width: 1240px; margin: 0 auto; padding: 10px 16px 0; display: grid; gap: 8px; }
+.appbar-inner { max-width: var(--page); margin: 0 auto; padding: 10px 16px 0; display: grid; gap: 8px; }
 .brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .brand .crest { width: 40px; height: 40px; }
 .brand h1 { font: 700 30px/1 var(--font-display); letter-spacing: .5px; color: var(--text); }
@@ -73,7 +74,9 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .tab:hover { color: var(--text); }
 
 /* Shell */
-.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 64px; }
+.wrap { max-width: var(--page); margin: 0 auto; padding-inline: 16px; padding-block: 20px 64px; }
+/* Lists that become columns when there's room (wide screens); a column is never narrower than the layout's usual single row. */
+.rows { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr)); align-items: start; }
 .view[hidden] { display: none !important; }
 .path { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; align-items: start; }
 @media (max-width: 900px) { .path { grid-template-columns: 1fr; } }
@@ -120,7 +123,7 @@ h1, h2, h3 { text-wrap: balance; margin: 0; }
 .next .hero .ic, .next .hero .ic-fallback { width: 112px; height: 112px; border: 3px solid var(--blood); }
 .next .hero .ic.round { padding: 0; }
 .next .hero .ic:not(.round) { padding: 10px; }
-.next .body { display: grid; gap: 10px; min-width: 0; }
+.next .body, .next .lead, .next .what { display: grid; gap: 10px; min-width: 0; align-content: start; }
 .next .eyebrow { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blood); font-weight: 600; }
 .next h2 { font: 700 30px/1.1 var(--font-display); }
 .next .meta { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--muted); }
@@ -189,7 +192,7 @@ details.sec > summary .count { margin-left: auto; font: 500 12px var(--font-mono
 .flash { box-shadow: 0 0 0 2px var(--blood); }
 
 /* Loadout */
-.loadout { display: grid; gap: 14px; }
+.loadout, .lo-part { display: grid; gap: 14px; align-content: start; }
 .slots { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 @media (max-width: 640px) { .slots { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .slot { border: 1px solid var(--line); border-radius: 12px; padding: 12px; background: var(--surface-2); display: grid; justify-items: center; gap: 6px; text-align: center; }
@@ -216,7 +219,7 @@ td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text
 td .best { color: var(--ok); font-weight: 600; }
 .cell { display: flex; align-items: center; gap: 10px; }
 .cell .ic, .cell .ic-fallback { width: 36px; height: 36px; padding: 2px; border: 1px solid var(--line); }
-.ladder { counter-reset: s; display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.ladder { counter-reset: s; display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; max-width: 96ch; }
 .ladder li { counter-increment: s; display: grid; grid-template-columns: 34px 1fr; gap: 12px; align-items: start; }
 .ladder li::before { content: counter(s); width: 30px; height: 30px; border-radius: 50%; background: var(--blood-soft); color: var(--blood); display: grid; place-items: center; font: 500 13px var(--font-mono); }
 .builds { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
@@ -230,7 +233,8 @@ td .best { color: var(--ok); font-weight: 600; }
 .build dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 10px; font-size: 13px; }
 .build dt { color: var(--muted); }
 .build dd { margin: 0; }
-.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+/* At most three cards a row, so wide screens don't squeeze six tables side by side. */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(max(min(100%, 300px), calc((100% - 44px) / 3)), 1fr)); gap: 22px; }
 .grid2 .card { margin: 0; align-content: start; }
 .confirm { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; }
 footer { color: var(--muted); font-size: 13px; max-width: 80ch; }
@@ -284,8 +288,8 @@ details.sec > summary .sec-ic { width: 26px; height: 26px; }
 @media (prefers-reduced-motion: reduce) { .next::before { animation: none; } .boss.pop .portrait::after { animation: none; } }
 
 /* Resource counters */
-.stock { display: grid; gap: 8px; }
-.stock-intro { font-size: 13.5px; color: var(--muted); max-width: 80ch; }
+.stock { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 600px), 1fr)); align-items: start; }
+.stock-intro { font-size: 13.5px; color: var(--muted); max-width: 80ch; grid-column: 1 / -1; }
 .res { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 10px;
   background: var(--surface-2); border: 1px solid var(--line); }
 .res .ic, .res .ic-fallback { width: 44px; height: 44px; padding: 3px; border: 1px solid var(--line); }
@@ -343,3 +347,24 @@ a.arch:hover, a.arch:focus-visible { transform: translateY(-3px); border-color: 
 .data-actions .msg.err { color: var(--blood); }
 .data-actions .msg.ok { color: var(--ok); }
 @media (max-width: 560px) { .pick-hero h2 { font-size: 34px; } }
+
+/* ---------- Wide screens (1600px and up, e.g. 2560×720 ultrawides) ----------
+   The page grows with the screen. Text keeps its usual line length: lists turn into columns instead of longer rows. */
+@media (min-width: 1600px) {
+  :root { --page: min(100vw - 64px, 2280px); }
+  /* One-row app bar (brand, tabs, progress), leaving more height for the page on short screens. */
+  .appbar-inner { display: flex; align-items: center; gap: 14px; }
+  .brand { display: contents; }
+  .tabs { order: 1; align-self: flex-end; margin-left: 10px; flex: none; }
+  .overall { order: 2; }
+  /* Loadout: spell slots beside the gear. */
+  .loadout { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+  /* Next step and phase headers: title on the left, the rest beside it instead of below. */
+  .next .body.split { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: 32px; align-items: center; }
+  .phase-head { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-auto-flow: row dense; column-gap: 32px; align-items: start; }
+  .phase-head > .row, .phase-head > .goal { grid-column: 1; }
+  .phase-head > .roster, .phase-head > .regions, .phase-head > .prog { grid-column: 2; }
+  /* Endgame: "Pick your endgame build" beside the builds; everything after spans the page. */
+  #view-endgame { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 22px; align-items: start; }
+  #view-endgame > :nth-child(n+3) { grid-column: 1 / -1; }
+}

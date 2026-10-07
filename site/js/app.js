@@ -201,11 +201,11 @@
 
     function loadoutBlock(l) {
       const keys = ['Veil', 'Spell 1', 'Spell 2', 'Ultimate'];
-      return `<div class="loadout">
+      return `<div class="loadout"><div class="lo-part">
         ${l.label || l.dps ? `<div class="dps">${[l.label, l.dps].filter(Boolean).join(' · ')}</div>` : ''}
-        <div class="slots">${l.slots.map((s, i) => `<div class="slot">${ic(slotIcon(def.slotIcons, s), 56)}<span class="k">${keys[i]}</span><span class="v">${s}</span></div>`).join('')}</div>
-        ${l.gear ? `<div><div class="dps" style="color:var(--muted);margin-bottom:8px">Gear, blood and passives</div>${tiles(l.gear)}</div>` : ''}
-        ${l.kv && l.kv.length ? `<dl class="kv">${l.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}
+        <div class="slots">${l.slots.map((s, i) => `<div class="slot">${ic(slotIcon(def.slotIcons, s), 56)}<span class="k">${keys[i]}</span><span class="v">${s}</span></div>`).join('')}</div></div>
+        <div class="lo-part">${l.gear ? `<div><div class="dps" style="color:var(--muted);margin-bottom:8px">Gear, blood and passives</div>${tiles(l.gear)}</div>` : ''}
+        ${l.kv && l.kv.length ? `<dl class="kv">${l.kv.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>` : ''}</div>
       </div>`;
     }
 
@@ -225,12 +225,12 @@
           <div class="regions">${p.regions.map(r => `<span class="chip region">${r}</span>`).join('')}</div>
           <div class="prog"><div class="bar"><i data-bar="${p.id}"></i></div><span data-count="${p.id}" class="mono"></span></div>
         </div>
-        ${p.access ? `<details class="sec" open><summary>Before you go</summary><div class="sec-body">${p.access.map(([n, a]) => `<div class="item" style="cursor:default;grid-template-columns:48px 1fr">${ic(n, 48)}<div class="text">${a}</div></div>`).join('')}</div></details>` : ''}
-        ${steps.length ? sec('Do', 'Step', steps.map(itemRow).join('')) : ''}
+        ${p.access ? `<details class="sec" open><summary>Before you go</summary><div class="sec-body"><div class="rows">${p.access.map(([n, a]) => `<div class="item" style="cursor:default;grid-template-columns:48px 1fr">${ic(n, 48)}<div class="text">${a}</div></div>`).join('')}</div></div></details>` : ''}
+        ${steps.length ? sec('Do', 'Step', `<div class="rows">${steps.map(itemRow).join('')}</div>`) : ''}
         ${sec(`V Bloods to hunt (${bosses.length})`, 'Boss', `<div class="bosses">${bosses.map(bossCard).join('')}</div>`)}
-        ${craft.length ? sec('Craft and prepare', 'Craft', needsTiles(p) + craft.map(itemRow).join('')) : ''}
+        ${craft.length ? sec('Craft and prepare', 'Craft', needsTiles(p) + `<div class="rows">${craft.map(itemRow).join('')}</div>`) : ''}
         ${stockSection(p)}
-        ${p.notes ? `<details class="sec"><summary>Tips</summary><div class="sec-body">${p.notes.map(n => `<div class="note">${n}</div>`).join('')}</div></details>` : ''}
+        ${p.notes ? `<details class="sec"><summary>Tips</summary><div class="sec-body"><div class="rows">${p.notes.map(n => `<div class="note">${n}</div>`).join('')}</div></div></details>` : ''}
         ${p.loadout ? `<details class="sec" open><summary>Loadout at the end of this phase</summary><div class="sec-body">${loadoutBlock(p.loadout)}</div></details>` : ''}
       </article>`;
     }
@@ -253,12 +253,12 @@
       const title = b ? b.name : it.kind === 'Step' ? 'Next step' : 'Next to craft';
       const body = b ? b.take : it.text;
       el.innerHTML = `<div class="next"><div class="hero">${ic(b ? b.name : it.icon, 112)}</div>
-        <div class="body"><div class="eyebrow">Up next · Phase ${p.n}: ${p.title}</div>
+        <div class="body split"><div class="lead"><div class="eyebrow">Up next · Phase ${p.n}: ${p.title}</div>
         <h2>${title}</h2>
         <div class="meta">${b ? `<span class="chip lv">Lv ${b.lv}</span>${b.must ? '<span class="chip must">★ needed</span>' : ''}${b.where ? `<span>${b.where}</span>` : ''}` : `<span class="chip">${it.kind}</span>`}</div>
-        ${b ? tiles(b.gets) : ''}
-        <div class="take">${body}</div>
-        <div class="actions"><button class="btn primary" type="button" data-done="${it.id}">${b ? 'Mark defeated' : 'Mark done'}</button><a class="btn" href="#row-${it.id}" data-jump="${it.id}">Show in phase</a>${b ? mapBtn(b) : ''}</div></div></div>`;
+        ${b ? tiles(b.gets) : ''}</div>
+        <div class="what"><div class="take">${body}</div>
+        <div class="actions"><button class="btn primary" type="button" data-done="${it.id}">${b ? 'Mark defeated' : 'Mark done'}</button><a class="btn" href="#row-${it.id}" data-jump="${it.id}">Show in phase</a>${b ? mapBtn(b) : ''}</div></div></div></div>`;
     }
 
     function updateProgress() {
