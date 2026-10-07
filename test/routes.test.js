@@ -377,7 +377,8 @@ for (const { arch, def, icons, endgame, ref } of ROUTES) describe(`${arch.name} 
     const p = page();
     p.window.VR_ICONS = known;
     p.run('js/core.js');
-    const missing = [...icons].filter(n => !['Starting dash', '—'].includes(n) && !p.window.BR.h.srcOf(n));
+    // Glyph names (the empty slot, the starting dash, rotation steps like 'Veil attack') are drawn without an icon.
+    const missing = [...icons].filter(n => !(n in p.window.BR.h.GLYPH) && !p.window.BR.h.srcOf(n));
     assert.deepEqual(missing, []);
   });
 

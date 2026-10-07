@@ -8,7 +8,7 @@
   // steps / craft entries: { t: html, ic: icon name }. Bosses: gets = icons of what they unlock.
   const PHASES = [
     {
-      id: 'p1', title: 'Wake up', levels: 'Start – 20', sig: 'Chaos Volley', regions: ['Farbane Woods'],
+      id: 'p1', title: 'Wake up', levels: 'Start – 20', sig: 'Chaos Volley', stage: 'Beginning', regions: ['Farbane Woods'],
       goal: 'A castle, bone gear, Chaos Volley and the crossbow line.',
       steps: [
         { ic: 'Bone Ring', t: 'Leave the crypt and collect bones: you get the Bone Sword and Bone Ring (GL 3, +5.3 Spell Power).' },
@@ -29,10 +29,17 @@
         { ic: 'Nightstalker Vest', t: `<b>Nightstalker set</b> (vest: 8 Leather + 4 Coarse Thread), the base for Warlock. Coarse Thread drops in ${L(M(CAMPS), 'Farbane bandit camps')} or comes from the Shady Goods Dealer at the ${L(M('283054,284512'), 'Shady Merchants Camp')}.` },
         { ic: 'Unsullied Heart', t: 'Keep every Unsullied Heart. These four bosses drop one 25% of the time; you need 4 for the Phase 3 ring (and 1 more to summon Nibbles, if you want Rat Form).' },
       ],
-      loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar (Nuns, Priests, Villagers, Alchemists, Witches, Devoted)']] },
+      loadout: {
+        slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar (Nuns, Priests, Villagers, Alchemists, Witches, Devoted)']],
+        rot: {
+          order: ['Shadowbolt', 'Starting dash', 'Veil attack', 'Chaos Volley'],
+          fill: ['Rain of Bolts', 'Crossbow shot'],
+          why: 'Two 8 s spells and no ultimate yet, so the order matters little: keep both on cooldown. Shadowbolt first, then the dash and its Veil attack (the next shot hits harder), then Volley; it\'s the order the simulator picks for Volley + Shadowbolt in the endgame A2 build. Between spells fire Rain of Bolts when it\'s ready and plain shots otherwise: the crossbow is about half your damage this early.',
+        },
+      },
     },
     {
-      id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', regions: ['Farbane Woods'],
+      id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', stage: 'Beginning', regions: ['Farbane Woods'],
       goal: 'Research, Warlock armor and the first mastery points.',
       steps: [
         { ic: 'Research Desk', t: 'Finish "Thirst for Power": beat 3 more V Bloods and equip a new spell. It rewards the Research Desk; build it.' },
@@ -48,10 +55,17 @@
         { ic: 'Warlock Vest', t: '<b>Warlock Vestment</b> (Research Desk): each piece = Nightstalker piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot. 4 pieces: +7.2% Bonus Spell Power, 2-piece +4% cooldown, 4-piece +1 Gear Level.' },
       ],
       notes: ['Grayson to Gaius (Lv 27–55) each drop an Unsullied Heart guaranteed, except Alpha, Errol, Keely, Rufus, Nibbles, Lidia, Kodia and Finn (25%). From Lv 53 on most V Bloods drop one 80% of the time and some none, but by then Tristan\'s recipe makes Greater Blood Essence without hearts.', 'Research Desk blueprints are a random draw within a category: 60 Paper for a weapon or ring, 50 for armour or a brew. Each armour draw is one random piece out of 16 (four sets), so a full set can take many draws.'],
-      loadout: { slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt or Bone Explosion', '—'], gear: ['Gravedigger Ring', 'Warlock Vest', 'Merciless Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar']] },
+      loadout: {
+        slots: ['Starting dash', 'Chaos Volley', 'Shadowbolt or Bone Explosion', '—'], gear: ['Gravedigger Ring', 'Warlock Vest', 'Merciless Copper Crossbow', 'Scholar'], kv: [['Blood', 'Scholar']],
+        rot: {
+          order: ['Bone Explosion', 'Starting dash', 'Veil attack', 'Chaos Volley'],
+          fill: ['Rain of Bolts', 'Crossbow shot'],
+          why: 'Bone Explosion first once Goreswine gives it: its Condemn (+15% damage taken for 5 s) covers the Veil attack and both Volley bolts that follow. If you keep Shadowbolt in the slot, use the same order: Shadowbolt, dash, Volley. Rain of Bolts and shots fill every gap; Snapshot arrives with the Iron Crossbow in Phase 3.',
+        },
+      },
     },
     {
-      id: 'p3', title: 'Chaos foundation', levels: '30 – 40', sig: 'Chaos Barrage', regions: ['Farbane Woods', 'Dunley Farmlands'],
+      id: 'p3', title: 'Chaos foundation', levels: '30 – 40', sig: 'Chaos Barrage', stage: 'Early', regions: ['Farbane Woods', 'Dunley Farmlands (Beatrice)'],
       goal: 'Finish the early build: Chaos Barrage, Veil of Blood and the Ring of the Sorcerer.',
       bosses: [
         { lv: 30, name: 'Clive the Firestarter', must: true, map: 178454, gets: ['Alchemy Table', 'Minor Explosive Box', 'Rain of Chaos'], take: 'Alchemy Table and Minor Explosive Box (opens Quincey\'s stronghold). Chaos T2 point → Rain of Chaos.' },
@@ -75,11 +89,17 @@
         dps: '≈50 DPS', label: 'Early build',
         slots: ['Veil of Blood', 'Chaos Volley', 'Bone Explosion', 'Chaos Barrage'],
         gear: ['Ring of the Sorcerer', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'],
-        kv: [['Rotation', 'Bone Explosion → Veil → Volley; Rain of Bolts, Snapshot and shots in between; ultimate when both spells are on cooldown'], ['Veil', 'Veil of Blood and the starting dash score the same (49.8 / 50.0)'], ['Spell 2', 'Bone Explosion 50.0; Corrupted Skull or Rain of Chaos 47.8, Shadowbolt 46.9']],
+        kv: [['Veil', 'Veil of Blood and the starting dash score the same (49.8 / 50.0)'], ['Spell 2', 'Bone Explosion 50.0; Corrupted Skull or Rain of Chaos 47.8, Shadowbolt 46.9']],
+        rot: {
+          pre: ['Enchanted Brew'],
+          order: ['Bone Explosion', 'Veil of Blood', 'Veil attack', 'Chaos Volley', { n: 'Chaos Barrage', when: 'both spells on cooldown' }],
+          fill: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+          why: 'Bone Explosion goes first so the Veil attack and both Volley bolts land inside its Condemn (+15% damage taken for 5 s). Hold Chaos Barrage until both spells are on cooldown: Scholar blood at 60%+ makes the ultimate reset your spell cooldowns, so another Bone Explosion and Volley follow straight away. Fill every gap with Rain of Bolts and Snapshot (each Marks the boss: +25% on your next shot), then primary shots; skip a shot if a spell comes back during its 1 s draw.',
+        },
       },
     },
     {
-      id: 'p4', title: 'Into the Study', levels: '40 – 50', sig: 'Veil of Bones', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
+      id: 'p4', title: 'Into the Study', levels: '40 – 50', sig: 'Veil of Bones', stage: 'Early', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
       goal: 'Veil of Bones and Ball Lightning, research tier 2, a Scholar prisoner, and the materials for every mid-game recipe.',
       steps: [
         { ic: 'Dominate', t: 'Get Dominate: "Waygate" gives the Stone Coffin → "Lord of the Manor" gives the Servant Coffin → "Servants" (Blood Press + Servant Coffin) gives Dominate.' },
@@ -105,10 +125,19 @@
         { ic: 'Study', t: 'Spend Scrolls at the Study on <b>Dark Magus</b>, <b>Merciless Iron Crossbow</b> and <b>Pendant of the Sorcerer</b>: 90 for a weapon or pendant, 75 for armour, each a random draw within its category. Their materials arrive in Phase 5.' },
       ],
       notes: ['Fill every gap with the crossbow: Rain of Bolts and Snapshot on cooldown, then primary shots. They\'re about a third of your damage here, and each hit on a Static target (Ball Lightning) adds a 10% Spell Power shock.','Wear the Scourgestone Pendant from Leandra on: 16.5 Spell Power and GL 15 against the ring\'s 12.8 and GL 12.', 'Corrupted Fish (raises prisoner quality ±2% per feed) is only caught in Oakveil or at Brighthaven Docks, so catch a high-quality prisoner for now.'],
-      loadout: { dps: '≈66 DPS at Lv 50', label: 'From Bane on', slots: ['Veil of Bones', 'Chaos Volley', 'Ball Lightning', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'], kv: [['Rotation', 'Veil → Ball Lightning → Volley; crossbow skills and shots in between; ultimate when both spells are down'], ['Elixir', 'None yet: the Prowler scores 65.8 against 66.2 without it. Brew it for Phase 5'], ['Before Bane', 'Veil of Blood']] },
+      loadout: {
+        dps: '≈66 DPS at Lv 50', label: 'From Bane on', slots: ['Veil of Bones', 'Chaos Volley', 'Ball Lightning', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'],
+        kv: [['Elixir', 'None yet: the Prowler scores 65.8 against 66.2 without it. Brew it for Phase 5'], ['Before Bane', 'Veil of Blood']],
+        rot: {
+          pre: ['Enchanted Brew'],
+          order: ['Veil of Bones', 'Veil attack', 'Ball Lightning', 'Chaos Volley', { n: 'Chaos Barrage', when: 'both spells on cooldown' }],
+          fill: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+          why: 'Veil first: Veil of Bones\' Veil attack Condemns the boss (+15% damage taken for 5 s), so both spells after it hit harder. Ball Lightning before Volley: it leaves the boss Static, and every crossbow hit on a Static boss shocks it for 10% of your Spell Power, so the shots between spells are worth more. Chaos Barrage when both spells are down, for the Scholar reset.',
+        },
+      },
     },
     {
-      id: 'p5', title: 'Gems, jewels, passives', levels: '50 – 60', sig: 'Lightning Tendrils', regions: ['Dunley Farmlands', 'Hallowed Mountains', 'Ruins of Mortium', 'Gloomrot South'],
+      id: 'p5', title: 'Gems, jewels, passives', levels: '50 – 60', sig: 'Lightning Tendrils', stage: 'Mid', regions: ['Dunley Farmlands', 'Hallowed Mountains (Frostmaw)', 'Ruins of Mortium (Elena, Cassius, Stygian Shards)', 'Gloomrot South (Domina, Ziva)'],
       goal: 'The mid-game build: Lightning Tendrils next to Chaos Volley, jewels and Stygian passives.',
       steps: [
         { ic: 'Stygian Shard', t: 'Farm Stygian Shards in Tier 1 Rift Incursions (recommended Lv 57+, every 30 minutes, tracked with the Eye of Mortium) and at Ruins of Mortium points of interest.' },
@@ -132,10 +161,24 @@
         { ic: 'Merciless Iron Crossbow', t: '<b>Merciless Iron Crossbow</b> (GL 18): Iron Crossbow + Regular Topaz + 4 Greater Blood Essence + 4 Reinforced Plank.' },
         { ic: 'Regular jewel', t: '<b>Regular jewels</b> (4 Regular gem + 4 Iron Ingot, 2 random mods): Chaos Volley (Amethyst) +20% damage / −12% cooldown · Tendrils (Topaz) +1 bolt / +12% bolt damage · Veil of Bones (Emerald) skeleton explosion / +50% on a boss below 20%.' },
       ],
-      loadout: { dps: '≈109 DPS at Lv 60', label: 'Mid build', slots: ['Veil of Bones', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Pendant of the Sorcerer', 'Dark Magus Chestguard', 'Merciless Iron Crossbow', 'Regular jewel', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames'], kv: [['Rotation', 'Veil → Volley → Tendrils; crossbow skills and shots in between'], ['Old core', 'Veil of Chaos with Tendrils + Unholy Chains: 107.1']] },
+      loadout: {
+        dps: '≈109 DPS at Lv 60', label: 'Mid build', slots: ['Veil of Bones', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Pendant of the Sorcerer', 'Dark Magus Chestguard', 'Merciless Iron Crossbow', 'Regular jewel', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames'],
+        kv: [['Old core', 'Veil of Chaos with Tendrils + Unholy Chains: 107.1']],
+        rot: {
+          pre: ['Elixir of the Prowler', 'Enchanted Brew'],
+          order: ['Veil of Bones', 'Veil attack', 'Chaos Volley', 'Lightning Tendrils', { n: 'Chaos Barrage', when: 'both spells on cooldown' }],
+          fill: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+          why: 'Veil first for its Condemn, which the Prowler\'s +7% Veil cooldown rate brings back sooner. Volley next: its Ignite turns on Renewing Flames (+8% spell damage) for the Tendrils bolts that follow. Tendrils keeps the boss Static, so every crossbow hit and, with Enhanced Conductivity, every spell hit shocks it. Chaos Barrage when both spells are down, for the Scholar reset.',
+        },
+        jewels: {
+          'Chaos Volley': ['Increases damage', 'Reduces cooldown'],
+          'Lightning Tendrils': ['additional lightning bolt', 'increased damage'],
+          'Veil of Bones': ['skeleton spawned explodes', 'below 20%'],
+        },
+      },
     },
     {
-      id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Blood Merlot Amulet', regions: ['Gloomrot South', 'Cursed Forest', 'Dunley Farmlands', 'Silverlight Hills'],
+      id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Blood Merlot Amulet', stage: 'Mid', regions: ['Gloomrot South (Angram)', 'Cursed Forest', 'Dunley Farmlands (Willfred; Blood Crystals at Dracula\'s Demise)', 'Silverlight Hills'],
       goal: 'Finish the mid build and stockpile late-game materials.',
       access: [['Shroud of the Forest', 'Cursed Forest fogs your view: kill Ben first and craft his Shroud of the Forest.'], ['Silver Resistance Potion', 'Silverlight Hills hurts with silver: bring Willfred\'s Silver Resistance Potion (Alchemy Table: 40 Plague Brier + Empty Glass Bottle; lasts 60 minutes).']],
       bosses: [
@@ -161,10 +204,24 @@
         { ic: 'Castle Heart', t: 'Castle Heart level 4: 12 Radium Alloy + 1 Primal Blood Essence (unlocks Subdue).' },
         { ic: 'Corrupted Fish', t: `<b>Corrupted Fish</b>: fish at ${L(M(178412), 'Brighthaven Docks')} and feed your Scholar prisoner up to 100%.` },
       ],
-      loadout: { dps: '≈150 DPS', label: 'Mid build, complete', slots: ['Veil of Bones', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Blood Merlot Amulet', 'Dark Magus Chestguard', 'Dark Silver Crossbow', 'Greater jewel', 'Elixir of the Bat', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames', 'Lightning Fast Strikes'], kv: [['Rotation', 'Volley → Tendrils → Veil; crossbow skills and shots in between'], ['Close', 'Curse instead of Volley: 149.1 (Prowler, Spiritual Infusion)']] },
+      loadout: {
+        dps: '≈150 DPS', label: 'Mid build, complete', slots: ['Veil of Bones', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Blood Merlot Amulet', 'Dark Magus Chestguard', 'Dark Silver Crossbow', 'Greater jewel', 'Elixir of the Bat', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames', 'Lightning Fast Strikes'],
+        kv: [['Close', 'Curse instead of Volley: 149.1 (Prowler, Spiritual Infusion)']],
+        rot: {
+          pre: ['Elixir of the Bat', 'Enchanted Brew'],
+          order: ['Chaos Volley', 'Lightning Tendrils', 'Veil of Bones', 'Veil attack', { n: 'Chaos Barrage', when: 'both spells on cooldown' }],
+          fill: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+          why: 'Spells first now. With the Bat elixir and 100% Scholar your cooldown rate is close to the 30% cap, so Volley and Tendrils come back before the Veil does, and the simulator\'s best order (150.4 DPS) never makes them wait. Volley\'s Ignite sets up Renewing Flames and the jewel\'s Agonizing Flames for Tendrils; the Veil and its Condemn go in while both spells cool down. Chaos Barrage when both spells are down, for the Scholar reset.',
+        },
+        jewels: {
+          'Chaos Volley': ['Increases damage', 'Reduces cooldown', 'Agonizing Flames'],
+          'Lightning Tendrils': ['additional lightning bolt', 'increased damage', 'cast rate'],
+          'Veil of Bones': ['skeleton spawned explodes', 'below 20%', 'Increases damage of next primary attack'],
+        },
+      },
     },
     {
-      id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Amulet of the Arch-Warlock', regions: ['Gloomrot North', 'Oakveil Woodlands', 'Cursed Forest', 'Silverlight Hills', 'Hallowed Mountains', 'Dunley (Dracula\'s Demise)', 'Ruins of Mortium'],
+      id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Amulet of the Arch-Warlock', stage: 'Late', regions: ['Gloomrot North', 'Oakveil Woodlands', 'Cursed Forest', 'Silverlight Hills', 'Hallowed Mountains (Terrorclaw)', 'Dunley Farmlands (Dracula\'s Demise)', 'Ruins of Mortium'],
       goal: 'Setup B, the late-game build before Dracula, plus the Blood Key.',
       steps: [
         { ic: 'Greater Stygian Shard', t: 'Farm Greater Stygian Shards in Tier 2 Rift Incursions (Lv 80, ~65 per solo run) or convert 12:1 at the Gem Cutting Table.' },
@@ -200,10 +257,24 @@
         { ic: 'Primal jewel', t: '<b>Primal jewels</b> (4 Flawless gem + 320 Greater Stygian Shards, 4 mods) for Chaos Volley (Amethyst), Tendrils (Topaz) and <b>Veil of Frost</b> (Sapphire; Vincent\'s drop): its Veil attack nova (50%), illusion nova (40%), +24% Veil attack and Freeze (a 30% hit on a V Blood). Merge duplicates at the Fusion Forge (12 Ember Glass).' },
       ],
       notes: ['Athenaeum blueprints cost Schematics: 120 for a weapon or amulet, 100 for armour or a potion, each a random draw within its category. Building the Athenaeum takes 20 more.'],
-      loadout: { dps: '≈310 DPS (≈294 before the Blood Key)', label: 'Setup B', slots: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Blood Key', 'Maleficer Scholar Chestguard', 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Unholy Coating', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Rotation', 'Volley → Tendrils → Veil; ultimate when both spells are down; crossbow skills and shots in between'], ['Why Veil of Frost', 'With Primal jewels its two novas and Freeze out-damage Veil of Bones, and its Chill turns on Cold Soul; Unholy Coating takes over the Condemn']] },
+      loadout: { dps: '≈310 DPS (≈294 before the Blood Key)', label: 'Setup B', slots: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Blood Key', 'Maleficer Scholar Chestguard', 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Unholy Coating', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'],
+        kv: [['Why Veil of Frost', 'With Primal jewels its two novas and Freeze out-damage Veil of Bones, and its Chill turns on Cold Soul; Unholy Coating takes over the Condemn']],
+        rot: {
+          pre: ['Witch Potion', 'Elixir of the Twisted', 'Unholy Coating'],
+          order: ['Chaos Volley', 'Lightning Tendrils', 'Veil of Frost', 'Veil attack', { n: 'Chaos Barrage', when: 'both spells on cooldown' }],
+          fill: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+          why: 'Volley first for its Ignite (Renewing Flames, Agonizing Flames), then Tendrils for Static and seven chances to crit, which keep Draculin\'s +30% cooldown rate running. Then Veil of Frost and a shot right away: the Veil attack sets off the nova, Chills the boss for Cold Soul and procs Freeze. The Unholy Coating rides on a shot every 12 s and Condemns the boss; Chaos Barrage waits until both spells are on cooldown so it never delays one.',
+        },
+        jewels: {
+          'Veil of Frost': ['conjures a nova', 'Illusion explodes', 'Increases damage of next primary attack', 'Freeze'],
+          'Chaos Volley': ['Increases damage', 'Reduces cooldown', 'Agonizing Flames', 'projectile range and speed'],
+          'Lightning Tendrils': ['additional lightning bolt', 'increased damage', 'cast rate', 'projectile range and speed'],
+        },
+        rolls: ['Spell Critical Chance', 'Spell Critical Power', 'Spell Cooldown Rate'],
+      },
     },
     {
-      id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', regions: ['Farbane (Dreaded Peak)', 'Silverlight Hills', 'Gloomrot North', 'Oakveil Woodlands', 'Ruins of Mortium'],
+      id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', stage: 'End', regions: ['Farbane Woods (Dreaded Peak)', 'Silverlight Hills', 'Gloomrot North', 'Oakveil Woodlands', 'Ruins of Mortium (Dracula\'s castle)'],
       goal: 'Dracula\'s Maleficer, the Soul Shard of Dracula, then your final build.',
       bosses: [
         { lv: 86, name: 'Talzur the Winged Horror', must: true, map: 178448, where: `${L(M(178385), 'The Dreaded Peak')}, Farbane`, gets: ["Dracula's Maleficer Gloves", 'Soul Shard of the Winged Horror'], take: 'Dracula\'s Maleficer Gloves and Soul Shard of the Winged Horror.' },
@@ -218,7 +289,21 @@
         { ic: 'Fusion Forge', t: 'Setup B and every endgame build use the same weapon rolls (Crit · Crit Power · Spell Cooldown). If your Ancestral Crossbow missed one, fuse or re-craft it at the Fusion Forge (12 Ember Glass).' },
         { ic: 'Greater Stygian Shard', t: 'Keep the shard repaired: feed on Primal Blood Souls in Tier 2 Rift Incursions (+750 each, shared across carried shards).' },
       ],
-      loadout: { dps: '326 – 329 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Unholy Coating', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
+      loadout: { dps: '326 – 329 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Unholy Coating', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'],
+        kv: [['Choose', 'Use the ladder on the Endgame builds tab']],
+        rot: {
+          pre: ['Witch Potion', 'Elixir of the Twisted', 'Unholy Coating'],
+          order: ['Chaos Volley', 'Lightning Tendrils', 'Veil of Frost', 'Veil attack', { n: 'Blood Storm', when: 'both spells on cooldown' }],
+          fill: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+          why: 'Build A\'s order: Volley\'s Ignite, then Tendrils\' Static and crits for Draculin\'s cooldown buff, then Veil of Frost with the Veil attack straight after for the nova, Chill and Freeze. Blood Storm\'s 4.5 s channel goes in only when both spells are on cooldown, so it never holds one back. The coating\'s Condemn rides on a shot every 12 s, and with all four Dracula\'s Maleficer pieces every Veil adds +15% spell crit for 4 s.',
+        },
+        jewels: {
+          'Veil of Frost': ['conjures a nova', 'Illusion explodes', 'Increases damage of next primary attack', 'Freeze'],
+          'Chaos Volley': ['Increases damage', 'Reduces cooldown', 'Agonizing Flames', 'projectile range and speed'],
+          'Lightning Tendrils': ['additional lightning bolt', 'increased damage', 'cast rate', 'projectile range and speed'],
+        },
+        rolls: ['Spell Critical Chance', 'Spell Critical Power', 'Spell Cooldown Rate'],
+      },
     },
   ];
 
@@ -253,6 +338,322 @@
     'Corrupted Flower': [7, 'Grows in the Oakveil Woodlands'],
     'Venom Sap': [7, 'Looted across Oakveil; also from Corrupted Oak (Advanced Sawmill) or Corrupted Fish (Blood Press)'],
     'Blood Rose': [1, L(C(6088), 'Blood Rose map layer')], 'Bleeding Heart': [5, 'Grows across the Ruins of Mortium'],
+  };
+
+  // ---------- Hover-card notes: why each loadout item is there, when to use consumables, what replaces it ----------
+  // { why, use? (consumables), combo?: [names it works with], upgrade? }. Numbers from docs/pve_spellcaster_build.md
+  // and calc/engine.js; DPS figures are the simulator's.
+  const INFO = {
+    // Abilities
+    'Starting dash': {
+      why: 'Your Veil until Beatrice drops Veil of Blood at Lv 40. Use it as a damage step, not only to dodge: the shot right after it is a Veil attack and hits harder.',
+      combo: ['Veil attack'],
+      upgrade: 'Replaced by Veil of Blood in Phase 3 (Beatrice, Lv 40); they score the same (50.0 vs 49.8), but Veil of Blood\'s attack also heals you.',
+    },
+    'Chaos Volley': {
+      why: 'Your main spell from Errol (Lv 20) to the end: two bolts of 125% for a 0.6 s cast every 8 s, each applying Ignite. That Ignite turns on Renewing Flames (+8% spell damage) from Phase 5 and the Agonizing Flames jewel from Phase 6; in build A Volley is the top damage source at 103 DPS.',
+      combo: ['Renewing Flames', 'Lightning Tendrils'],
+      upgrade: 'Never replaced: upgrade its jewel instead, Regular in Phase 5, Greater in Phase 6, Primal in Phase 7.',
+      phases: {
+        ...Object.fromEntries(['p1', 'p2', 'p3', 'p4'].map(p => [p, {
+          why: 'Errol\'s Chaos T1 point (Lv 20): two bolts of 125% for a 0.6 s cast every 8 s, each applying Ignite. It\'s spell 1 in the simulator\'s best build at every stage, from the early game to the end.',
+          upgrade: 'Never replaced; its first jewel (Regular: +20% damage, −12% cooldown) comes in Phase 5.',
+        }])),
+        p5: { upgrade: 'Swap its Regular jewel for a Greater one in Phase 6 (Mairwyn), which adds Agonizing Flames.' },
+        p6: { upgrade: 'Swap its Greater jewel for a Primal one in Phase 7 (General Valencia).' },
+        p7: { upgrade: 'Final spell; fuse duplicate Primal jewels at the Fusion Forge until it has the mods listed.' },
+        p8: { upgrade: 'Final spell; fuse duplicate Primal jewels at the Fusion Forge until it has the mods listed.' },
+      },
+    },
+    'Shadowbolt': {
+      why: 'Known from the start: a 1 s cast for 200% that Leeches the boss, every 8 s. It\'s your second spell until Goreswine gives you Bone Explosion; endgame build A2 brings it back.',
+      upgrade: 'Replaced by Bone Explosion once Goreswine (Lv 27) gives the Unholy T1 point: 50.0 against 46.9 DPS in the early build.',
+      phases: {
+        p2: { why: 'Your second spell until Goreswine is down: a 1 s cast for 200% that Leeches the boss, every 8 s. Once he gives you Bone Explosion, slot that instead; its Condemn makes it the better partner for Volley.' },
+      },
+    },
+    'Bone Explosion': {
+      why: 'Goreswine\'s Unholy T1 point (Lv 27): 150% after a 0.5 s cast every 9 s, and it Condemns the boss (+15% damage taken for 5 s). The best second spell of the early game: 50.0 DPS, against 47.8 for Corrupted Skull or Rain of Chaos.',
+      combo: ['Veil attack', 'Chaos Volley'],
+      upgrade: 'Replaced by Ball Lightning in Phase 4 (Grethel, Lv 50); from then on Veil of Bones supplies the Condemn.',
+    },
+    'Veil of Blood': {
+      why: 'Beatrice\'s drop (Lv 40). It scores the same as the starting dash (49.8 vs 50.0), but its Veil attack drains the boss and heals you, which helps in longer fights.',
+      combo: ['Veil attack'],
+      upgrade: 'Replaced by Veil of Bones from Bane (Lv 50) in Phase 4.',
+    },
+    'Chaos Barrage': {
+      why: 'Quincey\'s Chaos T3 point (Lv 37) and your ultimate until Dracula: four volleys of 200% + 100% in a 1 s cast, and it Ignites the boss. Cast it when both spells are on cooldown.',
+      combo: ['Scholar', 'Chaos Volley'],
+      upgrade: 'Replaced by Blood Storm from the Soul Shard of Dracula in Phase 8 (build A); build B+ keeps Chaos Barrage if many Blood Storm bolts miss.',
+      phases: {
+        ...Object.fromEntries(['p3', 'p4', 'p5', 'p6'].map(p => [p, {
+          why: 'Quincey\'s Chaos T3 point (Lv 37): four volleys of 200% + 100% in a 1 s cast that Ignite the boss. With Scholar as your main blood, tier III makes it reset both spell cooldowns, so cast it right after both spells and recast them at once.',
+        }])),
+        p7: {
+          why: 'Still the ultimate in setup B: four volleys of 200% + 100% that Ignite the boss, about 9 DPS over a long fight. With Draculin as your main blood it no longer resets your spells, so it waits until both are on cooldown purely so it never delays one.',
+          upgrade: 'Replaced by Blood Storm from the Soul Shard of Dracula in Phase 8; build B+ keeps Chaos Barrage if many Blood Storm bolts miss.',
+        },
+      },
+    },
+    'Veil of Bones': {
+      why: 'Bane\'s drop (Lv 50) and your Veil until Phase 7. Its Veil attack Condemns the boss (+15% damage taken for 5 s), the debuff Unholy Chains used to supply, so Volley can pair with Ball Lightning and later Tendrils. Jewels add a skeleton that explodes for 80% with another Condemn, and +50% on the Veil attack against a boss below 20%.',
+      combo: ['Veil attack', 'Chaos Volley', 'Lightning Tendrils'],
+      upgrade: 'Replaced by Veil of Frost in Phase 7, once Primal jewels make its two novas and Freeze out-damage it; Unholy Coating takes over the Condemn.',
+      phases: {
+        p4: {
+          why: 'Bane\'s drop (Lv 50), the last boss of this phase. Its Veil attack Condemns the boss (+15% damage taken for 5 s), the debuff Unholy Chains used to supply, so Volley can pair with Ball Lightning. No jewels yet; until Bane, use Veil of Blood.',
+          upgrade: 'Kept until Phase 7; Regular jewels in Phase 5 add the skeleton explosion and +50% on a boss below 20%.',
+        },
+        p5: { upgrade: 'Its Greater jewel in Phase 6 adds +24% on the Veil attack; Veil of Frost replaces it in Phase 7.' },
+      },
+    },
+    'Ball Lightning': {
+      why: 'Grethel\'s Storm T1 point (Lv 50; Sir Erwin\'s works too). The orb shocks the boss six times, explodes and leaves it Static, so every crossbow hit shocks it for another 10% of your Spell Power. Next to Volley it beats Unholy Chains, whose 2.5 s channel costs crossbow shots.',
+      combo: ['Crossbow shot', 'Rain of Bolts', 'Snapshot'],
+      upgrade: 'Replaced by Lightning Tendrils in Phase 5 (Domina or Ziva, Lv 60).',
+    },
+    'Lightning Tendrils': {
+      why: 'Domina\'s or Ziva\'s Storm T2 point (Lv 60): seven bolts of 40% (with the +1 bolt jewel) in a 0.9 s channel every 8 s. Each bolt can crit and keeps the boss Static, so crossbow hits and, with Enhanced Conductivity, spell hits shock it; late game the crits keep Draculin\'s +30% cooldown rate running. Second only to Volley in build A: 97.5 DPS, plus 28.5 from Static shocks.',
+      combo: ['Enhanced Conductivity', 'Crossbow shot', 'Draculin'],
+      upgrade: 'Never replaced: upgrade its jewel, Regular in Phase 5, Greater in Phase 6, Primal in Phase 7. If its bolts miss a moving boss, endgame build A2 swaps it for Shadowbolt.',
+      phases: {
+        p5: {
+          why: 'Domina\'s or Ziva\'s Storm T2 point (Lv 60), replacing Ball Lightning: seven bolts of 40% (the Regular jewel adds the seventh) in a 0.9 s channel every 8 s. Each bolt keeps the boss Static, so crossbow hits and, with Enhanced Conductivity, spell hits shock it; Volley + Tendrils is the core from here on (109.2 DPS at Lv 60).',
+          upgrade: 'Swap its Regular jewel for a Greater one in Phase 6, which adds +24% cast rate.',
+        },
+        p6: { upgrade: 'Swap its Greater jewel for a Primal one in Phase 7; from then on its crits also feed Draculin\'s cooldown buff.' },
+      },
+    },
+    'Veil of Frost': {
+      why: 'Vincent\'s drop (Lv 44), worth slotting once Primal jewels arrive in Phase 7. Its Veil attack sets off a 50% nova and the illusion explodes for 40%; both Chill the boss for Cold Soul\'s +8% damage, and the Freeze mod adds a 30% hit on a V Blood (they can\'t be frozen).',
+      combo: ['Veil attack', 'Cold Soul'],
+      upgrade: 'Kept to the end; fuse duplicate Primal jewels at the Fusion Forge until it has all four mods.',
+    },
+    'Blood Storm': {
+      why: 'The Soul Shard of Dracula\'s ultimate and build A\'s pick (328.6 DPS): 25 bolts of 100% plus a 300% hit over a 4.5 s channel, about 19 DPS across a 600 s fight. It only wins if nearly all 25 bolts land, so count them on a target dummy first (Endgame builds tab).',
+      combo: ['Soul Shard of Dracula'],
+      upgrade: 'If many bolts miss, go back to Chaos Barrage (build B+); if Tendrils misses or Static has a cooldown, build A2 keeps Blood Storm with Shadowbolt.',
+    },
+    // Crossbow skills and rotation steps
+    'Rain of Bolts': {
+      why: 'The crossbow\'s first skill: five bolts of 40% in a 0.4 s cast every 8 s. It Marks the boss, so your next shot deals +25% and gives +7% attack speed for 10 s; fire it whenever no spell is ready.',
+      combo: ['Crossbow shot', 'Snapshot'],
+      phases: Object.fromEntries(['p1', 'p2'].map(p => [p, {
+        why: 'Your only crossbow skill until the Iron Crossbow brings Snapshot in Phase 3: five bolts of 40% in a 0.4 s cast every 8 s. It Marks the boss, so the next shot deals +25% and gives +7% attack speed for 10 s; fire it whenever no spell is ready.',
+      }])),
+    },
+    'Snapshot': {
+      why: 'The crossbow\'s second skill, from the Iron Crossbow on: a 75% shot in 0.3 s every 8 s that also Marks the boss. Use it between spells and follow it with a primary shot to cash in the Mark.',
+      combo: ['Crossbow shot', 'Rain of Bolts'],
+    },
+    'Crossbow shot': {
+      why: 'A primary shot: 100% physical damage after a 1 s draw, then 0.55 s before the next. Fire one whenever no spell or crossbow skill is ready, but skip it if a spell comes back during the draw; on a Static boss each hit also shocks for 10% of your Spell Power.',
+      phases: {
+        ...Object.fromEntries(['p1', 'p2', 'p3'].map(p => [p, {
+          why: 'A primary shot: 100% physical damage after a 1 s draw, then 0.55 s before the next. Shots are about half your damage this early, so fire one whenever no spell or crossbow skill is ready; skip it only if a spell comes back during the draw.',
+        }])),
+        p6: { why: 'A primary shot: 100% physical after a 1 s draw, then 0.55 s; Lightning Fast Strikes makes both 7% quicker. Tendrils keeps the boss Static, so each hit also shocks for 10% of your Spell Power (+20% with Lightning Fast Strikes); skip the shot if a spell comes back during the draw.' },
+        p7: { why: 'A primary shot: 100% physical after a 1 s draw, then 0.55 s. Every hit on the Static boss shocks it for 10% of your Spell Power, and every 12 s a shot carries the Unholy Coating (40% magic, a bone spirit and Condemn); skip the shot if a spell comes back during the draw.' },
+        p8: { why: 'A primary shot: 100% physical after a 1 s draw, then 0.55 s. Hits shock the Static boss for 10% of your Spell Power, a shot every 12 s carries the Unholy Coating\'s Condemn, and each hit has a 15% chance to give the Soul Shard\'s Bloodthirst (+15% damage for 6 s).' },
+      },
+    },
+    'Veil attack': {
+      why: 'The first primary shot after a Veil, which carries that Veil\'s effect: Veil of Blood drains, Veil of Bones Condemns, Veil of Frost sets off a nova, Chills and procs Freeze. Fire it straight after the dash so the effect lands before your next spells.',
+      phases: {
+        p1: { why: 'The first shot after your starting dash, which hits harder than a normal shot. Take it straight after the dash, then go back to your spells.' },
+        p2: { why: 'The first shot after your starting dash, which hits harder than a normal shot. With Bone Explosion cast first, it lands inside the Condemn (+15% damage taken).' },
+        p3: { why: 'The first shot after Veil of Blood: it drains the boss and heals you, and with Bone Explosion cast first it lands inside the Condemn. Take it straight after the dash, before Volley.' },
+        p4: { why: 'The first shot after Veil of Bones: it Condemns the boss (+15% damage taken for 5 s), so take it straight after the dash and follow with Ball Lightning and Volley inside the Condemn.' },
+        p5: { why: 'The first shot after Veil of Bones: it Condemns the boss for 5 s, and the Regular jewel spawns a skeleton that explodes for 80% with another Condemn, plus +50% on the shot against a boss below 20%. Follow with Volley and Tendrils.' },
+        p6: { why: 'The first shot after Veil of Bones: Condemn for 5 s, the skeleton\'s 80% explosion, +24% on the shot and +50% against a boss below 20% (Greater jewel). The Veil comes after your spells now, so its Condemn covers the next Volley and Tendrils.' },
+        p7: { why: 'The first shot after Veil of Frost: a 50% nova and the illusion\'s 40% explosion, both Chilling the boss for Cold Soul\'s +8%, +24% on the shot, and a 30% Freeze hit (V Bloods can\'t be frozen). If the coating is ready, its Condemn rides on it too.' },
+        p8: { why: 'The first shot after Veil of Frost: the 50% nova, the illusion\'s 40% explosion, Chill for Cold Soul, +24% on the shot and the 30% Freeze hit, plus the coating\'s Condemn when it\'s ready. Dracula\'s Maleficer also gives +15% spell crit for 4 s after the Veil.' },
+      },
+    },
+    // Magic sources
+    'Bone Ring': {
+      why: 'The first magic source, made from the crypt\'s bones: GL 3 and +5.3 Spell Power. Every spell scales with Spell Power, so it\'s your first damage upgrade.',
+      upgrade: 'Replaced by the Gravedigger Ring in Phase 2 (Goreswine, GL 9, +9.7 Spell Power).',
+    },
+    'Gravedigger Ring': {
+      why: 'Goreswine\'s ring (12 Grave Dust + 32 Mourning Lily): GL 9 and +9.7 Spell Power, nearly double the Bone Ring. It\'s also the base for the Ring of the Sorcerer, so keep it.',
+      upgrade: 'Upgraded into the Ring of the Sorcerer in Phase 3 (GL 12, +12.8 Spell Power).',
+    },
+    'Ring of the Sorcerer': {
+      why: 'Research Desk recipe: Gravedigger Ring + 4 Crude Amethyst + 1 Greater Blood Essence (from 4 Unsullied Hearts). GL 12 and +12.8 Spell Power; the early build\'s 50 DPS assumes it (about 47 with the Gravedigger Ring).',
+      upgrade: 'Replaced by the Scourgestone Pendant in Phase 4 (Leandra, GL 15, +16.5 Spell Power).',
+    },
+    'Scourgestone Pendant': {
+      why: 'Leandra\'s pendant (8 Scourgestone + 24 Gem Dust, Artisan Table): GL 15 and +16.5 Spell Power against the ring\'s 12.8. It\'s the base for the Pendant of the Sorcerer.',
+      upgrade: 'Upgraded into the Pendant of the Sorcerer in Phase 5 (GL 18, +20.9 Spell Power).',
+    },
+    'Pendant of the Sorcerer': {
+      why: 'Study blueprint: Scourgestone Pendant + 4 Regular Amethyst + 16 Glass. GL 18, +20.9 Spell Power, and 10% of crossbow hits Ignite the boss (at most once every 4 s), which feeds Renewing Flames.',
+      upgrade: 'Replaced by the Blood Merlot Amulet in Phase 6 (Baron du Bouchon, GL 22, +27.9 Spell Power).',
+    },
+    'Blood Merlot Amulet': {
+      why: 'Baron du Bouchon\'s amulet (Blood Merlot + 4 Dark Silver Ingot + 12 Radium Alloy): GL 22, +27.9 Spell Power and 20% less blood drain. The mid build\'s 150 DPS uses it, and it\'s the base for the Amulet of the Arch-Warlock.',
+      upgrade: 'Upgraded into the Amulet of the Arch-Warlock in Phase 7 (GL 25, +34 Spell Power), then replaced by the Blood Key.',
+    },
+    'Amulet of the Arch-Warlock': {
+      why: 'Athenaeum blueprint: Blood Merlot Amulet + 4 Flawless Sapphire + 12 Power Core. GL 25, +34 Spell Power and a 10% chance on crossbow hits to gain Cold Blood (+15% Bonus Spell Power for 4 s); setup B scores about 294 with it.',
+      upgrade: 'Replaced by the Blood Key in Phase 7, about +16 DPS.',
+    },
+    'Blood Key': {
+      why: 'Lord Styx\'s recipe (4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal, Artisan Table). It opens Dracula\'s castle and carries +34 Spell Power (+38 with its equip buff), so wear it over the Arch-Warlock for about +16 DPS (setup B ≈310).',
+      upgrade: 'Replaced by the Soul Shard of Dracula in Phase 8; the Key still opens the castle from your bag.',
+    },
+    'Soul Shard of Dracula': {
+      why: 'Dracula\'s drop: +34 Spell Power, +16% Blood Efficiency (stronger Draculin effects), a 15% chance on crossbow hits for Bloodthirst (+15% damage for 6 s), and the Blood Storm ultimate. Every endgame build wears it.',
+      combo: ['Blood Storm', 'Draculin', 'Crossbow shot'],
+      upgrade: 'Final magic source. It loses durability over time: repair it by feeding on Primal Blood Souls in Tier 2 Rift Incursions.',
+    },
+    // Crossbows
+    'Copper Crossbow': {
+      why: 'Rufus unlocks the crossbow line; Copper (16 Copper Ingot + 8 Plank) is GL 9 with 8.5 Physical Power and Rain of Bolts. The crossbow is about half your early damage, so keep it at the best tier you can make.',
+      combo: ['Rain of Bolts', 'Crossbow shot'],
+      upgrade: 'Upgraded into the Merciless Copper Crossbow in Phase 2 (GL 12).',
+    },
+    'Merciless Copper Crossbow': {
+      why: 'Research Desk recipe: Copper Crossbow + 2 Crude Topaz + 12 Whetstone + 4 Leather. GL 12 and 10.9 Physical Power; a GL 12 weapon is also what mining Iron Ore needs.',
+      upgrade: 'Replaced by the Iron Crossbow in Phase 3 (Quincey\'s Smithy, GL 15).',
+    },
+    'Iron Crossbow': {
+      why: '12 Iron Ingot + 8 Plank at Quincey\'s Smithy: GL 15, 13.8 Physical Power, and Snapshot joins Rain of Bolts. Each shot hits for about 24, and the crossbow is half the early build\'s damage.',
+      combo: ['Rain of Bolts', 'Snapshot', 'Crossbow shot'],
+      upgrade: 'Upgraded into the Merciless Iron Crossbow in Phase 5 (GL 18).',
+    },
+    'Merciless Iron Crossbow': {
+      why: 'Study blueprint: Iron Crossbow + Regular Topaz + 4 Greater Blood Essence + 4 Reinforced Plank. GL 18 and 17.3 Physical Power; GL 18 also lets you mine Silver Ore for the next tier.',
+      upgrade: 'Replaced by the Dark Silver Crossbow in Phase 6 (Cyril\'s Anvil, GL 24).',
+    },
+    'Dark Silver Crossbow': {
+      why: '12 Dark Silver Ingot + 8 Reinforced Plank + 1 Primal Blood Essence at Cyril\'s Anvil: GL 24 and 24.3 Physical Power. GL 23+ is also what mining Blood Crystals for the Blood Key needs.',
+      upgrade: 'Upgraded into the Sanguine Crossbow in Phase 7 (Flawless Topaz + 12 Gold Ingot), then into an Epic Ancestral Crossbow.',
+    },
+    'Ancestral Crossbow Shards': {
+      why: 'The Epic Ancestral Crossbow: Sanguine Crossbow + an Epic shard + 4 Onyx Tear at the Ancestral Forge. 33.7 Physical Power and three rolls; every late build wants Spell Critical Chance, Spell Critical Power and Spell Cooldown Rate (+16%, +16% and +12% at the top tier).',
+      upgrade: 'Kept to the end; if a roll missed, fuse two at the Fusion Forge (12 Ember Glass) to keep the best rolls.',
+    },
+    // Armour (the chest stands for the set)
+    'Nightstalker Vest': {
+      why: 'The first leather set (vest: 8 Leather + 4 Coarse Thread). It adds health, not Spell Power; you wear it because every Warlock piece is made from a Nightstalker piece.',
+      upgrade: 'Upgraded piece by piece into Warlock in Phase 2 (Research Desk).',
+    },
+    'Warlock Vest': {
+      why: 'Research Desk upgrade of each Nightstalker piece (+ 4 Leather + 4 Coarse Thread + 8 Copper Ingot). The set gives +7.2% Bonus Spell Power, +4% cooldown rate (2 pieces) and +1 Gear Level (4 pieces); keep it on through Phase 4, since Hollowfang is only a base.',
+      upgrade: 'Replaced by Dark Magus in Phase 5: slightly less Spell Power (6%), but 8 Gear Levels higher and +3% leech.',
+    },
+    'Dark Magus Chestguard': {
+      why: 'Study blueprint: each Hollowfang piece + 4 Iron Ingot + 8 Thick Leather (Frostmaw). +6% Bonus Spell Power, +4% cooldown rate (2 pieces), +1 Gear Level (3) and +3% leech (4); the set is GL 25 against Warlock\'s 17.',
+      upgrade: 'Replaced by Maleficer Scholar in Phase 7 (Athenaeum).',
+    },
+    'Maleficer Scholar Chestguard': {
+      why: 'Athenaeum blueprint: each Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence. +6% Bonus Spell Power (1.5% a piece), +5% cooldown rate (2 pieces), +4% leech (3) and +1 Gear Level (4).',
+      upgrade: 'Each piece upgrades into Dracula\'s Maleficer in Phase 8 as Talzur, Solarus, Adam and Megara unlock them (setup B ≈321).',
+    },
+    "Dracula's Maleficer Chestguard": {
+      why: 'Each Maleficer Scholar piece + 12 Shadow Weave + 12 Bat Leather; Adam unlocks the chest, Talzur the gloves, Solarus the boots and Megara the leggings. The set adds +6% cooldown rate (2 pieces), +4% leech (3) and +15% spell crit for 4 s after every Veil (4).',
+      combo: ['Veil of Frost', 'Draculin'],
+      upgrade: 'Final armour: every endgame build wears all four pieces.',
+    },
+    // Jewels
+    'Regular jewel': {
+      why: 'Two mods for one spell (4 Regular gem + 4 Iron Ingot at Raziel\'s Jewelcrafting Table): Chaos Volley (Amethyst) +20% damage and −12% cooldown, Tendrils (Topaz) +1 bolt and +12% bolt damage, Veil of Bones (Emerald) the skeleton explosion and +50% on a boss below 20%. The mods roll at random, so keep the jewel that has the pair.',
+      upgrade: 'Replaced by Greater jewels (3 mods) in Phase 6, after Mairwyn (Lv 70).',
+    },
+    'Greater jewel': {
+      why: 'Three mods (4 Flawless gem + 4 Dark Silver Ingot, from Mairwyn): on top of the Regular pairs, Chaos Volley gets Agonizing Flames (a burn when a bolt hits an Ignited boss), Tendrils +24% cast rate and Veil of Bones +24% on the Veil attack.',
+      upgrade: 'Replaced by Primal jewels (4 mods) in Phase 7, after General Valencia (Lv 84).',
+    },
+    'Primal jewel': {
+      why: 'Four mods (4 Flawless gem + 320 Greater Stygian Shards, from Valencia). Veil of Frost (Sapphire) takes both novas, +24% Veil attack and Freeze; Chaos Volley and Tendrils keep their three and use the free fourth on projectile range and speed, so more bolts land on a moving boss. Merge duplicates at the Fusion Forge (12 Ember Glass) to keep the best mods.',
+      upgrade: 'Final jewels.',
+    },
+    // Consumables
+    'Enchanted Brew': {
+      why: '+3 Spell Power for 60 minutes from Clive\'s Alchemy Table. Flat Spell Power raises every spell, Ignite tick and Static shock, and the brew is cheap to make.',
+      use: 'Drink it at the castle before you head out: it lasts 60 minutes and survives death, so one covers a hunting trip; drink another before a boss if it\'s nearly out. Craft it at the Alchemy Table from 32 Snow Flower + Fish Bone (Finn) + Empty Waterskin (Keely). Its +3 Spell Power lifts Chaos Volley, your second spell and the ultimate alike; it doesn\'t stack with the Witch Potion.',
+      combo: ['Chaos Volley', 'Chaos Barrage'],
+      upgrade: 'Replaced by the Witch Potion in Phase 7 (+5 Spell Power).',
+    },
+    'Witch Potion': {
+      why: '+5 Spell Power for 60 minutes, the strongest spell brew; it replaces the Enchanted Brew (the two don\'t stack).',
+      use: 'Drink it at the castle before you leave, or before a boss if it\'s nearly out; it lasts 60 minutes and survives death. Craft it at the Alchemy Table (Athenaeum blueprint) from 60 Sacred Grapes + 60 Snow Flower + Fish Bone + Empty Glass Bottle, or buy it from the Treasure Hunter or a city Herbs & Potions vendor. The flat +5 Spell Power lifts every hit of Volley, Tendrils, the ultimate, the Veil novas and the coating.',
+      combo: ['Chaos Volley', 'Lightning Tendrils'],
+    },
+    'Elixir of the Prowler': {
+      why: '+7% Veil cooldown rate (and +4% movement speed) for 60 minutes: more Veil of Bones casts, so the boss is Condemned more often. It scored 109.2 in Phase 5, just ahead of the Elixir of the Bat.',
+      use: 'Drink it at the castle before a hunting trip; it lasts 60 minutes and survives death, and only one elixir can be active. Brew it at the Alchemy Table from Meredith\'s recipe: 20 Sunflower + 20 Fire Blossom + Greater Blood Essence + Empty Glass Bottle. It speeds up the Veil, so it powers Veil of Bones and the Condemn its Veil attack puts on the boss before Volley and Tendrils.',
+      combo: ['Veil of Bones', 'Veil attack'],
+      upgrade: 'Replaced by the Elixir of the Bat in Phase 6, once Lightning Fast Strikes is in.',
+    },
+    'Elixir of the Bat': {
+      why: '+6% spell cooldown rate and +4% spell leech for 60 minutes. With Lightning Fast Strikes in the third slot it edges out the Prowler: Volley and Tendrils come back sooner, and the leech keeps you topped up.',
+      use: 'Drink it at the castle before you head out; it lasts 60 minutes, survives death, and replaces any other elixir. Brew it at the Alchemy Table from Cassius\'s recipe: 20 Blood Rose + 20 Bleeding Heart (Ruins of Mortium) + Greater Blood Essence + Empty Glass Bottle. Its cooldown rate is what lets the Phase 6 rotation go spells first (Volley, Tendrils, then the Veil).',
+      combo: ['Chaos Volley', 'Lightning Tendrils'],
+      upgrade: 'Replaced by the Elixir of the Twisted in Phase 7 (Jakira, Lv 75).',
+    },
+    'Elixir of the Twisted': {
+      why: '+8% spell crit chance and +8% crit power for 60 minutes. Late game, crits are what keep Draculin\'s +30% cooldown rate and Wicked Power\'s effects coming, so it beats the Bat once Draculin is your blood.',
+      use: 'Drink it at the castle before each trip to a boss; it lasts 60 minutes, survives death, and only one elixir can be active. Brew it at the Alchemy Table from Jakira\'s recipe: 20 Corrupted Flower (Oakveil) + 20 Plague Brier (Gloomrot South) + Greater Blood Essence + Empty Glass Bottle. The extra crits on Tendrils\' seven bolts and Volley\'s two keep Draculin\'s cooldown buff up almost all the time.',
+      combo: ['Draculin', 'Lightning Tendrils', 'Wicked Power'],
+    },
+    'Unholy Coating': {
+      why: 'Every 12 s your next crossbow shot adds 40% magic damage, a 50% bone spirit and Condemn (+15% damage taken for 5 s): about 14 DPS, mostly from the Condemn. It takes over the Condemn Veil of Bones gave before you switched to Veil of Frost.',
+      use: 'Apply it to the crossbow at the castle before you head out; it lasts 60 minutes and survives death, and its on-hit recharges by itself every 12 s. Craft it at the Alchemy Table from Stavros\'s recipe: 16 Corrupted Flower + 16 Venom Sap. You don\'t time it: keep shooting between spells and it rides on the next shot, the Veil attack included, so its Condemn lands under Volley and Tendrils.',
+      combo: ['Crossbow shot', 'Veil attack'],
+    },
+    // Blood
+    'Scholar': {
+      why: 'The caster blood (Nuns, Priests, Villagers, Alchemists, Witches, Devoted). Its tiers: I +12% Spell Power, II +12% cooldown rate, III +20% Ultimate Power and an ultimate that resets your spell cooldowns, IV +12 Spell Charge at 90%+ quality.',
+      upgrade: 'Main blood through Phase 6, raised with a Prison Cell prisoner (Phase 4) and Corrupted Fish (Phase 6); from Phase 7 Draculin leads and Scholar stays on as its Homogenizer secondary.',
+      phases: {
+        p1: { why: 'Your blood from the start: feed on Nuns, Priests, Villagers, Alchemists, Witches or Devoted. At the ~60% you get from feeding it gives tiers I–III: +12% Spell Power and +12% cooldown rate at about 80% strength, and the ultimate reset once you have an ultimate.', upgrade: 'Keep feeding on the best Scholar carriers you find; a Prison Cell (Vincent, Phase 4) lets you hold a high-quality one.' },
+        p2: { why: 'Still from feeding (~60%): tiers I–III, so +12% Spell Power and +12% cooldown rate at about 80% strength. Tier III\'s ultimate reset matters from Phase 3, when Quincey gives you Chaos Barrage.', upgrade: 'Keep feeding on the best Scholar carriers you find; a Prison Cell (Vincent, Phase 4) lets you hold a high-quality one.' },
+        p3: { why: 'From feeding (~60%): tiers I–III. Tier III is what makes this phase\'s rotation work: Chaos Barrage resets both spell cooldowns, so another Bone Explosion and Volley follow it at once.', upgrade: 'In Phase 4 dominate a high-quality Scholar carrier and keep it in a Prison Cell (Vincent\'s recipe).' },
+        p4: { why: 'A 90% Scholar prisoner in a Prison Cell: tiers I–III at nearly full strength, and tier IV adds +12 Spell Charge (a free spell every so often). Tier III still makes Chaos Barrage reset both spells.', upgrade: 'Corrupted Fish (Brighthaven Docks, Phase 6) lift the prisoner to 100%.' },
+        p5: { why: 'A 90% Scholar prisoner: +12% Spell Power, +12% cooldown rate, +20% Ultimate Power with the spell reset, and +12 Spell Charge. Every blood/elixir/passive combination was tried here and Scholar still won.', upgrade: 'Corrupted Fish (Brighthaven Docks, Phase 6) lift the prisoner to 100%.' },
+        p6: { why: 'Scholar at 100% (fed with Corrupted Fish): every tier at full strength, and tier V adds +20% Blood Efficiency. With the Bat elixir it puts your cooldown rate close to the 30% cap, and Chaos Barrage still resets both spells.', upgrade: 'In Phase 7 Draculin becomes the main blood; keep a 90%+ Scholar potion for the Blood Homogenizer.' },
+        p7: { why: 'Now the secondary blood: Lucile\'s Blood Homogenizer adds Scholar tier II (+12% cooldown rate) to Draculin, and a 90%+ donor potion adds tier IV (+12 Spell Charge) too. The ultimate reset (tier III) is gone, so Chaos Barrage simply waits for both spells to be on cooldown.', upgrade: 'Kept as the Homogenizer secondary to the end.' },
+        p8: { why: 'The secondary blood: Scholar tier II (+12% cooldown rate) through the Blood Homogenizer, plus tier IV (+12 Spell Charge) from a 90%+ donor. With the weapon and armour it fills the 30% cooldown cap.', upgrade: 'Kept as the Homogenizer secondary to the end.' },
+      },
+    },
+    'Draculin': {
+      why: 'The late-game main blood (Vampire Cultists, Blood Prophets, Night Maidens): +12% Spell Power, +8% crit power, +16% spell crit, and every spell crit gives +30% cooldown rate for 3 s. With ~50% crit and Tendrils\' seven bolts that buff is up almost all the time.',
+      combo: ['Lightning Tendrils', 'Elixir of the Twisted', 'Scholar'],
+      upgrade: 'Kept to the end at 100%, with Scholar tier II added at the Blood Homogenizer.',
+      phases: {
+        p7: { why: 'Your new main blood at 100% (Vampire Cultists, Blood Prophets, Night Maidens): +12% Spell Power, +8% crit power, +16% spell crit, and every spell crit gives +30% cooldown rate for 3 s. Switch to it once Lucile\'s Blood Homogenizer can add Scholar tier II.' },
+        p8: { why: 'Main blood at 100%. The Soul Shard\'s +16% Blood Efficiency (36% in all) strengthens every Draculin tier: each spell crit now gives about +40.8% cooldown rate for 3 s, and with ~50% crit and Tendrils\' seven bolts it is up almost all the time.' },
+      },
+    },
+    // Stygian passives
+    'Enhanced Conductivity': {
+      why: '+7% Bonus Spell Power, and your spell hits on a Static boss shock it too (10% of Spell Power each), not just crossbow hits. With Tendrils keeping Static up it\'s the first passive to discover (400 Stygian Shards per random Discover).',
+      combo: ['Lightning Tendrils', 'Chaos Volley'],
+    },
+    'Renewing Flames': {
+      why: '+8% spell damage against an Ignited target. Chaos Volley (and Chaos Barrage) keep the boss Ignited almost all the time, so it\'s close to a flat +8%.',
+      combo: ['Chaos Volley'],
+    },
+    'Lightning Fast Strikes': {
+      why: 'Third passive slot (Cyril): +7% attack speed for faster crossbow shots and +20% damage on Static shocks. Crossbow hits and shocks are about a third of your mid-game damage, so it beats the other elemental passives here.',
+      combo: ['Lightning Tendrils', 'Crossbow shot'],
+      upgrade: 'Swapped for Cold Soul in Phase 7, when Veil of Frost starts Chilling the boss.',
+    },
+    'Wicked Power': {
+      why: 'Vampire passive (600 Greater Stygian Shards per random Discover): +8% spell crit, and each crit has a 50% chance to put a random school effect such as Condemn or Chill on the boss. More crits also mean more of Draculin\'s cooldown buff.',
+      combo: ['Draculin', 'Elixir of the Twisted'],
+    },
+    'Hunger for Blood': {
+      why: 'Vampire passive: +8% damage against V Bloods from every source (spells, crossbow, shocks and burns), a flat multiplier on every boss this route hunts.',
+    },
+    'Cold Soul': {
+      why: '+8% spell crit power, and +8% damage to a Chilled or Frozen target. Veil of Frost\'s Veil attack and novas Chill the boss, so from Phase 7 it replaces Lightning Fast Strikes.',
+      combo: ['Veil of Frost', 'Veil attack'],
+    },
   };
 
   // ---------- Endgame + reference views ----------
@@ -337,6 +738,7 @@
     id: 'spellcaster',
     phases: PHASES,
     resources: RES,
+    info: INFO,
     needs: (window.BR_NEEDS || {}).spellcaster || {},
     // Loadout slot text → icon (first spell named).
     slotIcons: ['Bone Explosion', 'Shadowbolt', 'Chaos Volley', 'Ball Lightning', 'Unholy Chains', 'Lightning Tendrils', 'Chaos Barrage', 'Blood Storm', 'Veil of Blood', 'Veil of Bones', 'Veil of Frost', 'Veil of Chaos'],

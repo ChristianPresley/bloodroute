@@ -11,7 +11,7 @@
   // steps / craft entries: { t: html, ic: icon name }. Bosses: gets = icons of what they unlock.
   const PHASES = [
     {
-      id: 'p1', title: 'Wake up', levels: 'Start – 20', sig: 'Copper Spear', regions: ['Farbane Woods'],
+      id: 'p1', title: 'Wake up', levels: 'Start – 20', sig: 'Copper Spear', stage: 'Beginning', regions: ['Farbane Woods (bandit camps, copper mine)'],
       goal: 'A castle, bone gear, a Copper Spear and Blood Rage.',
       steps: [
         { ic: 'Bone Spear', t: 'Leave the crypt and collect bones: craft the <b>Bone Spear</b> (16 Bone) and Bone Ring from the inventory. The spear has the fastest primary combo of the starting weapons; it\'s your weapon until Gaius in Phase 5.' },
@@ -29,10 +29,18 @@
         { ic: 'Copper Spear', t: 'Reinforced Bone Spear (Bone Spear + 4 Plank + 128 Stone) → <b>Copper Spear</b> (16 Copper Ingot + 8 Plank, Simple Workbench). Copper adds A Thousand Spears: 8 stabs for 140% that interrupt the target, plus a 50% thrust on recast.' },
         CRAFT.nightstalker('Marauder'), CRAFT.hearts,
       ],
-      loadout: { slots: ['Starting dash', 'Shadowbolt', 'Blood Rage', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Spear', 'Brute'], kv: [['Blood', 'Brute (Bandit Muggers, Stalkers); Creature until you can take them'], ['Combo', 'Blood Rage → primary attacks; A Thousand Spears to interrupt, Shadowbolt on cooldown']] },
+      loadout: {
+        slots: ['Starting dash', 'Shadowbolt', 'Blood Rage', '—'], gear: ['Bone Ring', 'Nightstalker Vest', 'Copper Spear', 'Brute'],
+        kv: [['Blood', 'Brute (Bandit Muggers, Stalkers); Creature until you can take them']],
+        rot: {
+          order: ['Shadowbolt', 'Blood Rage', { n: 'A Thousand Spears', when: 'when the boss starts a cast' }, { n: 'Starting dash', when: 'to dodge a telegraphed hit' }],
+          fill: ['Primary attacks'],
+          why: 'Shadowbolt opens from range while the boss walks in and puts Leech on it. Blood Rage\'s +25% attack speed lasts only 3 s, so cast it once you\'re in melee and spend all of it on primary attacks: they\'re your damage and, with Brute blood, your healing. A Thousand Spears interrupts, so keep it for a cast instead of firing it on cooldown, and send Shadowbolt again whenever it\'s ready.',
+        },
+      },
     },
     {
-      id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', regions: ['Farbane Woods'],
+      id: 'p2', title: 'First tools', levels: '20 – 30', sig: 'Gravedigger Ring', stage: 'Beginning', regions: ['Farbane Woods'],
       goal: 'Research, Marauder armor and the Merciless Copper Spear.',
       steps: [STEP.desk, STEP.heart2],
       bosses: [
@@ -45,10 +53,17 @@
         { ic: 'Marauder Vest', t: '<b>Marauder Vestment</b> (Research Desk): each piece = Nightstalker piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot. Primary Attack Speed on every piece; 2-piece +3% Primary Attack Leech, 4-piece +1 Gear Level.' },
       ],
       notes: [NOTE.hearts, NOTE.blueprints],
-      loadout: { slots: ['Starting dash', 'Shadowbolt', 'Blood Rage', '—'], gear: ['Gravedigger Ring', 'Marauder Vest', 'Merciless Copper Spear', 'Brute'], kv: [['Combo', 'Blood Rage → primary attacks; A Thousand Spears to interrupt, Shadowbolt on cooldown']] },
+      loadout: {
+        slots: ['Starting dash', 'Shadowbolt', 'Blood Rage', '—'], gear: ['Gravedigger Ring', 'Marauder Vest', 'Merciless Copper Spear', 'Brute'],
+        rot: {
+          order: ['Shadowbolt', 'Blood Rage', { n: 'A Thousand Spears', when: 'when the boss starts a cast' }, { n: 'Starting dash', when: 'to dodge a telegraphed hit' }],
+          fill: ['Primary attacks'],
+          why: 'The same plan with a harder-hitting spear: Shadowbolt from range for Leech, Blood Rage as you reach melee, then primary attacks through its 3 s haste and beyond. Marauder puts Primary Attack Speed on every piece and +3% Primary Attack Leech at 2 pieces, so those swings are both your damage and your healing. Keep A Thousand Spears to interrupt casts and dash out of telegraphed hits.',
+        },
+      },
     },
     {
-      id: 'p3', title: 'Iron and blood', levels: '30 – 40', sig: 'Ring of the Duskwatcher', regions: ['Farbane Woods', 'Dunley Farmlands'],
+      id: 'p3', title: 'Iron and blood', levels: '30 – 40', sig: 'Ring of the Duskwatcher', stage: 'Early', regions: ['Farbane Woods (Bandit Stronghold)', 'Dunley Farmlands (Beatrice, iron and cotton)'],
       goal: 'The early build: Iron Spear, Ring of the Duskwatcher, Brew of Ferocity, Veil of Blood and an ultimate.',
       bosses: [
         B('Clive the Firestarter', ['Alchemy Table', 'Minor Explosive Box'], 'Alchemy Table and Minor Explosive Box (opens Quincey\'s stronghold), plus a guaranteed Research Desk weapon blueprint. Chaos T2 point.'),
@@ -71,11 +86,17 @@
         label: 'Early build',
         slots: ['Veil of Blood', 'Shadowbolt', 'Blood Rage', 'Chaos Barrage'],
         gear: ['Ring of the Duskwatcher', 'Marauder Vest', 'Iron Spear', 'Brew of Ferocity', 'Brute'],
-        kv: [['Rotation', 'Harpoon to pull → Blood Rage → primary attacks; A Thousand Spears when the boss winds up, Veil to reset and heal'], ['Why speed', 'Primary attacks are most of your damage and all of your leech']],
+        kv: [['Why speed', 'Primary attacks are most of your damage and all of your leech']],
+        rot: {
+          pre: ['Brew of Ferocity'],
+          order: ['Shadowbolt', 'Harpoon', 'Blood Rage', { n: 'A Thousand Spears', when: 'when the boss winds up' }, { n: 'Veil of Blood', when: 'to dodge a big hit, or to reset and heal' }, 'Veil attack', { n: 'Chaos Barrage', when: 'once a fight, while the boss is snared or casting' }],
+          fill: ['Primary attacks'],
+          why: 'Shadowbolt as the boss approaches, then Harpoon pulls it into melee and snares it, so Blood Rage\'s 3 s of +25% attack speed all goes into primary attacks. Veil of Blood is your dodge and your heal: dash out of a big hit and land the Veil attack straight away for 5% of your maximum health and a nova that drains and Leeches. A Thousand Spears interrupts the boss\'s wind-ups, and Chaos Barrage is a once-a-fight burst while Harpoon\'s snare holds it in place.',
+        },
       },
     },
     {
-      id: 'p4', title: 'Storm and sustain', levels: '40 – 50', sig: 'Veil of Storm', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
+      id: 'p4', title: 'Storm and sustain', levels: '40 – 50', sig: 'Veil of Storm', stage: 'Early', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
       goal: 'Heart Strike, Discharge and Veil of Storm, the Study, a Brute prisoner and the mid-game materials.',
       steps: [
         STEP.dominate,
@@ -99,10 +120,18 @@
         { ic: 'Study', t: 'Spend Scrolls at the Study on the <b>Crimson Templar</b> set, <b>Pendant of the Duskwatcher</b> and <b>Merciless Iron Twinblade</b> (for Phase 5); each draw is random within its category.' },
       ],
       notes: ['Hold Discharge for a boss\'s big wind-up hit: it blocks the hit, pulls the boss in and stuns it for 0.6 s, enough for a primary hit or two.', 'Wear the Scourgestone Pendant (GL 15) over the Ring of the Duskwatcher (GL 12) for the Gear Level. You give up the ring\'s +7% Attack Speed until the Pendant of the Duskwatcher in Phase 5.', NOTE.fish],
-      loadout: { label: 'From Meredith on', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'], gear: ['Scourgestone Pendant', 'Marauder Vest', 'Iron Spear', 'Brew of Ferocity', 'Brute'], kv: [['Rotation', 'Veil → Veil attack → Blood Rage → primary attacks inside the 4 s attack-speed window; spear skills on cooldown, Discharge on the boss\'s big hit, Heart Strike to close in and put Leech on the boss']] },
+      loadout: {
+        label: 'From Meredith on', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'], gear: ['Scourgestone Pendant', 'Marauder Vest', 'Iron Spear', 'Brew of Ferocity', 'Brute'],
+        rot: {
+          pre: ['Brew of Ferocity'],
+          order: [{ n: 'Heart Strike', when: 'to close in at the pull' }, 'Veil of Storm', 'Veil attack', 'Blood Rage', { n: 'Discharge', when: 'on the boss\'s big wind-up hit' }],
+          fill: ['Primary attacks', 'Harpoon', 'A Thousand Spears'],
+          why: 'Veil of Storm opens the window: +20% attack speed for 4 s, and the Veil attack heals 5% of your maximum health, so land it first and cast Blood Rage right after to stack its +25% for 3 s on top. Fill the window, and the rest of the 8 s until the next Veil, with primary attacks and the spear skills as they come up. Open with Heart Strike to close the gap (its nova puts Leech on the boss), and hold Discharge for the big hit: it blocks it, pulls the boss in and stuns it for 0.6 s.',
+        },
+      },
     },
     {
-      id: 'p5', title: 'Twinblades', levels: '50 – 60', sig: 'Merciless Iron Twinblade', regions: ['Dunley Farmlands', 'Hallowed Mountains', 'Ruins of Mortium', 'Gloomrot South'],
+      id: 'p5', title: 'Twinblades', levels: '50 – 60', sig: 'Merciless Iron Twinblade', stage: 'Mid', regions: ['Dunley Farmlands (Colosseum)', 'Hallowed Mountains (Frostmaw)', 'Ruins of Mortium (Stygian Shards)', 'Gloomrot South (Domina, Ziva)'],
       goal: 'The mid-game build: Gaius\'s Twinblades, Crimson Templar, the Beast elixir, Storm mastery, jewels and the first passives.',
       steps: [
         STEP.shards,
@@ -129,10 +158,20 @@
         CRAFT.rareAncestral('Twinblade'),
       ],
       notes: ['Javelin recalls after 2 s and pierces on the way back: throw it past the boss so the recall goes through it.'],
-      loadout: { label: 'Mid build', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'], gear: ['Pendant of the Duskwatcher', 'Crimson Templar Chestguard', 'Merciless Iron Twinblade', 'Regular jewel', 'Elixir of the Beast', 'Brew of Ferocity', 'Brute', 'Lightning Fast Strikes', 'Sanguine Mastery'], kv: [['Rotation', 'Veil → Veil attack → Blood Rage → Javelin past the boss → Sweeping Strike → primary attacks; Discharge on its big hit']] },
+      loadout: {
+        label: 'Mid build', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'],
+        gear: ['Pendant of the Duskwatcher', 'Crimson Templar Chestguard', 'Merciless Iron Twinblade', 'Regular jewel', 'Elixir of the Beast', 'Brew of Ferocity', 'Brute', 'Lightning Fast Strikes', 'Sanguine Mastery'],
+        rot: {
+          pre: ['Elixir of the Beast', 'Brew of Ferocity'],
+          order: ['Veil of Storm', 'Veil attack', 'Blood Rage', 'Javelin', 'Sweeping Strike', { n: 'Discharge', when: 'on the boss\'s big hit' }, { n: 'Heart Strike', when: 'to close in, or to put Leech back on the boss' }],
+          fill: ['Primary attacks'],
+          why: 'Veil of Storm, then the Veil attack at once: the 5% heal, Static for Lightning Fast Strikes and +20% attack speed for 4 s. Blood Rage stacks +25% for 3 s and Leeches the boss, which turns on Sanguine Mastery\'s +8% physical damage. Throw Javelin past the boss so its recall pierces it 2 s later, Sweeping Strike back in, and spend everything else on primary attacks until the Veil is ready again; Discharge waits for the big hit.',
+        },
+        jewels: { 'Veil of Storm': ['damage of next primary attack', 'Dashing through an enemy'], 'Blood Rage': ['physical power by', 'duration of the effect'] },
+      },
     },
     {
-      id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Elixir of the Werewolf', regions: ['Gloomrot South', 'Cursed Forest', 'Dunley Farmlands', 'Silverlight Hills'],
+      id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Elixir of the Werewolf', stage: 'Mid', regions: ['Gloomrot South (Angram)', 'Cursed Forest', 'Dunley Farmlands (Willfred, Dracula\'s Demise)', 'Silverlight Hills'],
       goal: 'Dark Silver Twinblade, the Werewolf elixir, a 100% Brute prisoner and the late-game materials.',
       access: ACCESS,
       bosses: [
@@ -152,14 +191,24 @@
         { ic: 'Dark Silver Twinblade', t: `<b>Dark Silver Twinblade</b> (GL 24, Anvil; Gaius's recipe): 12 Dark Silver Ingot + 8 Reinforced Plank + 1 Primal Blood Essence. ${L(C(6094), 'Silver Ore')} needs a GL 18+ weapon.` },
         { ic: 'Elixir of the Werewolf', t: '<b>Elixir of the Werewolf</b>: 20 Ghost Shroom (Cursed Forest) + 20 Fire Blossom + Greater Blood Essence + Empty Glass Bottle. Use it for damage; keep a Beast elixir for bosses that out-damage your leech.' },
         CRAFT.dawnthorn('Grim Knight'), CRAFT.merlot, CRAFT.merlotAmulet,
-        { ic: 'Greater jewel', t: '<b>Greater jewels</b> (4 Flawless gem + 4 Dark Silver Ingot, 3 mods) for Veil of Storm (Topaz) and Blood Rage (Ruby).' },
+        { ic: 'Greater jewel', t: '<b>Greater jewels</b> (4 Flawless gem + 4 Dark Silver Ingot, 3 mods) for Veil of Storm (Topaz: the two Regular mods plus a 0.3–0.5 s stun that consumes Static) and Blood Rage (Ruby: the two Regular mods plus a cleanse of all negative effects).' },
         CRAFT.castle4, CRAFT.fish('Brute'),
       ],
       notes: [NOTE.gl],
-      loadout: { label: 'Mid build, complete', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'], gear: ['Blood Merlot Amulet', 'Crimson Templar Chestguard', 'Dark Silver Twinblade', 'Greater jewel', 'Elixir of the Werewolf', 'Brew of Ferocity', 'Brute', 'Lightning Fast Strikes', 'Sanguine Mastery', 'Blood Spray'], kv: [['Rotation', 'Veil → Veil attack → Blood Rage → Javelin past the boss → Sweeping Strike → primary attacks; Discharge on its big hit, Heart Strike for Leech']] },
+      loadout: {
+        label: 'Mid build, complete', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'],
+        gear: ['Blood Merlot Amulet', 'Crimson Templar Chestguard', 'Dark Silver Twinblade', 'Greater jewel', 'Elixir of the Werewolf', 'Brew of Ferocity', 'Brute', 'Lightning Fast Strikes', 'Sanguine Mastery', 'Blood Spray'],
+        rot: {
+          pre: ['Elixir of the Werewolf', 'Brew of Ferocity'],
+          order: ['Veil of Storm', 'Veil attack', 'Blood Rage', 'Javelin', 'Sweeping Strike', { n: 'Discharge', when: 'on the boss\'s big hit' }, { n: 'Heart Strike', when: 'to keep Leech on the boss between Blood Rages' }],
+          fill: ['Primary attacks'],
+          why: 'The same window, now faster: the Werewolf elixir\'s +7% attack speed sits under Veil of Storm\'s +20% and Blood Rage\'s +25%, and Blood Spray\'s crits leech on top of your Primary Attack Leech. Veil, Veil attack and Blood Rage back to back, Javelin past the boss and Sweeping Strike while the recall comes back, then primary attacks. Discharge is for the boss\'s big hit; Heart Strike keeps Leech on the boss for Sanguine Mastery while Blood Rage is on cooldown.',
+        },
+        jewels: { 'Veil of Storm': ['damage of next primary attack', 'Dashing through an enemy', 'Consumes Static'], 'Blood Rage': ['physical power by', 'duration of the effect', 'Removes all negative effects'] },
+      },
     },
     {
-      id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Amulet of the Blademaster', regions: ['Gloomrot North', 'Oakveil Woodlands', 'Cursed Forest', 'Silverlight Hills', 'Hallowed Mountains', 'Dunley (Dracula\'s Demise)', 'Ruins of Mortium'],
+      id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Amulet of the Blademaster', stage: 'Late', regions: ['Gloomrot North', 'Oakveil Woodlands', 'Cursed Forest (Matka, Gorecrusher)', 'Silverlight Hills (Azariel)', 'Hallowed Mountains (Terrorclaw)', 'Dunley Farmlands (Dracula\'s Demise)', 'Ruins of Mortium (Valencia)'],
       goal: 'Grim Knight, the Blademaster, a Sanguine then Ancestral Twinblade, and the Blood Key.',
       steps: [
         STEP.greater,
@@ -191,10 +240,21 @@
         CRAFT.epicAncestral('Twinblade', 'Target rolls Bonus Physical Power · Physical Critical Power · Attack Speed. Attack Speed sits at its cap while you wear the Blademaster, but the Soul Shard frees about 7 points of it in Phase 8. Physical Critical Chance only has about 8 points of room (Rogue blood, Rampage, Blood Spray), so a crit roll is half wasted.'),
       ],
       notes: [NOTE.athenaeum],
-      loadout: { label: 'Late build', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'], gear: ['Amulet of the Blademaster', 'Grim Knight Chestguard', 'Ancestral Twinblade Shards', 'Greater jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Brute', 'Rogue', 'Hunger for Blood', 'Rampage', 'Lethal Strikes', 'Sanguine Mastery', 'Blood Spray'], kv: [['Rotation', 'Veil → Veil attack → Blood Rage → Javelin → Sweeping Strike → primary attacks; Discharge on the big hit, Heart Strike for Leech']] },
+      loadout: {
+        label: 'Late build', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Heart Strike'],
+        gear: ['Amulet of the Blademaster', 'Grim Knight Chestguard', 'Ancestral Twinblade Shards', 'Greater jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Brute', 'Rogue', 'Hunger for Blood', 'Rampage', 'Lethal Strikes', 'Sanguine Mastery', 'Blood Spray'],
+        rot: {
+          pre: ['Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating'],
+          order: ['Veil of Storm', 'Veil attack', 'Blood Rage', 'Javelin', 'Sweeping Strike', { n: 'Discharge', when: 'on the boss\'s big hit' }, { n: 'Heart Strike', when: 'to put Leech back on the boss' }],
+          fill: ['Primary attacks'],
+          why: 'Coat the twinblade and drink both before the pull. The coated Veil attack puts Leech and Vampiric Curse on the boss at once, so Sanguine Mastery is live before Blood Rage lands. With the Blademaster you already sit at the 40% Attack Speed cap, and Veil of Storm, Blood Rage and Rampage\'s crit procs push past it, so Javelin, Sweeping Strike and every primary attack in the window land at full speed. Discharge on the big hit, Heart Strike to put Leech back on.',
+        },
+        jewels: { 'Veil of Storm': ['damage of next primary attack', 'Dashing through an enemy', 'Consumes Static'], 'Blood Rage': ['physical power by', 'duration of the effect', 'Removes all negative effects'] },
+        rolls: ['Bonus Physical Power', 'Physical Critical Power', 'Attack Speed'],
+      },
     },
     {
-      id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', regions: ['Farbane (Dreaded Peak)', 'Silverlight Hills', 'Gloomrot North', 'Oakveil Woodlands', 'Ruins of Mortium'],
+      id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', stage: 'End', regions: ['Farbane Woods (The Dreaded Peak)', 'Silverlight Hills (Solarus)', 'Gloomrot North (Adam)', 'Oakveil Woodlands (Megara)', 'Ruins of Mortium (Dracula\'s Castle)'],
       goal: 'Dracula\'s Grim, the Soul Shard of Dracula, then your final build.',
       bosses: [
         B('Talzur the Winged Horror', ["Dracula's Grim Gloves", 'Soul Shard of the Winged Horror'], 'Dracula\'s Grim Gloves and Soul Shard of the Winged Horror.'),
@@ -207,9 +267,247 @@
         { ic: "Dracula's Grim Chestguard", t: 'Upgrade each Grim Knight piece to <b>Dracula\'s Grim</b> (+ 12 Shadow Weave + 12 Bat Leather) as its boss unlocks the recipe. 2-piece +5% Primary Attack Leech, 3-piece +4% Damage Reduction, 4-piece: Veil attacks heal 1% more of your maximum health and you gain +10% attack speed for 4 s after a Veil.' },
         CRAFT.shard, CRAFT.repair,
       ],
-      loadout: { label: 'Endgame', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Grim Chestguard", 'Ancestral Twinblade Shards', 'Greater jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Brute', 'Rogue', 'Hunger for Blood', 'Rampage', 'Lethal Strikes', 'Sanguine Mastery', 'Blood Spray'], kv: [['Choose', 'Compare the options on the Endgame builds tab']] },
+      loadout: {
+        label: 'Endgame', slots: ['Veil of Storm', 'Blood Rage', 'Discharge', 'Blood Storm'],
+        gear: ['Soul Shard of Dracula', "Dracula's Grim Chestguard", 'Ancestral Twinblade Shards', 'Greater jewel', 'Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating', 'Brute', 'Rogue', 'Hunger for Blood', 'Rampage', 'Lethal Strikes', 'Sanguine Mastery', 'Blood Spray'],
+        kv: [['Choose', 'Compare the options on the Endgame builds tab']],
+        rot: {
+          pre: ['Elixir of the Werewolf', 'Potion of Rage', 'Blood Coating'],
+          order: ['Veil of Storm', 'Veil attack', 'Blood Rage', 'Javelin', 'Sweeping Strike', { n: 'Discharge', when: 'on the boss\'s big hit' }, { n: 'Blood Storm', when: 'when you need a breather' }],
+          fill: ['Primary attacks'],
+          why: 'Land the Veil attack right after Veil of Storm: it heals (1% more with Dracula\'s Grim), and the 4-piece adds +10% attack speed for 4 s on top of the Veil\'s +20%. Blood Rage stacks its +25% for 3 s, so Javelin past the boss, Sweeping Strike and the primary attacks in between all land at the fastest speed you get; keep swinging until the Veil is back. Hold Discharge for the boss\'s big hit, and cast Blood Storm when a phase would out-damage your leech, since you\'re invulnerable while it channels.',
+        },
+        jewels: { 'Veil of Storm': ['damage of next primary attack', 'Dashing through an enemy', 'Consumes Static'], 'Blood Rage': ['physical power by', 'duration of the effect', 'Removes all negative effects'] },
+        rolls: ['Bonus Physical Power', 'Physical Critical Power', 'Attack Speed'],
+      },
     },
   ];
+
+  // ---------- Hover-card notes ----------
+  // name → { why, use? (consumables: when, where, why), combo?: [names], upgrade? } for every loadout slot and gear
+  // item, plus the weapon skills the rotations name (js/cards.js).
+  const INFO = {
+    // Abilities
+    'Starting dash': {
+      why: 'The dash every vampire starts with is your Veil for Phases 1–2. Its job is defence: save it to step out of telegraphed hits rather than dashing in to attack.',
+      upgrade: 'Veil of Blood from Beatrice at the end of Phase 3, then Veil of Storm from Meredith in Phase 4.',
+    },
+    'Shadowbolt': {
+      why: 'Known from the start: a 200% magic projectile on an 8 s cooldown that puts Leech on its target. Open with it from range while the boss walks in; it\'s your only ranged hit until the Iron Spear\'s Harpoon.',
+      upgrade: 'Dropped in Phase 4 for Discharge (Sir Erwin): blocking a big hit does more for a melee build than a bolt that scales on Spell Power you don\'t have.',
+    },
+    'Blood Rage': {
+      why: 'The build\'s core spell from Rufus (Phase 1): +25% attack speed and a movement haste for 3 s, and Leech on nearby enemies. Cast it as you start swinging, right after the Veil attack once you have Veil of Storm, so the whole 3 s goes into primary attacks; its heal is 65% of your Spell Power, which is small here.',
+      upgrade: 'Kept to the end. From Phase 5 a Ruby jewel adds +8–16% Physical Power while it lasts and +12–24% duration, and Sanguine Mastery turns its Leech into +8% physical damage.',
+      combo: ['Veil of Storm', 'Sanguine Mastery'],
+    },
+    'Veil of Blood': {
+      why: 'Beatrice\'s Veil (Phase 3): dash and elude, and your next primary attack heals 5% of your maximum health and sets off a blood nova that drains health and applies Leech. It\'s the first Veil that pays a primary-attack build back, so dash out of a hit and land the Veil attack at once.',
+      upgrade: 'Replaced by Veil of Storm from Meredith in Phase 4: the same 5% heal plus +20% attack speed for 4 s. It returns in the Sustain endgame build (B2) if you keep dropping low.',
+    },
+    'Veil of Storm': {
+      why: 'Meredith\'s Veil (Phase 4) and the centre of every rotation from then on: dash, elude, +20% attack speed for 4 s, and your Veil attack heals 5% of your maximum health and applies Static. Every 8 s it opens the window your primary attacks fill.',
+      upgrade: 'Kept to the end. Topaz jewels add Veil attack damage and Static on dash-through from Phase 5, and Dracula\'s Grim adds +10% attack speed after each Veil in Phase 8.',
+      combo: ['Blood Rage', 'Lightning Fast Strikes', "Dracula's Grim Chestguard"],
+    },
+    'Chaos Barrage': {
+      why: 'Quincey\'s Chaos T3 point fills the empty ultimate slot in Phase 3: four chaos projectiles (200% magic damage on a direct hit, 100% in an area) that Ignite. With little Spell Power it\'s a once-a-fight burst, so fire it while Harpoon\'s snare holds the boss or it stands still to cast.',
+      upgrade: 'Replaced by Heart Strike from Tristan in Phase 4, which also closes the gap and puts Leech on the boss.',
+    },
+    'Discharge': {
+      why: 'Sir Erwin\'s Storm spell (Phase 4): block melee and projectile hits for up to 1.5 s; a blocked hit pulls the attacker in, stuns it for 0.6 s and gives you a Storm Shield. Hold it for the boss\'s big wind-up hit: you take nothing and get a free primary hit or two.',
+      upgrade: 'Kept to the end; nothing else in the kit blocks a hit.',
+    },
+    'Heart Strike': {
+      why: 'Tristan\'s Blood ultimate (Phase 4): a dash that strikes in a line for 150%, then a blood nova that puts Leech on the boss and anything near it, so Sanguine Mastery\'s +8% physical damage applies. Use it to close in at the pull; its heal (150% of Spell Power over 3.5 s) is only about 40–65 health on this build.',
+      upgrade: 'Replaced by Blood Storm when the Soul Shard of Dracula unlocks it in Phase 8.',
+      combo: ['Sanguine Mastery'],
+    },
+    'Blood Storm': {
+      why: 'The Soul Shard of Dracula\'s ultimate (Phase 8): you\'re invulnerable while you channel up to 25 homing blood bolts that Leech, then a 300% nova pushes enemies away. It\'s your breather: cast it when a boss phase would out-damage your leech, or to wait out a big attack.',
+      upgrade: 'The final pick. Since 1.1 you can keep any ultimate with a Soul Shard, so Heart Strike stays an option if you\'d rather have its Leech.',
+    },
+    // Weapon skills the rotations name
+    'A Thousand Spears': {
+      why: 'The Copper Spear\'s skill (Phase 1): stabs for 140% over 1.15 s that interrupt the target, plus a 50% knock-back thrust on recast. Save it for a boss cast you want to stop rather than firing it on cooldown.',
+      upgrade: 'Leaves with the spear when Gaius\'s Twinblades take over in Phase 5; the Spear endgame build (B3) brings it back for bosses that cast.',
+    },
+    'Harpoon': {
+      why: 'The Iron Spear\'s second skill (Phase 3): a 110% throw that pulls the target to you and snares it for 1.5 s. Open with it to drag the boss into melee, or pull back one that runs.',
+      upgrade: 'Leaves with the spear in Phase 5. Keep the Iron Spear for pulls; the Spear endgame build (B3) is built around it.',
+    },
+    'Javelin': {
+      why: 'Twinblade skill: throw the blade for 125% and a 1.5 s snare; after 2 s it recalls, piercing and pulling for 80% on the way back. Throw it past the boss so the recall goes through it, and keep swinging while it returns.',
+      upgrade: 'Kept from Gaius (Phase 5) to the end; the Werewolf elixir\'s +9% Weapon Skill Power raises it from Phase 6.',
+      combo: ['Sweeping Strike', 'Veil of Storm'],
+    },
+    'Sweeping Strike': {
+      why: 'Twinblade skill: lunge and swing for 100% in a line, launching enemies to your other side. Use it right after Javelin to get back into melee while the Veil window is still open.',
+      upgrade: 'Kept from Gaius (Phase 5) to the end.',
+      combo: ['Javelin'],
+    },
+    // Weapons
+    'Copper Spear': {
+      why: 'The spear has the fastest primary combo of the starting weapons, and Copper adds A Thousand Spears to interrupt casts. Primary attacks are your damage and your healing, so craft it as soon as copper is flowing in Phase 1.',
+      upgrade: 'Merciless Copper Spear (GL 12) once Grayson gives you Whetstone in Phase 2.',
+    },
+    'Merciless Copper Spear': {
+      why: 'GL 12 and more Physical Power from the Research Desk blueprint (Copper Spear + 2 Crude Emerald + 12 Whetstone + 4 Leather) in Phase 2. A GL 12 weapon is also what lets you mine Iron Ore in Phase 3.',
+      upgrade: 'Iron Spear (GL 15) from Quincey\'s Smithy in Phase 3, which adds Harpoon.',
+    },
+    'Iron Spear': {
+      why: 'GL 15 from Quincey\'s Smithy in Phase 3 (12 Iron Ingot + 8 Plank): more Physical Power on every primary hit, and Iron adds Harpoon, a 110% throw that pulls the boss to you.',
+      upgrade: 'Gaius\'s Twinblades in Phase 5: the Merciless Iron Twinblade (GL 18) has the fastest primary combo in the game. Keep the spear for Harpoon pulls.',
+    },
+    'Merciless Iron Twinblade': {
+      why: 'Gaius\'s Twinblades have the strongest primary combo of any weapon (about 83% per second at base, against the spear\'s 76%), and every point of it is damage and leech here. GL 18 in Phase 5 from Iron Twinblade + 1 Regular Sapphire + 4 Greater Blood Essence + 4 Reinforced Plank.',
+      upgrade: 'Dark Silver Twinblade (GL 24) at Cyril\'s Anvil in Phase 6. A Rare Ancestral Twinblade (two rolls) is an optional step in between.',
+    },
+    'Dark Silver Twinblade': {
+      why: 'GL 24 in Phase 6 from Gaius\'s recipe at Cyril\'s Anvil (12 Dark Silver Ingot + 8 Reinforced Plank + 1 Primal Blood Essence): a big step in Physical Power for every primary hit, and the base for the Sanguine Twinblade.',
+      upgrade: 'Sanguine Twinblade (GL 27) in Phase 7, then the Epic Ancestral Twinblade with three rolls.',
+    },
+    'Sanguine Twinblade': {
+      why: 'GL 27 in Phase 7 (Athenaeum blueprint, Anvil): Dark Silver Twinblade + 1 Flawless Sapphire + 12 Gold Ingot. You need it as the base of the Epic Ancestral Twinblade.',
+      upgrade: 'The Epic Ancestral Twinblade as soon as you have an Epic twinblade shard and 4 Onyx Tears, later in Phase 7.',
+    },
+    'Ancestral Twinblade Shards': {
+      why: 'The Epic Ancestral Twinblade (Phase 7): Sanguine Twinblade + an Epic twinblade shard + 4 Onyx Tear at the Ancestral Forge, with three random rolls. Aim for Bonus Physical Power, Physical Critical Power and Attack Speed; crit chance only has about 8 points of room.',
+      upgrade: 'Your final weapon. Merge two at the Fusion Forge (12 Ember Glass) to keep the best rolls; the Spear (B3) is the alternative for bosses that run or cast.',
+    },
+    // Jewelry
+    'Bone Ring': {
+      why: 'Your first magic source (Phase 1, from Bone). Its Spell Power barely touches a primary-attack kit; the Gear Level is what you wear it for.',
+      upgrade: 'Gravedigger Ring (GL 9) from Goreswine\'s recipe in Phase 2.',
+    },
+    'Gravedigger Ring': {
+      why: 'GL 9 in Phase 2 from Goreswine\'s recipe (12 Grave Dust + 32 Mourning Lily). Its Spell Power doesn\'t matter here; the Gear Level does, and it\'s the base for the Ring of the Duskwatcher.',
+      upgrade: 'Ring of the Duskwatcher (GL 12, +7% Attack Speed) in Phase 3.',
+    },
+    'Ring of the Duskwatcher': {
+      why: 'GL 12 and +7% Attack Speed in Phase 3: the first jewelry that feeds the build. Gravedigger Ring + 4 Crude Topaz + 1 Greater Blood Essence, made from 4 Unsullied Hearts until Tristan.',
+      upgrade: 'The Scourgestone Pendant (GL 15) in Phase 4 for the Gear Level; the Pendant of the Duskwatcher (GL 18) brings the +7% back in Phase 5.',
+    },
+    'Scourgestone Pendant': {
+      why: 'GL 15 in Phase 4 from Leandra\'s recipe (8 Scourgestone + 24 Gem Dust). Three Gear Levels over the ring outweigh its +7% Attack Speed for one phase, since you deal about 4% less damage per level under a boss.',
+      upgrade: 'Pendant of the Duskwatcher (GL 18, +7% Attack Speed) in Phase 5; this pendant is its base.',
+    },
+    'Pendant of the Duskwatcher': {
+      why: 'GL 18 and the +7% Attack Speed back in Phase 5 (Study blueprint): Scourgestone Pendant + 4 Regular Topaz + 16 Glass. Its primary hits can also apply Static, which Lightning Fast Strikes makes hit 20% harder.',
+      upgrade: 'Blood Merlot Amulet (GL 22) in Phase 6 for the Gear Level, then the Amulet of the Blademaster (GL 25) in Phase 7.',
+      combo: ['Lightning Fast Strikes'],
+    },
+    'Blood Merlot Amulet': {
+      why: 'GL 22 in Phase 6 (1 Blood Merlot + 4 Dark Silver Ingot + 12 Radium Alloy), worn for the Gear Level and 20% Reduced Blood Drain. You give up the pendant\'s +7% Attack Speed for now, and it\'s the base for the Amulet of the Blademaster.',
+      upgrade: 'Amulet of the Blademaster (GL 25, +7% Attack Speed) in Phase 7.',
+    },
+    'Amulet of the Blademaster': {
+      why: 'GL 25 and +7% Attack Speed in Phase 7 (Blood Merlot Amulet + 4 Flawless Topaz + 12 Power Core), and primary hits can trigger a Lesser Storm Shield. With it, Brute blood, Grim Knight, the Werewolf elixir and Storm mastery you sit at the 40% Attack Speed cap.',
+      upgrade: 'The Soul Shard of Dracula takes its slot in Phase 8; an Attack Speed roll or Lightning Fast Strikes makes up the +7% you lose.',
+    },
+    'Soul Shard of Dracula': {
+      why: 'Dracula\'s drop (Phase 8): +16% Blood Efficiency, so your Brute and Rogue bonuses and their caps grow 16%; primary hits can trigger Bloodthirst (+15% damage for 6 s); and it unlocks Blood Storm. It takes the Blademaster\'s slot, so check your Attack Speed afterwards.',
+      upgrade: 'Your final magic source. Keep it repaired by feeding on Primal Blood Souls in Tier 2 Rift Incursions.',
+    },
+    // Armor
+    'Nightstalker Vest': {
+      why: 'The first leather set (vest: 8 Leather + 4 Coarse Thread) once Keely gives you the Tannery in Phase 1: more health and Gear Level than bone, and the base for the Marauder set.',
+      upgrade: 'Marauder Vestment in Phase 2: each piece is a Nightstalker piece + 4 Leather + 4 Coarse Thread + 8 Copper Ingot.',
+    },
+    'Marauder Vest': {
+      why: 'The Brute\'s first class set (Research Desk, Phase 2): Primary Attack Speed on every piece, +3% Primary Attack Leech at 2 pieces and +1 Gear Level at 4. Speed and leech are exactly what this build runs on.',
+      upgrade: 'Crimson Templar Vestment in Phase 5, once Frostmaw\'s Thick Leather comes in.',
+    },
+    'Crimson Templar Chestguard': {
+      why: 'The Study\'s Brute set (Phase 5): Primary Attack Speed on every piece, +3% Primary Attack Leech at 2 pieces, +1 Gear Level at 3 and +3% Damage Reduction at 4. Each piece is a Hollowfang piece + 4 Iron Ingot + 8 Thick Leather.',
+      upgrade: 'Grim Knight Vestment from the Athenaeum in Phase 7.',
+    },
+    'Grim Knight Chestguard': {
+      why: 'The Athenaeum\'s Brute set (Phase 7): 7.2% Attack Speed across the set, +4% Primary Attack Leech at 2 pieces, +3% Damage Reduction at 3 and +1 Gear Level at 4. Each piece is a Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence.',
+      upgrade: 'Dracula\'s Grim in Phase 8, one piece at a time as Talzur, Solarus, Adam and Megara unlock the recipes.',
+    },
+    "Dracula's Grim Chestguard": {
+      why: 'Each Grim Knight piece + 12 Shadow Weave + 12 Bat Leather as its Phase 8 boss unlocks the recipe. 2-piece +5% Primary Attack Leech, 3-piece +4% Damage Reduction, and the 4-piece makes Veil attacks heal 1% more of your maximum health and adds +10% attack speed for 4 s after a Veil, on top of Veil of Storm\'s +20%.',
+      upgrade: 'Your final armor.',
+      combo: ['Veil of Storm'],
+    },
+    // Jewels
+    'Regular jewel': {
+      why: 'Two random mods for one spell (4 Regular gem + 4 Iron Ingot at Raziel\'s Jewelcrafting Table, Phase 5). Put a Topaz one in Veil of Storm (Veil attack damage, Static on dash-through) and a Ruby one in Blood Rage (Physical Power while it lasts, longer duration).',
+      upgrade: 'Greater jewels (3 mods) from Mairwyn in Phase 6.',
+    },
+    'Greater jewel': {
+      why: 'Three mods instead of two (4 Flawless gem + 4 Dark Silver Ingot, recipe from Mairwyn in Phase 6). Re-make the Veil of Storm (Topaz) and Blood Rage (Ruby) jewels: keep the Regular jewels\' two mods and add a Static stun on the Veil and a cleanse on Blood Rage.',
+      upgrade: 'Valencia\'s Primal jewels (4 mods, Phase 7) are optional for this build; the Greater ones carry it to the end.',
+    },
+    // Consumables
+    'Brew of Ferocity': {
+      why: '+3 Physical Power for 60 minutes from Phase 3, kept through death: every primary hit, weapon skill and Veil attack hits a little harder.',
+      use: 'Drink it before each boss or at the start of a farming run; it lasts 60 minutes and persists through death. Craft it at the Alchemy Table from 32 Hell\'s Clarion + Fish Bone (Finn\'s pole) + Empty Waterskin (Keely), or buy it from Herb & Potion merchants. It stacks with your elixir, not with Potion of Rage.',
+      upgrade: 'Potion of Rage (+5 Physical Power, Athenaeum) in Phase 7.',
+      combo: ['Elixir of the Beast', 'Elixir of the Werewolf'],
+    },
+    'Potion of Rage': {
+      why: '+5 Physical Power for 60 minutes, up from the Brew\'s +3, on every primary hit, weapon skill and Veil attack. The two don\'t stack, so it replaces the Brew in Phase 7.',
+      use: 'Drink it before each boss or farming run; it lasts 60 minutes and persists through death. Alchemy Table from the Athenaeum blueprint (60 Plague Brier + 60 Hell\'s Clarion + Fish Bone + Empty Glass Bottle), or 60 Goldsun Coins at the City Herb & Potion Vendor or the Treasure Hunter. It stacks with the Werewolf elixir and Blood Coating.',
+      upgrade: 'Kept to the end.',
+      combo: ['Elixir of the Werewolf', 'Blood Coating'],
+    },
+    'Elixir of the Beast': {
+      why: '+8% Maximum Health and +12% Healing Received for 60 minutes from Frostmaw (Phase 5). The healing bonus applies to your Primary Attack Leech and the Veil heal, which keeps you up while the build is still short on damage reduction.',
+      use: 'Drink it before a boss you can\'t out-leech, or at the start of a session (60 minutes, persists through death; one elixir at a time). Alchemy Table: 20 Snow Flower + 20 Hell\'s Clarion + Greater Blood Essence + Empty Glass Bottle. It boosts every heal in the rotation, the Veil attack\'s 5% and your leech, and stacks with the Brew.',
+      upgrade: 'Elixir of the Werewolf (+7% Attack Speed, +9% Weapon Skill Power) from Willfred in Phase 6 for damage. Keep a Beast elixir for bosses that out-damage your leech; it\'s also the Sustain endgame build\'s elixir.',
+      combo: ['Veil of Storm', 'Brew of Ferocity'],
+    },
+    'Elixir of the Werewolf': {
+      why: '+7% Attack Speed and +9% Weapon Skill Power for 60 minutes from Willfred (Phase 6): more primary hits per second, so more damage and more leech, and harder Javelins. It\'s one of the five sources that reach the 40% Attack Speed cap.',
+      use: 'Drink it before bosses and farming runs (60 minutes, persists through death; one elixir at a time, so it replaces the Beast). Alchemy Table: 20 Ghost Shroom (Cursed Forest) + 20 Fire Blossom + Greater Blood Essence + Empty Glass Bottle. Its attack speed sits under Veil of Storm and Blood Rage in the burst window; switch back to the Beast for a boss that out-damages your leech.',
+      upgrade: 'Kept to the end in the default build; the Sustain build (B2) swaps it for the Beast.',
+      combo: ['Veil of Storm', 'Blood Rage', 'Javelin'],
+    },
+    'Blood Coating': {
+      why: 'Stavros\'s coating (Phase 7): your next primary attack applies Leech and Vampiric Curse (50% magic damage after 2 s) and can leave a Blood Orb that heals you, recharging every 12 s. The Leech keeps Sanguine Mastery\'s +8% physical damage on the boss.',
+      use: 'Apply it to your twinblade before the fight; it lasts 60 minutes and persists through death. Alchemy Table: 16 Corrupted Flower + 16 Venom Sap, both from Oakveil. Open with the Veil attack so the coated hit lands first and Leech is on before Blood Rage; it procs again every 12 s while you swing.',
+      upgrade: 'Kept to the end.',
+      combo: ['Veil of Storm', 'Sanguine Mastery'],
+    },
+    // Blood
+    'Brute': {
+      why: 'The build\'s engine: Tier I adds Primary Attack Speed and Physical Power, Tier II Primary Attack Leech and Damage Reduction, Tier IV a chance to parry for +15% Physical Power. Feed on Bandit Muggers and Stalkers in Farbane, lock up a high-quality carrier in Phase 4 and raise it to 100% with Corrupted Fish in Phase 6.',
+      upgrade: 'Never replaced: from Phase 7 Lucile\'s Blood Homogenizer adds Rogue Tier I on top.',
+    },
+    'Rogue': {
+      why: 'Lucile\'s Blood Homogenizer (Phase 7) adds Rogue Tier I (Physical Critical Chance and +8% Physical Critical Power) to your 100% Brute blood from a 90%+ Rogue Blood Potion. That potion also brings Tier IV: crits have a 50% chance to expose armor (+15% damage taken for 4 s).',
+      upgrade: 'Kept to the end. Lock up a Rogue carrier (Militia Crossbowmen, Riflemen, Harpy Dashers) so you can refresh the potion.',
+    },
+    // Passives
+    'Lightning Fast Strikes': {
+      why: 'An elemental passive for Phase 5 (400 Stygian Shards per Discover): +7% Primary Attack Speed, and Static triggers deal 20% more. Veil of Storm\'s Veil attack and the Duskwatcher pendant apply Static, so both halves work.',
+      upgrade: 'Dropped in Phase 7 for Lethal Strikes once Brute blood, Grim Knight, the Blademaster, the Werewolf elixir and Storm mastery reach the 40% Attack Speed cap. If the Soul Shard leaves you under the cap in Phase 8, put it back.',
+    },
+    'Sanguine Mastery': {
+      why: 'An elemental passive for Phase 5: +8% to your blood type\'s effects and +8% physical damage against Leeched enemies. Blood Rage, Heart Strike and later Blood Coating keep Leech on the boss, so the damage half is always on.',
+      upgrade: 'Kept to the end.',
+      combo: ['Blood Rage', 'Heart Strike', 'Blood Coating'],
+    },
+    'Blood Spray': {
+      why: 'Cyril\'s third passive slot (Phase 6): +8% Physical Critical Chance, and your critical hits leech 5% health. Fast primaries crit often, so it\'s healing as much as damage.',
+      upgrade: 'Kept to the end.',
+    },
+    'Hunger for Blood': {
+      why: 'A vampire passive for Phase 7 (600 Greater Stygian Shards per Discover): +5% Primary Attack Leech and +8% damage against V Bloods. Leech is how this build heals, and every boss on the route is a V Blood.',
+      upgrade: 'Kept to the end.',
+    },
+    'Rampage': {
+      why: 'A vampire passive for Phase 7: +8% Physical Critical Chance, and physical crits give +12% attack speed for 4 s, which can pass the 40% cap. Fast primaries crit often, so it keeps the Veil of Storm window going.',
+      upgrade: 'Kept to the end.',
+      combo: ['Veil of Storm'],
+    },
+    'Lethal Strikes': {
+      why: 'A vampire passive for Phase 7: +8% Physical Critical Power and +12% damage to enemies under 30% health. It takes Lightning Fast Strikes\' slot once other sources reach the 40% Attack Speed cap.',
+      upgrade: 'Kept to the end.',
+    },
+  };
 
   // ---------- Endgame + reference views ----------
   const renderEndgame = () => BR.shared.renderEndgame({
@@ -251,6 +549,7 @@
   BR.registerRoute({
     id: 'brute',
     phases: PHASES,
+    info: INFO,
     resources: BR.shared.RES,
     needs: (window.BR_NEEDS || {}).brute || {},
     // Loadout slot text → icon (first spell named).

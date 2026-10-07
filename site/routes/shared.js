@@ -210,6 +210,19 @@
       <div class="scroll"><table><thead><tr><th>Weapon</th><th>Unlock</th><th>Primary/s</th><th>Skill 1</th><th>Skill 2</th><th>Skills/s</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
   }
 
+  // Carrier names become hover targets for their enemy card: "Bandit Rascal 10 · Thug 16" names Bandit Thug, so a
+  // one-word name borrows the row's first prefix when the lexicon knows that enemy.
+  function carrierLinks(text) {
+    const E = (BR.lexData && BR.lexData.ENEMIES) || {};
+    const parts = String(text).split(' · ');
+    const prefix = (parts[0].match(/^(\w+) \w/) || [])[1];
+    return parts.map(part => {
+      const m = part.match(/^(.*?)( \d.*)$/) || [, part, ''];
+      const shown = m[1], name = E[shown] ? shown : prefix && E[`${prefix} ${shown}`] ? `${prefix} ${shown}` : null;
+      return name ? `<span class="enemy" tabindex="0" data-info="${BR.h.esc(name)}">${shown}</span>${m[2]}` : part;
+    }).join(' · ');
+  }
+
   // ---------- Reference and endgame views ----------
   const table = (head, rows) => `<div class="scroll"><table>${head ? `<thead><tr>${head.map(h => `<th>${h}</th>`).join('')}</tr></thead>` : ''}<tbody>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
 
@@ -221,7 +234,7 @@
       <div class="grid2">
         <div class="card"><h2>Research tiers</h2>${table(null, cfg.research.map(([st, by, what]) => [`<span class="cell">${ic(st, 36)}<span><b>${st}</b><br><span style="font-size:12px;color:var(--muted)">${by}</span></span></span>`, what]))}
           <p>${NOTE.study} ${NOTE.athenaeum}</p></div>
-        <div class="card"><h2 class="cell">${ic(cfg.blood, 40)}Where to find ${cfg.blood} blood</h2>${table(['Region', 'Carriers and level'], CARRIERS[cfg.blood])}
+        <div class="card"><h2 class="cell">${ic(cfg.blood, 40)}Where to find ${cfg.blood} blood</h2>${table(['Region', 'Carriers and level'], CARRIERS[cfg.blood].map(([r, t]) => [`<span class="chip region" tabindex="0" data-info="${r}">📍 ${r}</span>`, carrierLinks(t)]))}
           <p>Blood tiers unlock at 1 / 30 / 60 / 90% quality and Tier V at 100%. Tristan's Blood Hunger shows type and quality over every head.</p></div>
         <div class="card"><h2 class="cell">${ic('Castle Heart', 40)}Castle Heart</h2>${table(['Level', 'Materials', 'Unlocks'], [
           ['<span class="mono">2</span>', '12 Leather + 12 Copper Ingot', ''], ['<span class="mono">3</span>', '8 Reinforced Plank + 24 Glass + 1 Greater Blood Essence', 'Eye of Mortium'],

@@ -78,6 +78,62 @@ describe('saved data', () => {
     assert.ok(!('Empty waterskin' in other.route('brute').stock));
   });
 
+  it('keeps view state apart, so saving it never undoes another tab\'s ticks', () => {
+    const storage = {};
+    const a = open(storage), b = open(storage);
+    a.route('warrior').done['p1-b0'] = 1; a.touch('warrior');
+    const u = b.ui('warrior');
+    u.collapsed.p1 = true; u.scroll.path = { anchor: 'row-p2-b1', offset: 40 };
+    assert.equal(b.saveUI(), true);
+    const again = open(storage);
+    assert.equal(again.route('warrior').done['p1-b0'], 1, 'tab A\'s tick survives tab B saving its view');
+    assert.equal(again.ui('warrior').collapsed.p1, true);
+    assert.deepEqual(JSON.parse(JSON.stringify(again.ui('warrior').scroll.path)), { anchor: 'row-p2-b1', offset: 40 });
+  });
+
+  it('keeps two tabs on different routes from overwriting each other\'s view state', () => {
+    const storage = {};
+    const a = open(storage), b = open(storage);
+    a.ui('spellcaster').collapsed.p2 = true; a.saveUI();
+    b.ui('warrior').scroll.path = { anchor: '#p4', offset: 0 }; b.saveUI();
+    a.ui('spellcaster').collapsed.p3 = true; a.saveUI();
+    const again = open(storage);
+    assert.equal(again.ui('warrior').scroll.path.anchor, '#p4', 'tab A did not undo tab B\'s warrior position');
+    assert.equal(again.ui('spellcaster').collapsed.p3, true);
+  });
+
+  it('leaves view state out of backups and keeps this browser\'s on import', () => {
+    const s = open({});
+    s.route('rogue').done['p1-s0'] = 1; s.touch('rogue');
+    s.ui('rogue').collapsed.p3 = true; s.saveUI();
+    const backup = s.exportJSON();
+    assert.doesNotMatch(backup, /collapsed/);
+    const other = open({});
+    other.ui('rogue').collapsed.p5 = true; other.saveUI();
+    other.importJSON(backup);
+    assert.equal(other.route('rogue').done['p1-s0'], 1);
+    assert.equal(other.ui('rogue').collapsed.p5, true);
+  });
+
+  it('clears a route\'s view state with its progress', () => {
+    const storage = {};
+    const s = open(storage);
+    s.route('brute').done.x = 1; s.touch('brute');
+    s.ui('brute').collapsed.p2 = true; s.saveUI();
+    s.clearRoute('brute');
+    assert.deepEqual(JSON.parse(JSON.stringify(open(storage).ui('brute').collapsed)), {});
+  });
+
+  it('picks up progress another tab saved', () => {
+    const storage = {};
+    const a = open(storage), b = open(storage);
+    const mine = b.route('spellcaster');
+    a.route('spellcaster').done['p2-b1'] = 1700000000000; a.route('spellcaster').stock.Bone = 9; a.touch('spellcaster');
+    assert.equal(b.reload(), true);
+    assert.equal(mine.done['p2-b1'], 1700000000000, 'the same object this page holds is updated');
+    assert.equal(mine.stock.Bone, 9);
+  });
+
   it('carries over progress from the old single-route caster page', () => {
     const s = open({ 'vardoran-caster-path-v1': '{"p1-b1":1}', 'vardoran-caster-stock-v1': '{"Bone":32}' });
     assert.equal(s.data.active, 'spellcaster');

@@ -23,6 +23,19 @@ function page(storage = {}) {
   return { window, run, storage };
 }
 
+// The scripts index.html loads between core.js and the routes.
+const LEXICON = ['js/lexicon-data.js', 'js/lexicon.js'];
+const MODULES = ['js/geo.js', 'js/map.js', 'js/cards.js', 'js/state.js', 'js/view.js'];
+
+// A page with core.js, the lexicon and the planner modules loaded (and optionally a BR_GAME fixture).
+function modules({ game = false } = {}) {
+  const p = page();
+  if (game) p.run('../test/fixtures/gamedata.js');
+  p.run('js/core.js');
+  for (const f of [...LEXICON, ...MODULES]) p.run(f);
+  return p;
+}
+
 // Every archetype in the registry, each loaded on its own page like the site does:
 // { arch, def, icons: Set of icon names used (phases and rendered views), endgame, ref }.
 function loadRoutes() {
@@ -38,6 +51,7 @@ function loadRoutes() {
     const ic = BR.h.ic, tiles = BR.h.tiles;
     BR.h.ic = (n, ...a) => { icons.add(n); return ic(n, ...a); };
     BR.h.tiles = l => { (l || []).forEach(n => icons.add(n)); return tiles(l); };
+    for (const f of LEXICON) p.run(f);
     const defs = [];
     BR.registerRoute = d => defs.push(d);
     for (const f of arch.files) p.run(f);
@@ -59,8 +73,34 @@ function loadRoutes() {
     [...arch.icons, arch.blood].forEach(n => icons.add(n));
     const endgame = def.renderEndgame ? def.renderEndgame() : '';
     const ref = def.renderRef ? def.renderRef() : '';
-    return { arch, def, icons, endgame, ref };
+    // The planner page itself (js/view.js), every phase open, in each boss order: its icons count too.
+    for (const f of MODULES) p.run(f);
+    const planner = renderPlanner(BR, defs[0]);
+    return { arch, def, icons, endgame, ref, planner, BR, live: defs[0] };
   });
+}
+
+// Builds the planner's items the way js/app.js does and renders every phase with js/view.js.
+// → { html: { [order]: page HTML }, phases } (phases are the live, item-carrying objects)
+function renderPlanner(BR, def) {
+  const phases = def.phases;
+  phases.forEach((p, pi) => {
+    p.n = pi + 1;
+    p.items = [];
+    (p.steps || []).forEach((s, i) => p.items.push({ id: `${p.id}-s${i}`, kind: 'Step', text: s.t, icon: s.ic }));
+    p.bosses.forEach((b, i) => p.items.push({ id: `${p.id}-b${i}`, kind: 'Boss', boss: b }));
+    (p.craft || []).forEach((s, i) => p.items.push({ id: `${p.id}-c${i}`, kind: 'Craft', text: s.t, icon: s.ic }));
+    p.items.forEach(it => { it.phase = p; });
+  });
+  const html = {};
+  for (const order of Object.keys(BR.state.ORDERS)) {
+    const plans = {};
+    for (const p of phases) plans[p.id] = BR.state.orderBosses(p, p.items.filter(i => i.kind === 'Boss'), order, { def });
+    const ctx = { def, phases, done: {}, stock: {}, ui: { collapsed: {}, sections: {}, scroll: {} }, order, filters: {}, plans,
+      hueOf: () => '#fff', open: Object.fromEntries(phases.map(p => [p.id, true])) };
+    html[order] = BR.view.rail(ctx) + phases.map(p => BR.view.phaseCard(p, ctx)).join('');
+  }
+  return { html, phases };
 }
 
 const read = f => fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\r/g, '');
@@ -109,4 +149,4 @@ function spellTable() {
   return { points, spells, veils, start: ['Shadowbolt', 'Blood Rite'], shards };
 }
 
-module.exports = { ROOT, SITE, page, loadRoutes, vbloodRewards, spellTable };
+module.exports = { ROOT, SITE, LEXICON, MODULES, page, modules, loadRoutes, vbloodRewards, spellTable };

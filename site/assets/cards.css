@@ -1,0 +1,173 @@
+/* Hover cards (js/cards.js): the floating card, its sections, and the bottom sheet on phones.
+   Dark-first; the light theme comes through the variables in app.css. The map inside a card is styled by map.css. */
+
+/* Icons that open a card. No callout or text selection on long-press (touch). */
+[data-info] { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+:where(.tile, .slot, .portrait, .item-ic, .mat-ic, .chip.region, .rot-steps li)[tabindex]:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 8px; }
+
+/* ---------- The floating card ---------- */
+/* Above the app bar (20) and the full-screen map viewer (60), so "Details" in a map popup shows. */
+.brc-pop {
+  position: fixed; z-index: 70; left: 8px; top: 8px;
+  width: min(440px, calc(100vw - 16px)); max-height: min(80vh, 720px);
+  overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-top: 3px solid var(--acc, var(--blood)); border-radius: var(--radius);
+  box-shadow: var(--shadow), 0 18px 48px rgba(0, 0, 0, .38);
+  font: 14px/1.45 var(--font-body);
+  animation: brc-in .14s ease-out;
+}
+.brc-pop[hidden] { display: none; }
+.brc-pop:focus { outline: none; }
+.brc-pop:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.brc-pop :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+@keyframes brc-in { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+/* Back / close bar: only once the card is pinned (clicked, tapped or opened from the keyboard). */
+.brc-bar { position: sticky; top: 0; z-index: 2; display: none; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 6px 8px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.brc-pop.pinned .brc-bar, .brc-pop.sheet .brc-bar { display: flex; }
+.brc-back[hidden] { display: none; }
+.brc-grip { flex: 1; }
+.brc-x { appearance: none; border: 1px solid var(--line); background: var(--surface-2); color: var(--muted); width: 30px; height: 30px; border-radius: 50%;
+  font: 600 18px/1 var(--font-body); cursor: pointer; display: grid; place-items: center; }
+.brc-x:hover { color: var(--text); border-color: var(--blood); }
+
+/* Phones: a bottom sheet with a grab bar. */
+.brc-pop.sheet { left: 0; right: auto; top: auto; bottom: 0; width: 100%; max-height: 78vh;
+  border-radius: 16px 16px 0 0; border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); animation-name: brc-up; }
+.brc-pop.sheet .brc-grip { display: flex; justify-content: center; }
+.brc-pop.sheet .brc-grip::before { content: ""; width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
+@keyframes brc-up { from { transform: translateY(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* One-time hint on touch screens. */
+.brc-hint { position: fixed; z-index: 71; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+  padding: 8px 14px; border-radius: 999px; background: var(--surface-2); color: var(--text); border: 1px solid var(--line);
+  box-shadow: var(--shadow); font-size: 13px; white-space: nowrap; pointer-events: none; animation: brc-in .2s ease-out; }
+
+/* ---------- Card content (js/cards.js render()) ---------- */
+.brc { --acc: var(--blood); display: grid; gap: 12px; padding: 12px 14px 14px; min-width: 0; }
+.brc p { margin: 0; }
+.brc a { color: var(--blood); }
+.brc-head { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; }
+.brc-head .ic, .brc-head .ic-fallback { width: 56px; height: 56px; padding: 3px; border: 2px solid var(--acc); }
+.brc-head .ic.round { padding: 0; }
+.brc-head .ic-fallback.glyph { font-size: 26px; color: var(--acc); }
+.brc-title { min-width: 0; }
+.brc-title h3 { font: 700 23px/1.1 var(--font-display); letter-spacing: .3px; color: var(--text); overflow-wrap: anywhere; }
+.brc-kind { margin-top: 3px; color: var(--acc); font: 600 11px/1.3 var(--font-body); letter-spacing: .7px; text-transform: uppercase; }
+.brc-meta { display: flex; flex-wrap: wrap; gap: 4px 6px; margin-top: 6px; align-items: center; }
+.brc-tag { display: inline-flex; align-items: center; gap: 4px; padding: 1px 8px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line);
+  color: var(--muted); font: 600 11.5px/1.6 var(--font-body); white-space: nowrap; }
+.brc-tag.gl, .brc-tag.lv { font-family: var(--font-mono); color: var(--text); }
+.brc-tag.must, .brc-tag.ben-core { background: var(--gold-soft); color: var(--gold); border-color: transparent; }
+.brc-tag.ben-dps { color: var(--blood); }
+.brc-tag.ben-sustain { color: var(--ok); }
+.brc-tag.base { margin-left: 4px; }
+.brc-desc { color: var(--muted); font-style: italic; }
+.brc-effect { font-weight: 600; }
+.brc-muted { color: var(--muted); }
+.brc-small { font-size: 12px; }
+
+.brc-sec { display: grid; gap: 7px; padding-top: 10px; border-top: 1px solid var(--line); min-width: 0; }
+.brc-sec > h4 { margin: 0; font: 600 11px/1.2 var(--font-body); letter-spacing: .8px; text-transform: uppercase; color: var(--muted); }
+.brc-dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 0; }
+.brc-dl dt { color: var(--muted); font-size: 12px; padding-top: 1px; }
+.brc-dl dd { margin: 0; min-width: 0; }
+.brc-list { margin: 0; padding-left: 18px; display: grid; gap: 3px; }
+
+/* Stats and tables */
+.brc-stats, .brc-needs { width: 100%; border-collapse: collapse; font-size: 13px; }
+.brc-stats th, .brc-needs th { text-align: left; font-weight: 500; color: var(--muted); padding: 2px 8px 2px 0; vertical-align: top; }
+.brc-stats td { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; padding: 2px 0; }
+.brc-tiers td, .brc-carriers td { text-align: left; font-family: var(--font-body); }
+.brc-needs td { padding: 2px 8px 2px 0; vertical-align: top; }
+.brc-needs tr.cur th, .brc-needs tr.cur td { color: var(--text); font-weight: 600; }
+
+/* Icon chips (each opens its own card in place) */
+.brc-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.brc-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 2px 9px 2px 2px; border-radius: 8px;
+  background: var(--surface-2); border: 1px solid var(--line); font-size: 12.5px; line-height: 1.3; cursor: pointer; vertical-align: middle; }
+.brc-chip > span { overflow-wrap: anywhere; }
+.brc-chip:hover { border-color: var(--acc); }
+.brc-chip .ic, .brc-chip .ic-fallback { width: 22px; height: 22px; border-radius: 6px; font-size: 9px; }
+.brc-chip small { color: var(--muted); }
+.brc-loc { padding-left: 7px; }
+.brc-ref { display: inline-flex; align-items: center; gap: 4px; vertical-align: -3px; font-weight: 600; cursor: pointer; }
+.brc-ref .ic, .brc-ref .ic-fallback { width: 18px; height: 18px; border-radius: 5px; font-size: 8px; }
+.brc-ref:hover span, .brc-ref:hover b { text-decoration: underline; text-decoration-color: var(--acc); }
+.brc-ph { display: inline-block; padding: 0 6px; border-radius: 6px; background: var(--surface-2); border: 1px solid var(--line);
+  font: 600 11px/1.6 var(--font-mono); color: var(--muted); }
+.brc-ph.cur { border-color: var(--acc); color: var(--text); box-shadow: inset 0 -2px 0 var(--acc); }
+.brc-ph + .brc-ph { margin-left: 4px; }
+
+/* Route notes (trusted route HTML) and the build's reasoning */
+.brc-note { font-size: 13px; padding: 6px 10px; background: var(--surface-2); border-left: 3px solid var(--line); border-radius: 0 8px 8px 0; }
+.brc-why { font-size: 13.5px; padding: 6px 10px; background: var(--gold-soft); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; }
+.brc-src { color: var(--muted); font-weight: 600; font-size: 12px; }
+.brc-where { font-size: 13px; }
+.brc-unlock, .brc-research, .brc-gate, .brc-res { font-size: 13px; }
+
+/* Mod pools, roll pools and passive lists: ★ marks the build's picks */
+.brc-mods { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
+.brc-mods li { display: grid; grid-template-columns: 16px 1fr auto; gap: 8px; align-items: baseline; padding: 4px 8px; border-radius: 8px; font-size: 13px; }
+.brc-mods li.pick { background: var(--gold-soft); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent); font-weight: 600; }
+.brc-mods li.cur { box-shadow: inset 3px 0 0 var(--acc); }
+.brc-mods li.pick.cur { box-shadow: inset 3px 0 0 var(--acc), inset 0 0 0 1px color-mix(in srgb, var(--gold) 45%, transparent); }
+.brc-passives li { grid-template-columns: 16px 1fr; font-weight: 400; }
+.brc-passives li.pick { font-weight: 400; }
+.brc-passives .brc-muted { font-size: 12px; }
+.brc-star { color: var(--gold); font-size: 14px; line-height: 1; justify-self: center; }
+.brc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--line); justify-self: center; align-self: center; }
+.brc-range { color: var(--muted); font-size: 12px; white-space: nowrap; font-weight: 400; }
+.brc-legend { font-size: 12px; color: var(--muted); }
+.brc-jw { display: grid; gap: 4px; }
+.brc-jw + .brc-jw { margin-top: 6px; }
+.brc-jw > .brc-chip { justify-self: start; }
+
+/* Rotation strip: pre-buffs + numbered order → fill */
+.brc-rot { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px 2px; }
+.brc-rs { position: relative; display: grid; justify-items: center; gap: 3px; width: 58px; text-align: center; font-size: 10.5px; line-height: 1.15;
+  color: var(--muted); cursor: pointer; overflow-wrap: anywhere; }
+.brc-rs .ic, .brc-rs .ic-fallback { width: 34px; height: 34px; padding: 2px; border: 1px solid var(--line); border-radius: 8px; font-size: 10px; }
+.brc-rs.pre .ic, .brc-rs.pre .ic-fallback { border-style: dashed; }
+.brc-rs.fill { opacity: .85; }
+.brc-rs.cur { color: var(--text); font-weight: 600; }
+.brc-rs.cur .ic, .brc-rs.cur .ic-fallback { border: 2px solid var(--acc); box-shadow: 0 0 0 3px color-mix(in srgb, var(--acc) 25%, transparent); }
+.brc-rn { position: absolute; top: -5px; left: 6px; z-index: 1; min-width: 16px; height: 16px; padding: 0 3px; border-radius: 8px;
+  background: var(--surface); color: var(--text); border: 1px solid var(--acc); font: 700 10px/14px var(--font-mono); }
+.brc-arrow { align-self: center; margin-top: -14px; color: var(--muted); font-size: 13px; padding: 0 1px; }
+.brc-pos { font-size: 13px; }
+
+/* Difficulty pips */
+.brc-pips { display: inline-flex; gap: 3px; vertical-align: -1px; }
+.brc-pips i { width: 11px; height: 11px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--line); }
+.brc-pips i.on { background: var(--blood); border-color: var(--blood); }
+
+/* Recipe inputs, each with where to get it */
+.brc-inputs { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.brc-input { display: grid; gap: 3px; padding-left: 2px; }
+.brc-input > .brc-chip { justify-self: start; }
+.brc-input .brc-chip .ic, .brc-input .brc-chip .ic-fallback { width: 28px; height: 28px; }
+.brc-input.base > .brc-chip { border-color: color-mix(in srgb, var(--acc) 55%, var(--line)); }
+.brc-input .brc-src { font-size: 12.5px; color: var(--muted); padding-left: 4px; }
+.brc-input .brc-src a, .brc-src-links a { white-space: nowrap; }
+.brc-pin { text-decoration: none; }
+.brc-mg { font-size: 12px; }
+.brc-drops { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 12.5px; }
+.brc-drops li { display: inline-flex; align-items: center; gap: 4px; }
+.brc-loot { font-weight: 600; }
+
+/* Map and links */
+.brc-map { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); background: var(--surface-2); }
+.brc-links { display: flex; flex-wrap: wrap; gap: 6px; }
+.brc-links .btn.small { text-decoration: none; }
+.brc-foot { font-size: 11px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; }
+
+@media (max-width: 639px) {
+  .brc { padding: 10px 14px 16px; }
+  .brc-title h3 { font-size: 21px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .brc-pop, .brc-pop.sheet, .brc-hint { animation: none; }
+}
