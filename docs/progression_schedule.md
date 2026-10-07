@@ -12,7 +12,7 @@ This takes a fresh vampire to the endgame build in `pve_spellcaster_build.md`, i
 - **Boss levels** are V Blood levels. Fight at a **Gear Level at or above the boss level**: you deal about 4% less damage per level under (and about 1% more per level over).
 - **The V Blood menu** tracks bosses, but it blurs ones far above your Gear Level.
 - **Spell points:** every V Blood gives one Spell Point for a fixed school and tier; spend it in the Spellbook on any spell of that tier.
-- **Spell School Mastery:** traits unlock as you *spend* 3 / 5 / 7 points in a school. The build wants **Chaos 7** and **Illusion 3**.
+- **Spell School Mastery:** traits unlock as you *spend* 3 / 5 / 7 points in a school. The build wants **Chaos 7**, **Illusion 3** and **Storm 3**.
 - **★** marks a boss the build needs.
 
 | Phase | Levels | Regions | You leave with |
@@ -20,10 +20,10 @@ This takes a fresh vampire to the endgame build in `pve_spellcaster_build.md`, i
 | 1. Wake up | Start – 20 | Farbane Woods | Castle, bone gear, Chaos Volley, crossbow line |
 | 2. First tools | 20 – 30 | Farbane Woods | Research Desk, Gravedigger Ring, Warlock armor, Bone Explosion |
 | 3. Chaos foundation | 30 – 40 | Farbane Woods → Dunley | Smithy, Alchemy, Ring of the Sorcerer, Chaos Barrage, Veil of Blood (**early build**) |
-| 4. Into the Study | 40 – 50 | Dunley Farmlands | Unholy Chains, Study, Artisan Table, prisoners |
-| 5. Gems, jewels, passives | 50 – 60 | Dunley, Hallowed Mountains, Mortium roads, Gloomrot South | Dark Magus, Veil of Chaos, jewels, Stygian altar, Lightning Tendrils (**mid build**) |
+| 4. Into the Study | 40 – 50 | Dunley Farmlands | Veil of Bones, Ball Lightning, Study, Artisan Table, prisoners |
+| 5. Gems, jewels, passives | 50 – 60 | Dunley, Hallowed Mountains, Mortium roads, Gloomrot South | Dark Magus, jewels, Stygian altar, Lightning Tendrils (**mid build**) |
 | 6. Dark Silver | 60 – 70 | Gloomrot South, Cursed Forest, Dunley, Silverlight Hills | Dark Silver gear, Blood Merlot Amulet, Greater jewels (**mid build complete**) |
-| 7. Athenaeum | 70 – 84 | Gloomrot North, Oakveil, Cursed Forest, Silverlight, Hallowed Mountains, Dunley (Dracula's Demise), Mortium | Maleficer Scholar, Arch-Warlock, Homogenizer, Fusion Forge, Primal jewels, Blood Key (**setup B**) |
+| 7. Athenaeum | 70 – 84 | Gloomrot North, Oakveil, Cursed Forest, Silverlight, Hallowed Mountains, Dunley (Dracula's Demise), Mortium | Maleficer Scholar, Arch-Warlock, Unholy Coating, Homogenizer, Fusion Forge, Primal jewels, Blood Key (**setup B**) |
 | 8. Dracula's court | 84 – 91 | Farbane (Dreaded Peak), Silverlight, Gloomrot North, Oakveil, Mortium | Dracula's Maleficer, Soul Shard of Dracula (**endgame**) |
 
 **Useful map layers:**
@@ -123,19 +123,20 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 - **Vermin Salve / Blood Rose Brew** for healing ([Blood Rose](https://mapgenie.io/v-rising/maps/vardoran?catIds=6088)).
 - **Iron Crossbow** (Smithy, after Quincey): 12 Iron Ingot + 8 Plank. Mining [Iron Ore](https://mapgenie.io/v-rising/maps/vardoran?catIds=6093) needs a GL 12+ weapon.
 
-**Early build, complete (≈33 DPS):**
-- **Abilities:** Veil of Blood · Chaos Volley + **Bone Explosion** or **Shadowbolt** · Chaos Barrage.
+**Early build, complete (≈50 DPS):**
+- **Abilities:** Veil of Blood (or keep the starting dash: 49.8 vs 50.0) · Chaos Volley + **Bone Explosion** · Chaos Barrage.
 - **Gear:** Warlock Vestment, Ring of the Sorcerer, Iron Crossbow.
-- **Blood and potion:** Scholar 100%, Enchanted Brew.
-- **Spell 2:** Bone Explosion's lead (33.4 vs 32.7) comes mostly from short fights; at 10 minutes it's 31.6 vs 31.4.
-- **Rotation:** Volley → spell 2 → Veil; ultimate when both spells are on cooldown.
+- **Blood and potion:** Scholar (~60% from feeding until you have a Prison Cell), Enchanted Brew.
+- **Spell 2:** Bone Explosion 50.0; Corrupted Skull or Rain of Chaos 47.8, Shadowbolt 46.9.
+- **The crossbow is about half your damage:** Rain of Bolts and Snapshot every 8 s, a primary shot (1 s draw, 0.55 s reload) whenever no spell is ready.
+- **Rotation:** Bone Explosion → Veil → Volley; crossbow in between; ultimate when both spells are on cooldown.
 - **Leaving Farbane:** the journal's "Broaden Horizons" (Lv 40) sends you to **Dunley Farmlands**.
 
 ---
 
 ## Phase 4: Into the Study (Lv 40 → 50) · Dunley Farmlands (Tristan roams Farbane)
 
-**Goal:** Unholy Chains, research tier 2, prisoners for 100% blood, and the materials for every mid-game recipe.
+**Goal:** Veil of Bones and Ball Lightning, research tier 2, prisoners for 100% blood, and the materials for every mid-game recipe.
 
 | Lv | Boss | Map | Take |
 |---|---|---|---|
@@ -143,12 +144,12 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 | 44 | ★ **Christina the Sun Priestess** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178472) (roams between Dawnbreak and Mosswick) | **Wool Thread**. Illusion T2 point → Curse. **Illusion mastery T1** (3rd point): +5% cooldown rate |
 | 44 | ★ **Vincent the Frostbringer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178474) (wanders Dunley paths) | **Prison Cell** (8 Iron Ingot + 2 Reinforced Plank), **Reinforced Plank**. Veil of Frost (drop) |
 | 46 | Sir Erwin the Gallant Cavalier | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=449769) | Stables. Storm T1 point → Ball Lightning |
-| 47 | ★ **Kriig the Undead General** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=348261) (around the [Haunted Iron Mine](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178316)) | Unholy T2 point → **Unholy Chains**, the core spell from here on |
+| 47 | ★ **Kriig the Undead General** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=348261) (around the [Haunted Iron Mine](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178316)) | Unholy T2 point → Unholy Chains. It hits hard, but Chaos Volley with Ball Lightning (later Tendrils) scores higher once Veil of Bones supplies the Condemn |
 | 47 | ★ **Maja the Dark Savant** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=282796) | **Study** (research tier 2), Scroll. Illusion T1 point |
 | 47 | ★ **Leandra the Shadow Priestess** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178470) | **Artisan Table**, **Scourgestone Pendant**, Scourgestone. Unholy T1 point |
 | 50 | ★ **Meredith the Bright Archer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178311) | **Elixir of the Prowler**: 20 Sunflower ([patches](https://mapgenie.io/v-rising/maps/vardoran?locationIds=179518,179681,432219)) + 20 [Fire Blossom](https://mapgenie.io/v-rising/maps/vardoran?catIds=6089) + Greater Blood Essence + bottle. Veil of Storm (drop) |
-| 50 | ★ **Grethel the Glassblower** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=282806) | **Glass**, **Empty Glass Bottle**, Blood Rose Potion. Storm T1 point |
-| 50 | Bane the Shadowblade | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=284510) (hooded human on Dunley paths) | Human Form (needed for silver merchants), daggers. Veil of Bones (drop) |
+| 50 | ★ **Grethel the Glassblower** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=282806) | **Glass**, **Empty Glass Bottle**, Blood Rose Potion. Storm T1 point → **Ball Lightning** (its Static makes every crossbow hit shock the boss) |
+| 50 | ★ **Bane the Shadowblade** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=284510) (hooded human on Dunley paths) | Human Form (needed for silver merchants), daggers. **Veil of Bones** (drop): its Veil attack Condemns the boss (+15% damage taken for 5 s); your Veil until Phase 7 |
 
 **Prisoners and 100% blood:**
 1. **Get Dominate** through the journal chain:
@@ -170,17 +171,16 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
   - Build the Eye inside your territory: 4 Iron Ingot + 4 Scourgestone + 20 Scroll.
 - **Study:** spend Scrolls on **Dark Magus**, **Merciless Iron Crossbow** and **Pendant of the Sorcerer** (90 for a weapon or pendant, 75 for armour, each a random draw within its category). Their materials arrive in Phase 5.
 
-**Loadout from Kriig on:** Veil of Blood · **Chaos Volley + Unholy Chains** · Chaos Barrage.
-- **Unholy Chains:** it channels for up to 1.7 s and the tether breaks if you get more than 14 m from the target. Don't start it if your Veil is back within ~2 s.
+**Loadout from Bane on (≈66 DPS at Lv 50):** **Veil of Bones** · **Chaos Volley + Ball Lightning** · Chaos Barrage (Veil of Blood until Bane).
 - **Gear:** Warlock Vestment, **Scourgestone Pendant** (16.5 Spell Power, GL 15, over the ring's 12.8 and GL 12), Iron Crossbow.
-- **Elixir and potion:** Prowler once Meredith is down; keep drinking Enchanted Brew.
-- **DPS:** with Veil of Blood this loadout tops out around **102** even with full Lv 70 gear (less in this phase). With the same Lv 70 gear it reaches ~115 once Veil of Chaos replaces Veil of Blood (Phase 5).
+- **Elixir and potion:** no elixir yet (the Prowler scores 65.8 against 66.2 without it; brew it for Phase 5); keep drinking Enchanted Brew. Blood: a 90% Scholar prisoner.
+- **Rotation:** Veil → Ball Lightning → Volley; Rain of Bolts, Snapshot and shots in between; ultimate when both spells are down.
 
 ---
 
 ## Phase 5: Gems, jewels, passives (Lv 50 → 60)
 
-**Goal:** the mid-game build: Veil of Chaos, Lightning Tendrils, jewels and Stygian passives.
+**Goal:** the mid-game build: Lightning Tendrils next to Chaos Volley, jewels and Stygian passives.
 
 | Lv | Boss | Map | Take |
 |---|---|---|---|
@@ -188,7 +188,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 | 53 | ★ **Frostmaw the Mountain Terror** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178467) (roams the Hallowed Mountains) | **Thick Leather** (Dark Magus). Frost T3 point → Ice Block (emergency defence) |
 | 53 | ★ **General Elena the Hollow** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=355624) (Ruins of Mortium roads) | **Altar of Stygian Awakening** + passive slot 1. Frost T2 point |
 | 55 | Gaius the Cursed Champion | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=450463) ([Colosseum](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178286) or Dunley paths) | Arena, twinblades. Unholy T1 point |
-| 57 | ★ **Jade the Vampire Hunter** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178473) (wanders Dunley paths) | **Veil of Chaos** (drop), **Advanced Blood Press**, **Primal Blood Essence**, pistols |
+| 57 | ★ **Jade the Vampire Hunter** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178473) (wanders Dunley paths) | Veil of Chaos (drop; Veil of Bones still scores higher), **Advanced Blood Press**, **Primal Blood Essence**, pistols |
 | 57 | ★ **General Cassius the Betrayer** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=396636) (Ruins of Mortium paths) | Passive slot 2, Stygian Summoning Circle, Elixir of the Bat. Unholy T2 point |
 | 57 | ★ **Raziel the Shepherd** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178475) (Dunley) | **Jewelcrafting Table**. Blood T2 point → Carrion Swarm |
 | 58 | Octavian the Militia Captain | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178469) (Dunley) | **Ancestral Forge**, gear storage. Storm T3 point |
@@ -203,21 +203,21 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
   | Spell | Gem | Target mods |
   |---|---|---|
+  | Chaos Volley | Amethyst | +20% damage, −12% cooldown |
   | Lightning Tendrils | Topaz | +1 bolt, +12% bolt damage |
-  | Unholy Chains | Emerald | +60% damage |
-  | Veil of Chaos | Amethyst | explosion +24%, second illusion |
+  | Veil of Bones | Emerald | skeleton explosion (80% + Condemn), +50% on a boss below 20% |
 
 **Stygian passives:**
 - **Stygian Shards** come from **Tier 1 Rift Incursions** (recommended Lv 57+; every 30 min, tracked with the Eye of Mortium) and Ruins of Mortium points of interest.
 - The Altar's **Discover** unlocks a **random** elemental passive for 400 Stygian Shards. Awakening Scrolls from Rift V Bloods unlock a chosen one.
-- Target **Enhanced Conductivity, Renewing Flames**, then **Chaos Kindling** when Cyril's third slot opens (and Cold Soul for Phase 7).
+- Target **Enhanced Conductivity, Renewing Flames**, then **Lightning Fast Strikes** when Cyril's third slot opens (and Cold Soul for Phase 7).
 - Each Discover gives a random passive you don't have yet, out of 12. Landing all four takes about 10.4 Discovers on average (k specific out of 12 take k·13/(k+1)), so ≈4,160 Stygian Shards. The Altar itself costs 1 Regular Ruby + 12 Iron Ingot + 4 Greater Blood Essence.
 
-**Mid build at Lv 60 (≈91 DPS):** two passive slots (Enhanced Conductivity + Renewing Flames), Regular jewels, Chaos mastery still T1.
-- **Abilities:** **Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage**.
+**Mid build at Lv 60 (≈109 DPS):** two passive slots (Enhanced Conductivity + Renewing Flames), Regular jewels, Chaos mastery still T1.
+- **Abilities:** **Veil of Bones · Chaos Volley + Lightning Tendrils · Chaos Barrage**. The old Veil of Chaos · Tendrils + Chains setup scores 107.1 here.
 - **Gear:** Dark Magus, Pendant of the Sorcerer, Merciless Iron Crossbow.
-- **Blood, elixir, potion:** Scholar 100%, Prowler, Enchanted Brew.
-- **Rotation:** Tendrils → Veil → Chains; ultimate when both spells are down. Veil → primary attack → recast.
+- **Blood, elixir, potion:** a 90% Scholar prisoner, Prowler, Enchanted Brew.
+- **Rotation:** Veil → Volley → Tendrils; ultimate when both spells are down; Rain of Bolts, Snapshot and shots in between.
 
 ---
 
@@ -253,14 +253,16 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
   | Spell | Target mods |
   |---|---|
+  | Chaos Volley | +20%, −12% cooldown, Agonizing Flames |
   | Lightning Tendrils | +1 bolt, +12%, +24% cast rate |
-  | Unholy Chains | +60%, nova |
-  | Veil of Chaos | explosion, second illusion, Agonizing Flames |
+  | Veil of Bones | skeleton explosion, +50% on a boss below 20%, +24% Veil attack |
+
+- **Elixir of the Bat** (Alchemy Table, Cassius's recipe): 20 Blood Rose + 20 Bleeding Heart (Ruins of Mortium) + Greater Blood Essence + Empty Glass Bottle. +6% cooldown rate and +4% leech; it edges out the Prowler once Lightning Fast Strikes is in.
 
 - **Castle Heart level 4:** 12 Radium Alloy + 1 Primal Blood Essence. Unlocks Subdue.
 - **Corrupted Fish:** now reachable. Fish at **[Brighthaven Docks](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178412)** (Silverlight Hills), where every region's fish can be caught. Feed it to your Scholar prisoner to push it to 100%.
 
-**Mid build, complete (≈119 DPS):** the Phase 5 loadout with Blood Merlot Amulet, Greater jewels and three passives.
+**Mid build, complete (≈150 DPS):** the Phase 5 loadout with Blood Merlot Amulet, Dark Silver Crossbow, Greater jewels, Elixir of the Bat, Scholar 100% and three passives (Enhanced Conductivity, Renewing Flames, Lightning Fast Strikes). Rotation: Volley → Tendrils → Veil. Curse instead of Volley scores 149.1.
 
 ---
 
@@ -272,7 +274,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 |---|---|---|---|
 | 74 | ★ **Henry Blackbrew the Doctor** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=283053) (Gloomrot North) | **Athenaeum** (research tier 3). Storm T3 point |
 | 75 | ★ **Jakira the Shadow Huntress** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=474543) (Oakveil Woodlands) | Passive slot 4, **Elixir of the Twisted**. Illusion T2 point |
-| 75 | ★ **Stavros the Carver** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=474540) (Oakveil) | Weapon coatings, Advanced Sawmill. Chaos T2 point → **Chaos mastery T3** (7 points): Ignite +1 tick |
+| 75 | ★ **Stavros the Carver** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=474540) (Oakveil) | Weapon coatings (**Unholy Coating**), Advanced Sawmill. Chaos T2 point → **Chaos mastery T3** (7 points): Ignite +1 tick |
 | 76 | ★ **Matka the Curse Weaver** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178460) (Cursed Forest) | **Advanced Loom, Ghost Yarn** (Maleficer). Illusion T2 point |
 | 76 | ★ **Lucile the Venom Alchemist** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=450465) (Oakveil) | **Blood Homogenizer**. Blood T2 point |
 | 76 | Terrorclaw the Ogre | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=178281) (Hallowed Mountains) | Advanced Tannery. Frost T3 point |
@@ -286,7 +288,8 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
 **Craft (Athenaeum research):** each blueprint costs Schematics (120 for a weapon or amulet, 100 for armour or a potion) and is a random draw within its category.
 - **Maleficer Scholar Vestment.** Each piece = a Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence; set bonus 2-piece +5% cooldown, 3-piece +4% leech, 4-piece +1 Gear Level.
-- **Amulet of the Arch-Warlock** (GL 25): Blood Merlot Amulet + 4 Flawless Sapphire + 12 Power Core.
+- **Amulet of the Arch-Warlock** (GL 25): Blood Merlot Amulet + 4 Flawless Sapphire + 12 Power Core. Your magic source until the Blood Key.
+- **Unholy Coating** (Alchemy Table, Stavros's recipe): 16 Corrupted Flower + 16 Venom Sap (looted in Oakveil, or pressed from Corrupted Oak or Corrupted Fish); lasts 60 minutes. Every 12 s your next shot adds 40% magic damage, a 50% bone spirit and Condemn: about 14 DPS.
 - **Witch Potion** (+5 Spell Power): 60 Sacred Grapes + 60 Snow Flower + Fish Bone + Empty Glass Bottle. It can also be bought from the city Herbs & Potions vendor or the [Treasure Hunter](https://mapgenie.io/v-rising/maps/vardoran?locationIds=355898) (Goldsun Coins).
 - **Elixir of the Twisted:** 20 Corrupted Flower (Oakveil) + 20 Plague Brier (Gloomrot South) + Greater Blood Essence + bottle.
 - **Sanguine Crossbow** (GL 27, Anvil): Dark Silver Crossbow + 1 Flawless Topaz + 12 Gold Ingot.
@@ -294,7 +297,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 - **Onyx Tear** (Anvil, recipe from Styx): 4 Gold Ingot + 4 Power Core + 4 Ember Glass.
   - Also drops about 5% from Lv 79–84 V Bloods and 25% from Gorecrusher, Talzur, Solarus, Adam and Megara.
   - The [Treasure Hunter](https://mapgenie.io/v-rising/maps/vardoran?locationIds=355898) (Gloomrot North) sells it for Goldsun Coins.
-- **Blood Key** (Artisan Table): 4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal. It gives entry to Dracula's castle.
+- **Blood Key** (Artisan Table): 4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal. It gives entry to Dracula's castle (from your bag), and as a magic source it carries +34 Spell Power (+4 more from its equip buff): **wear it** over the Arch-Warlock, about +16 DPS.
   - Blood Crystals are mined only at Dracula's Demise and need a GL 23+ (Dark Silver) weapon.
 
 **Ancestral weapon** (the build's weapon rolls; Ancestral Forge from Octavian):
@@ -310,7 +313,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
   | Epic | ~5% from Lv 79+ V Bloods and Tier 2 Rift Incursions | 1,500 Greater Stygian Shards at the Northern Mortium Vampire Merchant |
 
   Map Genie's two [Mortium "Merchant Camp" markers](https://mapgenie.io/v-rising/maps/vardoran?locationIds=400681,400682) are probably these merchants; its popup text is a placeholder.
-- **Rolls are random.** Target **Bonus Spell Power · Spell Cooldown · Crit Power** for setup B.
+- **Rolls are random.** Target **Crit · Crit Power · Spell Cooldown**: setup B and every endgame build use them.
 - The **Fusion Forge** (12 Ember Glass per fusion) merges two Ancestral weapons, even across weapon types, keeping the best rolls.
 
 **Blood:**
@@ -325,16 +328,17 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
   - Scrolls for passives you already own salvage at the Devourer for 100 Greater each.
   - A server's shard drop multiplier helps.
 
-**Primal jewels** (4 Flawless gem + 320 Greater Stygian Shards, 4 mods) for Tendrils, Chains and Veil of Chaos.
+**Primal jewels** (4 Flawless gem + 320 Greater Stygian Shards, 4 mods) for Chaos Volley (Amethyst), Tendrils (Topaz) and **Veil of Frost** (Sapphire; Vincent's drop from Phase 4). Veil of Frost's mods: Veil attack nova 50% + Chill, illusion nova 40%, +24% Veil attack, Freeze (a 30% hit on a V Blood). With them it overtakes Veil of Bones.
 - Merge two jewels of the same spell at the Fusion Forge to keep the best mods (12 Ember Glass; the result keeps the target jewel's mod count).
 - These and the passives are realistically Lv 80+ farming.
 
-**Setup B with Maleficer Scholar (≈249 DPS):**
-- **Abilities:** Veil of Chaos · Lightning Tendrils + Unholy Chains · Chaos Barrage.
-- **Gear:** Arch-Warlock.
-- **Blood, potion, elixir:** Draculin + Scholar T2, Witch Potion, Twisted.
-- **Rotation:** Tendrils → Chains → Veil; ultimate when both spells are down.
-- It reaches **≈258** once Phase 8's Dracula's Maleficer pieces are on.
+**Setup B with Maleficer Scholar (≈310 DPS):**
+- **Abilities:** Veil of Frost · Chaos Volley + Lightning Tendrils · Chaos Barrage.
+- **Gear:** Blood Key (≈294 with the Arch-Warlock before Styx), Maleficer Scholar, Epic Ancestral Crossbow.
+- **Blood, potion, elixir, coating:** Draculin + Scholar T2, Witch Potion, Twisted, Unholy Coating.
+- **Passives:** Enhanced Conductivity, Wicked Power, Hunger for Blood, Renewing Flames, Cold Soul (swap Lightning Fast Strikes out for it).
+- **Rotation:** Volley → Tendrils → Veil; ultimate when both spells are down; crossbow in between.
+- It reaches **≈321** once Phase 8's Dracula's Maleficer pieces are on.
 
 ---
 
@@ -342,7 +346,7 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 
 **Goal:** Dracula's Maleficer, the Soul Shard of Dracula, then the final endgame build.
 
-**Dracula's Maleficer:** each piece = the matching Maleficer Scholar piece + 12 Shadow Weave + 12 Bat Leather (Tailoring Bench). Each boss below **unlocks the recipe** for one piece. Upgrade as you go; the 4-piece set brings setup B to ≈258.
+**Dracula's Maleficer:** each piece = the matching Maleficer Scholar piece + 12 Shadow Weave + 12 Bat Leather (Tailoring Bench). Each boss below **unlocks the recipe** for one piece. Upgrade as you go; the 4-piece set brings setup B to ≈321.
 
 | Lv | Boss | Map | Take |
 |---|---|---|---|
@@ -352,39 +356,29 @@ The game data also lists a "Lv 30 Quincey the Marauder". It's a duplicate entry 
 | 88 | ★ **Megara the Serpent Queen** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=508500) (Oakveil) | **Dracula's Maleficer Leggings**, Soul Shard of the Serpent |
 | 91 | ★ **Dracula the Immortal King** | [📍](https://mapgenie.io/v-rising/maps/vardoran?locationIds=378284) (Ruins of Mortium; needs the Blood Key) | **Soul Shard of Dracula** → Blood Storm. Completes "Lord of the Night" |
 
-**Craft:** **Elixir of the Blasphemous** for build A (Alchemy Table, Domina's recipe): 20 Plague Brier + 20 Hell's Clarion + Greater Blood Essence + Empty Glass Bottle.
-
 **Choose your endgame build** (full detail in the build guide):
-1. **Wear the Soul Shard of Dracula.** It works with any ultimate.
-2. **Run the test in build A's full setup:** **Mutant 100% + Elixir of the Blasphemous + the shard**. Without Blasphemous the cut is ~13 s and A looks worse than it is. Use a Grayson target dummy:
-   - Time Blood Storm's cooldown without Veiling. ~120 s means Ultimate Cooldown Rate doesn't speed the timer; ~79 s means it does.
-   - Veil once and land the follow-up attack. Watch how far the cooldown jumps: ~14.5 s is the default assumption. Two separate ~7 s jumps (Veil attack, then recast + attack) is also good for A.
-   - Count how many of the 25 bolts hit.
-3. **Use A if the Veil cycle cuts ≥ ~14 s (one big jump or two ~7 s jumps) *and* ≥ ~90% of bolts land.** Otherwise pick by your bosses:
-   - Bosses teleport or break the Chains tether → **A2**.
-   - Tendrils' bolts also miss → **A3**.
+1. **Wear the Soul Shard of Dracula.** It works with any ultimate and takes the Blood Key's slot (the Key opens the castle from your bag).
+2. **Run the test** on a Grayson target dummy:
+   - Put Static on it with Lightning Tendrils, then fire Rain of Bolts. Five separate shock numbers mean Static has no cooldown; about one per second means it does.
+   - On a boss that moves, count how many of Tendrils' 7 bolts hit.
+   - Count how many of Blood Storm's 25 bolts hit.
+3. **Use A if Static has no cooldown and nearly all of both spells' bolts land** (its lead is only 0.2–1.6 DPS). Otherwise:
+   - Static has a cooldown, or Tendrils misses → **A2**.
    - Many Blood Storm bolts miss → **B+**.
-   - Unsure → **A2**.
+   - Unsure → **A2**: it is never more than ~15 DPS behind.
 
-| Build | Spells + ultimate | Blood (100%) | Elixir | Weapon rolls | DPS |
-|---|---|---|---|---|---|
-| **A** | Tendrils + Chains + Blood Storm | **Mutant** + Draculin T2 | **Blasphemous** | Crit · Crit Power · **Veil Cooldown** | 276 |
-| **A2** | Shadowbolt (or Chaos Volley) + Tendrils + Blood Storm | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 270 |
-| **A3** | Chaos Volley + Shadowbolt + Blood Storm | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 268 |
-| **B+** | Tendrils + Chains + Chaos Barrage (shard still worn) | Draculin + Scholar T2 | Twisted | Crit · Crit Power · Spell Cooldown | 265 |
+| Build | Spells + ultimate | DPS |
+|---|---|---|
+| **A** | Chaos Volley + Lightning Tendrils + Blood Storm | 328.6 |
+| **A2** | Chaos Volley + Shadowbolt + Blood Storm | 325.6 |
+| **B+** | Chaos Volley + Lightning Tendrils + Chaos Barrage (shard still worn) | 327.1 |
 
-**All four share:**
-- Veil of Chaos.
-- Dracula's Maleficer (4 pieces).
-- Witch Potion.
+**All three share setup B's gear and blood:**
+- Veil of Frost.
+- Draculin + Scholar T2, Elixir of the Twisted, Unholy Coating.
+- Dracula's Maleficer (4 pieces), Witch Potion.
+- Weapon rolls: Crit · Crit Power · Spell Cooldown. Setup B already has them, so no re-roll.
 - Stygian passives: Enhanced Conductivity · Wicked Power · Hunger for Blood · Renewing Flames · Cold Soul.
-
-Moving from setup B means re-rolling or fusing the weapon: swap Bonus Spell Power for **Crit** (and, for A, Spell Cooldown for **Veil Cooldown**).
-
-**Mutant blood for A:**
-- Since 1.1, **Mutant Spitters** (Gloomrot South) can be dominated and imprisoned. Keep one and feed it Corrupted Fish (Brighthaven Docks or Oakveil) up to 100%.
-- **Don't rely on Irradiant Gruel.** Each feed has a 35% chance to turn the prisoner into an Abomination, which can't be kept.
-- Homogenize Draculin T2 from a 90%+ Draculin potion.
 
 **Keep the shard alive:**
 - It has 2,500 durability and loses it over time.
@@ -399,7 +393,7 @@ Moving from setup B means re-rolling or fusing the weapon: swap Bonus Spell Powe
 | Phase | Bosses |
 |---|---|
 | Phase 1–3 | Errol, Keely, Rufus, Grayson, Goreswine, Clive, Lidia, Finn, Polora, Quincey (Bandit King), Beatrice |
-| Phase 4–6 | Tristan, Christina, Vincent, Kriig, Maja, Leandra, Meredith, Grethel, Terah, Frostmaw, Elena, Jade, Cassius, Raziel, Domina, Ziva, Angram, Ben, Ungora, Willfred, Cyril, Mairwyn, Baron, Morian |
+| Phase 4–6 | Tristan, Christina, Vincent, Kriig, Maja, Leandra, Meredith, Grethel, Bane, Terah, Frostmaw, Elena, Jade, Cassius, Raziel, Domina, Ziva, Angram, Ben, Ungora, Willfred, Cyril, Mairwyn, Baron, Morian |
 | Phase 7–8 | Henry Blackbrew, Jakira, Stavros, Matka, Lucile, Azariel, Voltatia, Simon Belmont, Dantos, Valencia, Gorecrusher, Styx, Talzur, Solarus, Adam, Megara, Dracula |
 
 [All V Bloods on the map](https://mapgenie.io/v-rising/maps/vardoran?catIds=6066)
@@ -431,10 +425,11 @@ Moving from setup B means re-rolling or fusing the weapon: swap Bonus Spell Powe
 | Chaos | T2 | Angram 61 | + Quincey, Angram |
 | Chaos | T3 | Stavros 75 | + Morian, Stavros |
 | Illusion | T1 | Christina 44 | Grayson, Polora, Christina |
+| Storm | T1 (+5% attack speed) | Lv 60 | Grethel, Domina, Ziva |
 
 **Research costs:** each blueprint is a random draw within its category: 60 Paper / 90 Scrolls / 120 Schematics for a weapon or jewelry, 50 / 75 / 100 for armour or a consumable.
 
-**Spell picks:** Tendrils (Storm T2) is required. Leftover Frost, Storm and Blood points are free to spend on defensive picks like Cold Snap or Ice Block.
+**Spell picks:** Ball Lightning (Storm T1, Phase 4) and Tendrils (Storm T2) are required. Leftover Frost and Blood points are free to spend on defensive picks like Cold Snap or Ice Block.
 
 **Mining gates:** Iron Ore needs a GL 12+ weapon, Silver Ore GL 18+, Blood Crystals GL 23+.
 
@@ -443,7 +438,7 @@ Moving from setup B means re-rolling or fusing the weapon: swap Bonus Spell Powe
 - [Snow Flower](https://mapgenie.io/v-rising/maps/vardoran?catIds=6090)
 - [Blood Rose](https://mapgenie.io/v-rising/maps/vardoran?catIds=6088)
 - [Fire Blossom](https://mapgenie.io/v-rising/maps/vardoran?catIds=6089)
-- [Hell's Clarion](https://mapgenie.io/v-rising/maps/vardoran?catIds=6106) (Elixir of the Blasphemous)
+- [Hell's Clarion](https://mapgenie.io/v-rising/maps/vardoran?catIds=6106)
 - [Copper Ore](https://mapgenie.io/v-rising/maps/vardoran?catIds=6091)
 - [Iron Ore](https://mapgenie.io/v-rising/maps/vardoran?catIds=6093)
 - [Silver Ore](https://mapgenie.io/v-rising/maps/vardoran?catIds=6094)

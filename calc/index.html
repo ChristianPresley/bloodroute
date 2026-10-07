@@ -19,10 +19,11 @@
 </style>
 <main>
   <h1>V Rising caster calculator</h1>
-  <p class="sub">Simulates a single-target boss fight and searches for the highest-damage loadout per game stage. DPS (mix) averages 90/180/300/600-second fights, ± its standard error over the random seeds. Assumptions are in engine.js (ASSUME).</p>
+  <p class="sub">Simulates a single-target boss fight (spells, Veils, ultimates and the crossbow) and searches for the highest-damage loadout per game stage. DPS (mix) averages 90/180/300/600-second fights, ± its standard error over the random seeds. Assumptions are in engine.js (ASSUME).</p>
   <div>
     <button data-stage="early">Optimise early</button>
     <button data-stage="mid">Optimise mid</button>
+    <button data-stage="p7">Optimise Phase 7 (Lv 84)</button>
     <button data-stage="late-pre">Optimise late (before Dracula)</button>
     <button data-stage="late">Optimise late</button>
   </div>
@@ -40,10 +41,10 @@
       const top = Object.entries(r.by).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([k, v]) => `${k} ${fmt(v)}`).join(', ');
       const lens = Object.entries(r.byLen).map(([k, v]) => `${k}s ${fmt(v)}`).join('<br>');
       return `<tr><td>${i + 1}</td><td class="num">${fmt(r.dps)} ± ${fmt(r.se)}</td><td class="num">${lens}</td><td>${r.build.veil}<br>${r.build.s1} + ${r.build.s2}<br><b>${r.build.ult}</b></td>
-        <td>${c.primary} / ${sec}<br>${c.amulet}<br>${c.elixir}</td><td>${c.passives.join(', ') || '—'}<br>${c.weapon.join(', ') || ''}</td><td>${top}</td></tr>`;
+        <td>${c.primary} / ${sec}<br>${c.amulet}<br>${c.elixir}${c.coating && c.coating !== 'none' ? '<br>' + c.coating : ''}</td><td>${c.passives.join(', ') || '—'}<br>${c.weapon.join(', ') || ''}</td><td>${top}</td></tr>`;
     }).join('');
     out.insertAdjacentHTML('afterbegin', `<h2>${res.label}</h2><div class="wrap"><table>
-      <tr><th>#</th><th>DPS (mix)</th><th>By fight length</th><th>Veil / spells / ultimate</th><th>Blood / amulet / elixir</th><th>Passives / weapon rolls</th><th>Top damage sources (DPS)</th></tr>${rows}</table></div>`);
+      <tr><th>#</th><th>DPS (mix)</th><th>By fight length</th><th>Veil / spells / ultimate</th><th>Blood / amulet / elixir / coating</th><th>Passives / weapon rolls</th><th>Top damage sources (DPS)</th></tr>${rows}</table></div>`);
   }
   const setBusy = busy => document.querySelectorAll('button').forEach(x => x.disabled = busy);
   function runOnPage(stage) {

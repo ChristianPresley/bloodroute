@@ -113,7 +113,9 @@ school and Unholy T3; late reaches T3 everywhere except Blood (T2, 6 points).
 ## Gear (fixed values; no random rolls on armor or amulets)
 
 - Warlock Vestment: +7.2% Bonus Spell Power total, 2pc +4% Cooldown Rate. Dark Magus Vestment: +6% Bonus Spell Power total, 2pc +4% Cooldown Rate, 3pc +1 Gear Level, 4pc +3% Spell Leech (wiki set pages).
-- Maleficer Scholar / Dracula's Maleficer: +1.5% Bonus Spell Power per piece. Dracula's set: 2pc +6% Cooldown Rate, 3pc +4% Leech, 4pc +15% Spell Crit for 4s after a Veil.
+- Maleficer Scholar / Dracula's Maleficer: +1.5% Bonus Spell Power per piece (wiki; the game data has 0 placeholders). Maleficer Scholar set: 2pc +5% Cooldown Rate, 3pc +4% Leech, 4pc +1 Gear Level; pieces are Athenaeum blueprints (Henry Blackbrew 74), each a Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence. Dracula's set: 2pc +6% Cooldown Rate, 3pc +4% Leech, 4pc +15% Spell Crit for 4s after a Veil (spell crit only).
+- Blood Key (Lord Styx 84): +34.03 SP, GL 25, no other stat; its equip buff `item_equipbuff_magicsource_bloodkey_t01` adds +4 SP in the game data but not on the wiki (`ASSUME.bloodKeyBuff`). Not needed in a slot to enter Dracula's castle.
+- Earlier magic sources (items.json): Gravedigger Ring 9.7 SP, Ring of the Sorcerer 12.8, Scourgestone Pendant 16.5, Pendant of the Sorcerer 20.9, Blood Merlot Amulet 27.9.
 - Amulet of the Arch-Warlock +34 SP, +8% Spell Crit; proc Cold Blood (+15% Bonus Spell Power for 4s, 10% on primary hit, 10s cooldown).
 - Master Spellweaver +6% Cooldown Rate. Wicked Prophet +4% Leech.
 - Soul Shard of Dracula +34 SP, +16% Blood Efficiency; 15% chance on primary hit to gain Bloodthirst (+15% damage for 6s, 10s cooldown). Durability 2,500, decays while worn; repaired only with Primal Blood Souls in Rift Incursions (server setting can disable decay). Since 1.1 a Soul Shard's ultimate can be swapped for any other.
@@ -124,6 +126,21 @@ school and Unholy T3; late reaches T3 everywhere except Blood (T2, 6 points).
 - Stygian passives (W/Altar_of_Stygian_Awakening): 5 slots from Elena 53, Cassius 57, Cyril 65, Jakira 75, Simon Belmont 80.
   - Elemental (Stygian Shards): Enhanced Conductivity +7% Bonus SP and spell hits trigger Static; Cold Soul +8% crit power **and** +8% damage vs Chilled/Frozen; Flowing Sorcery and Chaos Kindling +6% CDR (altar table says 7%, individual pages and Attributes say 6%; 6 used), Kindling also Ignite +25%; Renewing Flames +8% spell damage vs Ignited; Spiritual Infusion +8% spell damage vs Weakened; Arcane Animator +12% minion damage; Sanguine Mastery boosts your blood type by 8%; Lightning Fast Strikes Static +20%.
   - Vampire (Greater Stygian Shards, treated as endgame): Wicked Power +8% crit, crits 50% chance to apply a random school effect; Embrace Mayhem +14% Ultimate Cooldown Rate, +10% Ultimate Power; Hunger for Blood +8% damage vs V Bloods; Hunger for Power +20% damage for 6s after 6 consecutive spells.
+
+## Crossbow and other weapon damage
+
+- Primary (W/Crossbow, `ab_vampire_crossbow_primary_group`): one bolt, 100% physical; 1 s cast, 0.55 s cooldown (64.52% DPS). Attack speed divides both. A primary that hits a Marked target deals +25% and gives +7% attack speed for 10s, up to 3 stacks.
+- Weapon skills: Rain of Bolts (Copper tier on) 5 × 40%, 8s cooldown, 0.4s cast; Snapshot (Iron tier on) 75% that splits toward other enemies, 8s, 0.3s. Both Mark. A caster has no Weapon Skill Cooldown, so both stay on 8s.
+- Physical Power: base 10 plus the weapon's (AddToBase, items.json): Iron 13.84, Merciless Iron 17.30, Dark Silver 24.33, Sanguine 29.34, Ancestral 33.7. Physical crit 5% / 140% base, caps 45% / 180%; spell crit doesn't apply to weapon attacks. Attack speed cap 40%; caster sources: Lightning Fast Strikes +7%, Storm mastery T1 +5%, Veil of Storm +20% for 4s, Marked stacks.
+- Static (W/Abilities): 5s; **physical** damage against the target triggers a shock for 10% magic damage (Spell Power). Enhanced Conductivity makes spell damage trigger it too; Lightning Fast Strikes makes shocks +20%. No internal cooldown is documented either way (`ASSUME.staticIcd`).
+- Veil attacks: every Veil's next primary heals 5% max HP. Veil of Shadow's attack deals +25% (game data). Each school's jewel pool has "+X% damage on the Veil attack" (24% at tier 5), plus: Blood +16% physical damage for 4s on a Leeched target; Frost a 50% nova + Chill, illusion 40%; Bones skeleton explodes for 80% + Condemn, +50% vs targets under 20% HP; Storm illusion shocks 20% + Static, dash applies Static; Illusion recast detonation 36% + Weaken, up to 5 Phantasm (W/Template:Jewel_Table). Veil of Storm's cast gives +20% attack speed for 4s. Veil of Bones' Skeleton Warrior (30% per hit, cannot crit) is not modelled.
+- Weapon coatings (Stavros 75; Alchemy Table, 16 Corrupted Flower + 16 Venom Sap; lasts 60 min): the next primary every 12s carries the effect. Unholy +40% magic + Condemn + a 50% bone spirit; Chaos 40% + Ignite; Storm +40% + Chain Lightning (other enemies); Frost 30% + Chill; Illusion 30% + Weaken + 4 Phantasm; Blood Leech + Vampiric Curse 50% + Blood Orb (W/Coating pages, items.json).
+- Healing, not damage: Sanguine Coil's "drains 30% health" and Veil of Blood's "drains 20%" (the Coil jewel "increases life drain"). Frost Bat's impact-blast jewel hits only surrounding enemies.
+
+## Blood quality
+
+- Tiers unlock at 1% / 30% / 60% / 90% quality; Tiers I–III scale as max × (0.5 + 0.5 × quality), Tier IV is fixed, Tier V needs exactly 100% (W/Blood).
+- The model uses ~60% Scholar blood up to Lv 40 (no Prison Cell before Vincent, 44), a 90% prisoner in Phases 4–5, and 100% from Phase 6 (Corrupted Fish from Brighthaven Docks or Oakveil).
 
 ## Blood (100% quality; Tier V adds +20% Blood Efficiency to every primary effect)
 

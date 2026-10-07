@@ -70,17 +70,17 @@
         { ic: 'Vermin Salve', t: `Healing: Vermin Salve and Blood Rose Brew (${L(C(6088), 'Blood Rose')}).` },
         { ic: 'Iron Crossbow', t: `<b>Iron Crossbow</b> (Smithy): 12 Iron Ingot + 8 Plank. Mining ${L(C(6093), 'Iron Ore')} needs a GL 12+ weapon.` },
       ],
-      notes: ['The game data also lists a "Lv 30 Quincey the Marauder". It\'s a duplicate entry; the real fight is the Lv 37 Bandit King.', 'The journal\'s "Broaden Horizons" (Lv 40) sends you on to Dunley Farmlands.', 'Paper, Scrolls and Schematics pay for research. They drop from humans (Paper in Farbane, Scrolls in Dunley, Schematics in Silverlight, the Cursed Forest, Oakveil and Gloomrot North) and chests, and the Devourer turns spare blueprints into them. Nicholaus\'s Paper Press also crafts all three (4 Scrolls from 4 Coarse Thread + 8 Paper; 12 Schematics from 40 Tech Scrap + 16 Scrolls), so kill him if drops run short.'],
+      notes: ['The game data also lists a "Lv 30 Quincey the Marauder". It\'s a duplicate entry; the real fight is the Lv 37 Bandit King.', 'The journal\'s "Broaden Horizons" (Lv 40) sends you on to Dunley Farmlands.', 'Paper, Scrolls and Schematics pay for research. They drop from humans (Paper in Farbane, Scrolls in Dunley, Schematics in Silverlight, the Cursed Forest, Oakveil and Gloomrot North) and chests, and the Devourer turns spare blueprints into them. Nicholaus\'s Paper Press also crafts all three (4 Scrolls from 4 Coarse Thread + 8 Paper; 12 Schematics from 40 Tech Scrap + 16 Scrolls), so kill him if drops run short.', 'Keep shooting. The crossbow is about half your damage this early: Rain of Bolts and Snapshot every 8 s, a primary shot (1 s draw, 0.55 s reload) whenever no spell is ready.'],
       loadout: {
-        dps: '≈33 DPS', label: 'Early build',
-        slots: ['Veil of Blood', 'Chaos Volley', 'Bone Explosion or Shadowbolt', 'Chaos Barrage'],
+        dps: '≈50 DPS', label: 'Early build',
+        slots: ['Veil of Blood', 'Chaos Volley', 'Bone Explosion', 'Chaos Barrage'],
         gear: ['Ring of the Sorcerer', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'],
-        kv: [['Rotation', 'Volley → spell 2 → Veil; ultimate when both spells are on cooldown'], ['Spell 2', 'Bone Explosion 33.4 vs Shadowbolt 32.7; the gap comes mostly from short fights']],
+        kv: [['Rotation', 'Bone Explosion → Veil → Volley; Rain of Bolts, Snapshot and shots in between; ultimate when both spells are on cooldown'], ['Veil', 'Veil of Blood and the starting dash score the same (49.8 / 50.0)'], ['Spell 2', 'Bone Explosion 50.0; Corrupted Skull or Rain of Chaos 47.8, Shadowbolt 46.9']],
       },
     },
     {
-      id: 'p4', title: 'Into the Study', levels: '40 – 50', sig: 'Unholy Chains', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
-      goal: 'Unholy Chains, research tier 2, a Scholar prisoner, and the materials for every mid-game recipe.',
+      id: 'p4', title: 'Into the Study', levels: '40 – 50', sig: 'Veil of Bones', regions: ['Dunley Farmlands', 'Farbane Woods (Tristan)'],
+      goal: 'Veil of Bones and Ball Lightning, research tier 2, a Scholar prisoner, and the materials for every mid-game recipe.',
       steps: [
         { ic: 'Dominate', t: 'Get Dominate: "Waygate" gives the Stone Coffin → "Lord of the Manor" gives the Servant Coffin → "Servants" (Blood Press + Servant Coffin) gives Dominate.' },
         { ic: 'Blood Hunger', t: 'With Tristan\'s Blood Hunger, find a high-quality Scholar carrier (Nun, Priest), dominate it and lock it in a Prison Cell. Feed on it, or drain Blood Potions into Empty Glass Bottles.' },
@@ -91,35 +91,35 @@
         { lv: 44, name: 'Tristan the Vampire Hunter', must: true, map: 178455, where: 'wanders Farbane paths', gets: ['Greater Blood Essence', 'Blood Hunger', 'Crimson Beam'], take: 'Greater Blood Essence recipe (no more hearts needed) and Blood Hunger. Blood T3 point → Crimson Beam.' },
         { lv: 44, name: 'Christina the Sun Priestess', must: true, map: 178472, where: 'roams between Dawnbreak and Mosswick', gets: ['Wool Thread', 'Curse'], take: 'Wool Thread. Illusion T2 point → Curse. <b>Illusion mastery T1</b> (+5% cooldown rate).' },
         { lv: 44, name: 'Vincent the Frostbringer', must: true, map: 178474, where: 'wanders Dunley paths', gets: ['Prison Cell', 'Reinforced Plank', 'Veil of Frost'], take: 'Prison Cell (8 Iron Ingot + 2 Reinforced Plank) and Reinforced Plank. Veil of Frost (drop).' },
-        { lv: 46, name: 'Sir Erwin the Gallant Cavalier', map: 449769, gets: ['Ball Lightning'], take: 'Stables. Storm T1 point → Ball Lightning.' },
-        { lv: 47, name: 'Kriig the Undead General', must: true, map: 348261, where: `around the ${L(M(178316), 'Haunted Iron Mine')}`, gets: ['Unholy Chains'], take: 'Unholy T2 point → <b>Unholy Chains</b>, the core spell from here on.' },
+        { lv: 46, name: 'Sir Erwin the Gallant Cavalier', map: 449769, gets: ['Ball Lightning'], take: 'Stables. Storm T1 point → Ball Lightning (Grethel\'s point works too).' },
+        { lv: 47, name: 'Kriig the Undead General', must: true, map: 348261, where: `around the ${L(M(178316), 'Haunted Iron Mine')}`, gets: ['Unholy Chains'], take: 'Unholy T2 point → Unholy Chains. It hits hard, but its 2.5 s channel costs crossbow shots, so Volley with Ball Lightning (later Tendrils) scores higher.' },
         { lv: 47, name: 'Maja the Dark Savant', must: true, map: 282796, gets: ['Study', 'Scroll'], take: '<b>Study</b> (research tier 2) and Scroll. Illusion T1 point.' },
         { lv: 47, name: 'Leandra the Shadow Priestess', must: true, map: 178470, gets: ['Artisan Table', 'Scourgestone Pendant', 'Scourgestone'], take: 'Artisan Table, Scourgestone Pendant, Scourgestone. Unholy T1 point.' },
         { lv: 50, name: 'Meredith the Bright Archer', must: true, map: 178311, gets: ['Elixir of the Prowler', 'Veil of Storm'], take: `<b>Elixir of the Prowler</b>: 20 Sunflower (${L(M('179518,179681,432219'), 'patches')}) + 20 ${L(C(6089), 'Fire Blossom')} + Greater Blood Essence + bottle. Veil of Storm (drop).` },
-        { lv: 50, name: 'Grethel the Glassblower', must: true, map: 282806, gets: ['Glass', 'Empty Glass Bottle', 'Blood Rose Potion'], take: 'Glass, Empty Glass Bottle, Blood Rose Potion. Storm T1 point.' },
-        { lv: 50, name: 'Bane the Shadowblade', map: 284510, where: 'hooded human on Dunley paths', gets: ['Human Form', 'Veil of Bones'], take: 'Human Form (for silver merchants), daggers. Veil of Bones (drop).' },
+        { lv: 50, name: 'Grethel the Glassblower', must: true, map: 282806, gets: ['Glass', 'Empty Glass Bottle', 'Blood Rose Potion'], take: 'Glass, Empty Glass Bottle, Blood Rose Potion. Storm T1 point → <b>Ball Lightning</b>: its Static makes every crossbow hit shock the boss.' },
+        { lv: 50, name: 'Bane the Shadowblade', must: true, map: 284510, where: 'hooded human on Dunley paths', gets: ['Human Form', 'Veil of Bones'], take: 'Human Form (for silver merchants), daggers. <b>Veil of Bones</b> (drop): its Veil attack Condemns the boss (+15% damage taken for 5 s). Your Veil until Phase 7.' },
       ],
       craft: [
         { ic: 'Hollowfang Chestguard', t: `<b>Hollowfang Battlegear</b> (Tailoring Bench; chest 12 Cotton Yarn + 8 Wool Thread). Keep wearing Warlock: Hollowfang is only the base for Dark Magus. Loot thread in Dunley; ${L(M('432218,432220,432221,432222'), 'cotton patches')} are there too.` },
         { ic: 'Scourgestone Pendant', t: '<b>Scourgestone Pendant</b> (GL 15, Artisan Table): 8 Scourgestone + 24 Gem Dust.' },
         { ic: 'Study', t: 'Spend Scrolls at the Study on <b>Dark Magus</b>, <b>Merciless Iron Crossbow</b> and <b>Pendant of the Sorcerer</b>: 90 for a weapon or pendant, 75 for armour, each a random draw within its category. Their materials arrive in Phase 5.' },
       ],
-      notes: ['Unholy Chains channels for up to 1.7 s and the tether breaks if you get more than 14 m from the target. Don\'t start it if your Veil is back within ~2 s.', 'Wear the Scourgestone Pendant from Leandra on: 16.5 Spell Power and GL 15 against the ring\'s 12.8 and GL 12.', 'Corrupted Fish (raises prisoner quality ±2% per feed) is only caught in Oakveil or at Brighthaven Docks, so catch a high-quality prisoner for now.'],
-      loadout: { dps: '≈102 DPS at most, with full Lv 70 gear (less in this phase)', label: 'From Kriig on', slots: ['Veil of Blood', 'Chaos Volley', 'Unholy Chains', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Warlock Vest', 'Iron Crossbow', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar'], kv: [['Later', 'With the same Lv 70 gear, Veil of Chaos instead of Veil of Blood reaches ~115 (Phase 5)']] },
+      notes: ['Fill every gap with the crossbow: Rain of Bolts and Snapshot on cooldown, then primary shots. They\'re about a third of your damage here, and each hit on a Static target (Ball Lightning) adds a 10% Spell Power shock.','Wear the Scourgestone Pendant from Leandra on: 16.5 Spell Power and GL 15 against the ring\'s 12.8 and GL 12.', 'Corrupted Fish (raises prisoner quality ±2% per feed) is only caught in Oakveil or at Brighthaven Docks, so catch a high-quality prisoner for now.'],
+      loadout: { dps: '≈66 DPS at Lv 50', label: 'From Bane on', slots: ['Veil of Bones', 'Chaos Volley', 'Ball Lightning', 'Chaos Barrage'], gear: ['Scourgestone Pendant', 'Warlock Vest', 'Iron Crossbow', 'Enchanted Brew', 'Scholar'], kv: [['Rotation', 'Veil → Ball Lightning → Volley; crossbow skills and shots in between; ultimate when both spells are down'], ['Elixir', 'None yet: the Prowler scores 65.8 against 66.2 without it. Brew it for Phase 5'], ['Before Bane', 'Veil of Blood']] },
     },
     {
       id: 'p5', title: 'Gems, jewels, passives', levels: '50 – 60', sig: 'Lightning Tendrils', regions: ['Dunley Farmlands', 'Hallowed Mountains', 'Ruins of Mortium', 'Gloomrot South'],
-      goal: 'The mid-game build: Veil of Chaos, Lightning Tendrils, jewels and Stygian passives.',
+      goal: 'The mid-game build: Lightning Tendrils next to Chaos Volley, jewels and Stygian passives.',
       steps: [
         { ic: 'Stygian Shard', t: 'Farm Stygian Shards in Tier 1 Rift Incursions (recommended Lv 57+, every 30 minutes, tracked with the Eye of Mortium) and at Ruins of Mortium points of interest.' },
-        { ic: 'Enhanced Conductivity', t: 'Discover elemental passives at the Altar (400 Stygian Shards each, random). Target Enhanced Conductivity and Renewing Flames, then Chaos Kindling when the third slot opens (and Cold Soul for Phase 7). All four take about 10.4 Discovers, ≈4,160 Stygian Shards on average; Awakening Scrolls from Rift V Bloods unlock one directly.' },
+        { ic: 'Enhanced Conductivity', t: 'Discover elemental passives at the Altar (400 Stygian Shards each, random). Target Enhanced Conductivity and Renewing Flames, then Lightning Fast Strikes when the third slot opens (and Cold Soul for Phase 7). All four take about 10.4 Discovers, ≈4,160 Stygian Shards on average; Awakening Scrolls from Rift V Bloods unlock one directly.' },
       ],
       bosses: [
         { lv: 53, name: 'Terah the Geomancer', must: true, map: 178471, gets: ['Gem Cutting Table', 'Regular Topaz', 'Spectral Guardian'], take: 'Gem Cutting Table (also converts 12 Stygian → 1 Greater Stygian Shard) and Regular gems. Illusion T3 point.' },
         { lv: 53, name: 'Frostmaw the Mountain Terror', must: true, map: 178467, where: 'roams the Hallowed Mountains', gets: ['Thick Leather', 'Ice Block'], take: 'Thick Leather (Dark Magus). Frost T3 point → Ice Block.' },
         { lv: 53, name: 'General Elena the Hollow', must: true, map: 355624, where: 'Ruins of Mortium roads', gets: ['Altar of Stygian Awakening'], take: 'Altar of Stygian Awakening + passive slot 1. Frost T2 point.' },
         { lv: 55, name: 'Gaius the Cursed Champion', map: 450463, where: `${L(M(178286), 'Colosseum')} or Dunley paths`, gets: [], take: 'Arena, twinblades. Unholy T1 point.' },
-        { lv: 57, name: 'Jade the Vampire Hunter', must: true, map: 178473, where: 'wanders Dunley paths', gets: ['Veil of Chaos', 'Advanced Blood Press', 'Primal Blood Essence'], take: '<b>Veil of Chaos</b> (drop), Advanced Blood Press, Primal Blood Essence, pistols.' },
+        { lv: 57, name: 'Jade the Vampire Hunter', must: true, map: 178473, where: 'wanders Dunley paths', gets: ['Veil of Chaos', 'Advanced Blood Press', 'Primal Blood Essence'], take: 'Veil of Chaos (drop), Advanced Blood Press, Primal Blood Essence, pistols. Veil of Bones still scores higher.' },
         { lv: 57, name: 'General Cassius the Betrayer', must: true, map: 396636, where: 'Ruins of Mortium paths', gets: ['Elixir of the Bat'], take: 'Passive slot 2, Stygian Summoning Circle, Elixir of the Bat. Unholy T2 point.' },
         { lv: 57, name: 'Raziel the Shepherd', must: true, map: 178475, gets: ['Jewelcrafting Table', 'Carrion Swarm'], take: 'Jewelcrafting Table. Blood T2 point → Carrion Swarm.' },
         { lv: 58, name: 'Octavian the Militia Captain', map: 178469, gets: ['Ancestral Forge'], take: 'Ancestral Forge and gear storage. Storm T3 point.' },
@@ -130,9 +130,9 @@
         { ic: 'Dark Magus Chestguard', t: '<b>Dark Magus Vestment</b> (Study): each piece = Hollowfang piece + 4 Iron Ingot + 8 Thick Leather. +6% Bonus Spell Power; 2-piece +4% cooldown, 3-piece +1 Gear Level, 4-piece +3% leech. Swap from Warlock now: slightly less Spell Power than Warlock\'s 7.2%, but the set is 8 Gear Levels higher (25 vs 17) and adds leech.' },
         { ic: 'Pendant of the Sorcerer', t: '<b>Pendant of the Sorcerer</b> (GL 18): Scourgestone Pendant + 4 Regular Amethyst + 16 Glass.' },
         { ic: 'Merciless Iron Crossbow', t: '<b>Merciless Iron Crossbow</b> (GL 18): Iron Crossbow + Regular Topaz + 4 Greater Blood Essence + 4 Reinforced Plank.' },
-        { ic: 'Regular jewel', t: '<b>Regular jewels</b> (4 Regular gem + 4 Iron Ingot, 2 random mods): Tendrils (Topaz) +1 bolt / +12% bolt damage · Chains (Emerald) +60% damage · Veil of Chaos (Amethyst) explosion +24% / second illusion.' },
+        { ic: 'Regular jewel', t: '<b>Regular jewels</b> (4 Regular gem + 4 Iron Ingot, 2 random mods): Chaos Volley (Amethyst) +20% damage / −12% cooldown · Tendrils (Topaz) +1 bolt / +12% bolt damage · Veil of Bones (Emerald) skeleton explosion / +50% on a boss below 20%.' },
       ],
-      loadout: { dps: '≈91 DPS at Lv 60', label: 'Mid build', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], gear: ['Pendant of the Sorcerer', 'Dark Magus Chestguard', 'Merciless Iron Crossbow', 'Regular jewel', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames'], kv: [['Rotation', 'Tendrils → Veil → Chains; Veil → primary attack → recast']] },
+      loadout: { dps: '≈109 DPS at Lv 60', label: 'Mid build', slots: ['Veil of Bones', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Pendant of the Sorcerer', 'Dark Magus Chestguard', 'Merciless Iron Crossbow', 'Regular jewel', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames'], kv: [['Rotation', 'Veil → Volley → Tendrils; crossbow skills and shots in between'], ['Old core', 'Veil of Chaos with Tendrils + Unholy Chains: 107.1']] },
     },
     {
       id: 'p6', title: 'Dark Silver', levels: '60 – 70', sig: 'Blood Merlot Amulet', regions: ['Gloomrot South', 'Cursed Forest', 'Dunley Farmlands', 'Silverlight Hills'],
@@ -156,24 +156,25 @@
         { ic: 'Dark Silver Crossbow', t: `<b>Dark Silver Crossbow</b> (GL 24, Anvil): 12 Dark Silver Ingot + 8 Reinforced Plank + 1 Primal Blood Essence. ${L(C(6094), 'Silver Ore')} needs a GL 18+ weapon.` },
         { ic: 'Blood Merlot', t: '<b>Blood Merlot</b> (drink, at a Prison Cell): Empty Glass Bottle + 60 Sacred Grapes (Brighthaven vineyards or Sacred Grape Seeds).' },
         { ic: 'Blood Merlot Amulet', t: '<b>Blood Merlot Amulet</b> (GL 22, Artisan Table): 1 Blood Merlot + 4 Dark Silver Ingot + 12 Radium Alloy.' },
-        { ic: 'Greater jewel', t: '<b>Greater jewels</b> (4 Flawless gem + 4 Dark Silver Ingot, 3 mods): Tendrils +1 bolt / +12% / +24% cast rate · Chains +60% / nova · Veil of Chaos explosion / second illusion / Agonizing Flames.' },
+        { ic: 'Greater jewel', t: '<b>Greater jewels</b> (4 Flawless gem + 4 Dark Silver Ingot, 3 mods): Chaos Volley +20% / −12% cooldown / Agonizing Flames · Tendrils +1 bolt / +12% / +24% cast rate · Veil of Bones skeleton explosion / +50% on a boss below 20% / +24% Veil attack.' },
+        { ic: 'Elixir of the Bat', t: `<b>Elixir of the Bat</b> (+6% Spell Cooldown Rate, +4% Spell Leech; Alchemy Table, Cassius's recipe): 20 ${L(C(6088), 'Blood Rose')} + 20 Bleeding Heart (Ruins of Mortium) + Greater Blood Essence + Empty Glass Bottle. It edges out the Prowler once Lightning Fast Strikes is in.` },
         { ic: 'Castle Heart', t: 'Castle Heart level 4: 12 Radium Alloy + 1 Primal Blood Essence (unlocks Subdue).' },
         { ic: 'Corrupted Fish', t: `<b>Corrupted Fish</b>: fish at ${L(M(178412), 'Brighthaven Docks')} and feed your Scholar prisoner up to 100%.` },
       ],
-      loadout: { dps: '≈119 DPS', label: 'Mid build, complete', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], gear: ['Blood Merlot Amulet', 'Dark Magus Chestguard', 'Dark Silver Crossbow', 'Greater jewel', 'Elixir of the Prowler', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Chaos Kindling', 'Renewing Flames'] },
+      loadout: { dps: '≈150 DPS', label: 'Mid build, complete', slots: ['Veil of Bones', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Blood Merlot Amulet', 'Dark Magus Chestguard', 'Dark Silver Crossbow', 'Greater jewel', 'Elixir of the Bat', 'Enchanted Brew', 'Scholar', 'Enhanced Conductivity', 'Renewing Flames', 'Lightning Fast Strikes'], kv: [['Rotation', 'Volley → Tendrils → Veil; crossbow skills and shots in between'], ['Close', 'Curse instead of Volley: 149.1 (Prowler, Spiritual Infusion)']] },
     },
     {
       id: 'p7', title: 'Athenaeum', levels: '70 – 84', sig: 'Amulet of the Arch-Warlock', regions: ['Gloomrot North', 'Oakveil Woodlands', 'Cursed Forest', 'Silverlight Hills', 'Hallowed Mountains', 'Dunley (Dracula\'s Demise)', 'Ruins of Mortium'],
       goal: 'Setup B, the late-game build before Dracula, plus the Blood Key.',
       steps: [
         { ic: 'Greater Stygian Shard', t: 'Farm Greater Stygian Shards in Tier 2 Rift Incursions (Lv 80, ~65 per solo run) or convert 12:1 at the Gem Cutting Table.' },
-        { ic: 'Wicked Power', t: 'Discover vampire passives Wicked Power and Hunger for Blood (600 Greater each, random; about 8.7 Discovers, ≈5,200 Greater on average for both), and swap Chaos Kindling for Cold Soul (+8% Spell Critical Power). Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
+        { ic: 'Wicked Power', t: 'Discover vampire passives Wicked Power and Hunger for Blood (600 Greater each, random; about 8.7 Discovers, ≈5,200 Greater on average for both), and swap Lightning Fast Strikes for Cold Soul (+8% Spell Critical Power, +8% damage to the Chilled boss). Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
         { ic: 'Draculin', t: 'Switch blood: Draculin 100% primary (Vampire Cultists, Blood Prophets, Night Maidens), then homogenize Scholar T2 from a 90%+ Scholar potion.' },
       ],
       bosses: [
         { lv: 74, name: 'Henry Blackbrew the Doctor', must: true, map: 283053, where: 'Gloomrot North', gets: ['Athenaeum'], take: '<b>Athenaeum</b> (research tier 3). Storm T3 point.' },
         { lv: 75, name: 'Jakira the Shadow Huntress', must: true, map: 474543, where: 'Oakveil Woodlands', gets: ['Elixir of the Twisted'], take: 'Passive slot 4 and Elixir of the Twisted. Illusion T2 point.' },
-        { lv: 75, name: 'Stavros the Carver', must: true, map: 474540, where: 'Oakveil', gets: [], take: 'Weapon coatings. Chaos T2 point → <b>Chaos mastery T3</b> (Ignite +1 tick).' },
+        { lv: 75, name: 'Stavros the Carver', must: true, map: 474540, where: 'Oakveil', gets: [], take: 'Weapon coatings → <b>Unholy Coating</b>. Chaos T2 point → <b>Chaos mastery T3</b> (Ignite +1 tick).' },
         { lv: 76, name: 'Matka the Curse Weaver', must: true, map: 178460, where: 'Cursed Forest', gets: ['Ghost Yarn'], take: 'Advanced Loom and Ghost Yarn. Illusion T2 point.' },
         { lv: 76, name: 'Lucile the Venom Alchemist', must: true, map: 450465, where: 'Oakveil', gets: ['Blood Homogenizer'], take: '<b>Blood Homogenizer</b>. Blood T2 point.' },
         { lv: 76, name: 'Terrorclaw the Ogre', map: 178281, where: 'Hallowed Mountains', gets: ['Tannery'], take: 'Advanced Tannery. Frost T3 point.' },
@@ -187,18 +188,19 @@
       ],
       craft: [
         { ic: 'Maleficer Scholar Chestguard', t: '<b>Maleficer Scholar Vestment</b> (Athenaeum): each piece = Dawnthorn piece + 8 Ghost Yarn + 1 Primal Blood Essence.' },
-        { ic: 'Amulet of the Arch-Warlock', t: '<b>Amulet of the Arch-Warlock</b> (GL 25): Blood Merlot Amulet + 4 Flawless Sapphire + 12 Power Core.' },
+        { ic: 'Amulet of the Arch-Warlock', t: '<b>Amulet of the Arch-Warlock</b> (GL 25): Blood Merlot Amulet + 4 Flawless Sapphire + 12 Power Core. Your magic source until the Blood Key.' },
+        { ic: 'Unholy Coating', t: '<b>Unholy Coating</b> (Alchemy Table, Stavros\'s recipe): 16 Corrupted Flower + 16 Venom Sap; lasts 60 minutes. Every 12 s your next shot adds 40% magic damage, a 50% bone spirit and Condemn (+15% damage taken for 5 s), worth about 14 DPS.' },
         { ic: 'Witch Potion', t: `<b>Witch Potion</b> (+5 Spell Power): 60 Sacred Grapes + 60 Snow Flower + Fish Bone + bottle, or buy it from the ${L(M(355898), 'Treasure Hunter')}.` },
         { ic: 'Elixir of the Twisted', t: '<b>Elixir of the Twisted</b>: 20 Corrupted Flower + 20 Plague Brier + Greater Blood Essence + bottle.' },
         { ic: 'Sanguine Crossbow', t: '<b>Sanguine Crossbow</b> (GL 27, Anvil): Dark Silver Crossbow + 1 Flawless Topaz + 12 Gold Ingot.' },
         { ic: 'Castle Heart', t: 'Castle Heart level 5: 12 Dark Silver Ingot + 4 Power Core + 1 Primal Blood Essence.' },
         { ic: 'Onyx Tear', t: `<b>Onyx Tear</b> (Anvil): 4 Gold Ingot + 4 Power Core + 4 Ember Glass. Also drops from Lv 79+ bosses or from the ${L(M(355898), 'Treasure Hunter')}.` },
-        { ic: 'Blood Key', t: '<b>Blood Key</b> (Artisan Table): 4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal (mined at Dracula\'s Demise with a GL 23+ weapon). Opens Dracula\'s castle.' },
-        { ic: 'Ancestral Crossbow Shards', t: `<b>Epic Ancestral Crossbow</b> (3 rolls): Sanguine Crossbow + Epic shard + 4 Onyx Tear. Epic shards: ~5% from Lv 79+ bosses and Tier 2 Rifts, or 1,500 Greater at the Northern Mortium Vampire Merchant (${L(M('400681,400682'), 'probable markers')}). Target rolls Bonus Spell Power · Spell Cooldown · Crit Power.` },
-        { ic: 'Primal jewel', t: '<b>Primal jewels</b> (4 Flawless gem + 320 Greater Stygian Shards) for Tendrils, Chains and Veil of Chaos. Merge duplicates at the Fusion Forge (12 Ember Glass).' },
+        { ic: 'Blood Key', t: '<b>Blood Key</b> (Artisan Table): 4 Onyx Tear + 4 Primal Blood Essence + 200 Blood Crystal (mined at Dracula\'s Demise with a GL 23+ weapon). Opens Dracula\'s castle; it also carries +34 Spell Power (+38 counting its equip buff), so <b>wear it</b> over the Arch-Warlock (about +16 DPS).' },
+        { ic: 'Ancestral Crossbow Shards', t: `<b>Epic Ancestral Crossbow</b> (3 rolls): Sanguine Crossbow + Epic shard + 4 Onyx Tear. Epic shards: ~5% from Lv 79+ bosses and Tier 2 Rifts, or 1,500 Greater at the Northern Mortium Vampire Merchant (${L(M('400681,400682'), 'probable markers')}). Target rolls Crit · Crit Power · Spell Cooldown (every late build uses them).` },
+        { ic: 'Primal jewel', t: '<b>Primal jewels</b> (4 Flawless gem + 320 Greater Stygian Shards, 4 mods) for Chaos Volley (Amethyst), Tendrils (Topaz) and <b>Veil of Frost</b> (Sapphire; Vincent\'s drop): its Veil attack nova (50%), illusion nova (40%), +24% Veil attack and Freeze (a 30% hit on a V Blood). Merge duplicates at the Fusion Forge (12 Ember Glass).' },
       ],
       notes: ['Athenaeum blueprints cost Schematics: 120 for a weapon or amulet, 100 for armour or a potion, each a random draw within its category. Building the Athenaeum takes 20 more.'],
-      loadout: { dps: '≈249 DPS (≈258 with Dracula\'s Maleficer)', label: 'Setup B', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], gear: ['Amulet of the Arch-Warlock', 'Maleficer Scholar Chestguard', 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Rotation', 'Tendrils → Chains → Veil; ultimate when both spells are down']] },
+      loadout: { dps: '≈310 DPS (≈294 before the Blood Key)', label: 'Setup B', slots: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], gear: ['Blood Key', 'Maleficer Scholar Chestguard', 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Unholy Coating', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Rotation', 'Volley → Tendrils → Veil; ultimate when both spells are down; crossbow skills and shots in between'], ['Why Veil of Frost', 'With Primal jewels its two novas and Freeze out-damage Veil of Bones, and its Chill turns on Cold Soul; Unholy Coating takes over the Condemn']] },
     },
     {
       id: 'p8', title: 'Dracula\'s court', levels: '84 – 91', sig: 'Soul Shard of Dracula', regions: ['Farbane (Dreaded Peak)', 'Silverlight Hills', 'Gloomrot North', 'Oakveil Woodlands', 'Ruins of Mortium'],
@@ -211,13 +213,12 @@
         { lv: 91, name: 'Dracula the Immortal King', must: true, map: 378284, where: 'Ruins of Mortium; needs the Blood Key', gets: ['Soul Shard of Dracula', 'Blood Storm'], take: '<b>Soul Shard of Dracula</b> → Blood Storm. Completes "Lord of the Night".' },
       ],
       craft: [
-        { ic: "Dracula's Maleficer Chestguard", t: 'Upgrade each Maleficer Scholar piece to <b>Dracula\'s Maleficer</b> (+ 12 Shadow Weave + 12 Bat Leather) as its boss unlocks the recipe. Setup B reaches ≈258.' },
-        { ic: 'Elixir of the Blasphemous', t: '<b>Elixir of the Blasphemous</b> for build A (+14% Ultimate Cooldown Rate, +10% Ultimate Power; Alchemy Table, Domina\'s recipe): 20 Plague Brier + 20 Hell\'s Clarion + Greater Blood Essence + Empty Glass Bottle. The other builds keep the Twisted elixir.' },
-        { ic: 'Soul Shard of Dracula', t: 'Wear the Soul Shard of Dracula (+16% Blood Efficiency; it takes the Arch-Warlock\'s slot) and run the endgame test (Endgame builds tab).' },
-        { ic: 'Fusion Forge', t: 'Once you\'ve picked a build, fuse or re-craft the Ancestral Crossbow toward its rolls at the Fusion Forge (12 Ember Glass): swap Bonus Spell Power for Crit, and for build A Spell Cooldown for Veil Cooldown.' },
+        { ic: "Dracula's Maleficer Chestguard", t: 'Upgrade each Maleficer Scholar piece to <b>Dracula\'s Maleficer</b> (+ 12 Shadow Weave + 12 Bat Leather) as its boss unlocks the recipe. Setup B reaches ≈321.' },
+        { ic: 'Soul Shard of Dracula', t: 'Wear the Soul Shard of Dracula (+16% Blood Efficiency; it takes the Blood Key\'s slot, and the Key opens the castle from your bag) and run the endgame test (Endgame builds tab).' },
+        { ic: 'Fusion Forge', t: 'Setup B and every endgame build use the same weapon rolls (Crit · Crit Power · Spell Cooldown). If your Ancestral Crossbow missed one, fuse or re-craft it at the Fusion Forge (12 Ember Glass).' },
         { ic: 'Greater Stygian Shard', t: 'Keep the shard repaired: feed on Primal Blood Souls in Tier 2 Rift Incursions (+750 each, shared across carried shards).' },
       ],
-      loadout: { dps: '265 – 276 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Blasphemous', 'Witch Potion', 'Mutant', 'Draculin', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
+      loadout: { dps: '326 – 329 DPS', label: 'Endgame (build A shown)', slots: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Blood Storm'], gear: ['Soul Shard of Dracula', "Dracula's Maleficer Chestguard", 'Ancestral Crossbow Shards', 'Primal jewel', 'Elixir of the Twisted', 'Witch Potion', 'Unholy Coating', 'Draculin', 'Scholar', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'], kv: [['Choose', 'Use the ladder on the Endgame builds tab']] },
     },
   ];
 
@@ -250,57 +251,57 @@
     'Blood Crystal': [6, 'Mine at Dracula\'s Demise with a GL 23+ weapon'], 'Ghost Yarn': [7, 'Advanced Loom (Matka)'],
     'Gold Ingot': [7, 'Recipe from Azariel'], 'Ember Glass': [7, 'Recipe from Dantos'], 'Shadow Weave': [7, 'Recipe from Valencia'], 'Bat Leather': [7, 'Recipe from Gorecrusher'],
     'Corrupted Flower': [7, 'Grows in the Oakveil Woodlands'],
+    'Venom Sap': [7, 'Looted across Oakveil; also from Corrupted Oak (Advanced Sawmill) or Corrupted Fish (Blood Press)'],
+    'Blood Rose': [1, L(C(6088), 'Blood Rose map layer')], 'Bleeding Heart': [5, 'Grows across the Ruins of Mortium'],
   };
 
   // ---------- Endgame + reference views ----------
   function renderEndgame() {
     const builds = [
-      { k: 'A', top: true, dps: '276.2', spells: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Blood Storm'], blood: ['Mutant', 'Draculin'], bloodText: 'Mutant + Draculin T2', elixir: 'Elixir of the Blasphemous', rolls: 'Crit · Crit Power · Veil Cooldown', when: 'Veil cut ≥ ~14 s and ≥ ~90% of bolts land' },
-      { k: 'A2', dps: '270.0', spells: ['Veil of Chaos', 'Shadowbolt', 'Lightning Tendrils', 'Blood Storm'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Bosses teleport or break the Chains tether (Chaos Volley can replace Shadowbolt, 267.3)' },
-      { k: 'A3', dps: '268.3', spells: ['Veil of Chaos', 'Chaos Volley', 'Shadowbolt', 'Blood Storm'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Tendrils\' bolts also miss often' },
-      { k: 'B+', dps: '265.0', spells: ['Veil of Chaos', 'Lightning Tendrils', 'Unholy Chains', 'Chaos Barrage'], blood: ['Draculin', 'Scholar'], bloodText: 'Draculin + Scholar T2', elixir: 'Elixir of the Twisted', rolls: 'Crit · Crit Power · Spell Cooldown', when: 'Many Blood Storm bolts miss (keep wearing the shard)' },
+      { k: 'A', top: true, dps: '328.6', spells: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Blood Storm'], when: 'Default: most of Tendrils\' bolts and Blood Storm\'s bolts land, and every crossbow hit on a Static boss shocks' },
+      { k: 'A2', dps: '325.6', spells: ['Veil of Frost', 'Chaos Volley', 'Shadowbolt', 'Blood Storm'], when: 'Tendrils\' bolts miss or Static shocks have a cooldown; also the safe pick' },
+      { k: 'B+', dps: '327.1', spells: ['Veil of Frost', 'Chaos Volley', 'Lightning Tendrils', 'Chaos Barrage'], when: 'Many Blood Storm bolts miss (keep wearing the shard)' },
     ];
     const sc = [
-      ['Default assumptions', 276.3, 269.5, 267.9, 265.4],
-      ['Ultimate Cooldown Rate works as the tooltip says', 285.4, 269.5, 267.9, 265.4],
-      ['Ultimate Cooldown Rate does nothing', 252.8, 269.5, 267.9, 265.4],
-      ['Veil of Chaos recast counts as a second Veil attack', 280.8, 260.3, 259.0, 250.4],
-      ['Blood Efficiency doesn\'t stretch fixed traits', 245.9, 255.7, 246.6, 256.2],
-      ['Only 75% of Blood Storm bolts hit', 249.1, 263.6, 262.1, 265.4],
-      ['Only 50% of Blood Storm bolts hit', 231.7, 258.1, 256.8, 265.4],
-      ['80% of Tendrils bolts hit and Static shocks once per second', 250.2, 231.0, 266.3, 230.7],
-      ['25% of Unholy Chains channels fail', 254.1, 269.5, 267.9, 229.5],
+      ['Default assumptions', 327.6, 326.0, 327.4],
+      ['Crossbow shots and skills deal no damage (spells only)', 267.3, 266.7, 259.7],
+      ['Half of Rain of Bolts\' bolts hit', 321.4, 317.3, 317.8],
+      ['80% of Tendrils bolts hit', 304.4, 326.0, 302.6],
+      ['Static shocks at most once per second', 303.9, 319.9, 303.2],
+      ['80% of Tendrils bolts hit and Static shocks once per second', 284.0, 319.9, 281.4],
+      ['Only 75% of Blood Storm bolts hit', 324.8, 318.1, 327.4],
+      ['Only 50% of Blood Storm bolts hit', 319.1, 312.7, 327.4],
+      ['Bloodthirst (shard proc) only boosts physical damage', 320.0, 317.8, 317.8],
+      ['Blood Efficiency also boosts the Homogenizer trait', 346.1, 330.9, 339.8],
     ];
     const scRows = sc.map(r => { const mx = Math.max(...r.slice(1)); return `<tr><td>${r[0]}</td>${r.slice(1).map(v => `<td class="num">${v === mx ? `<span class="best">${v.toFixed(1)}</span>` : v.toFixed(1)}</td>`).join('')}</tr>`; }).join('');
     return `
       <div class="card"><h2>Pick your endgame build</h2>
-        <p>After Dracula you can wear the Soul Shard of Dracula with any ultimate. Four builds are close; which one wins depends on two mechanics nobody has confirmed, so test before you commit.</p>
+        <p>After Dracula you can wear the Soul Shard of Dracula with any ultimate. Three builds score within 3 DPS of each other; which one wins depends on mechanics nobody has measured, so test before you commit.</p>
         <ol class="ladder">
-          <li><div class="cell">${ic('Mutant', 36)}${ic('Elixir of the Blasphemous', 36)}${ic('Soul Shard of Dracula', 36)}<div><b>Wear build A's full setup:</b> Mutant 100% + Elixir of the Blasphemous + the Soul Shard of Dracula. Without Blasphemous the Veil cut is only ~13 s.</div></div></li>
-          <li><div class="cell">${ic('Blood Storm', 36)}<div><b>Time Blood Storm's cooldown without Veiling.</b> ~120 s means Ultimate Cooldown Rate doesn't speed the timer; ~79 s means it does.</div></div></li>
-          <li><div class="cell">${ic('Veil of Chaos', 36)}<div><b>Veil once and land the follow-up attack.</b> A ~14.5 s jump, or two separate ~7 s jumps (Veil attack, then recast + attack), is good for A.</div></div></li>
-          <li><div class="cell">${ic('Grayson the Armourer', 36)}<div><b>Count Blood Storm's bolts</b> on a Grayson target dummy. A needs at least ~90% of the 25 to land.</div></div></li>
-          <li><div><b>Choose:</b> both checks pass → <b>A</b>. Otherwise: teleporting bosses or a breaking Chains tether → <b>A2</b>; Tendrils' bolts also miss → <b>A3</b>; many Blood Storm bolts miss → <b>B+</b>; unsure → <b>A2</b>.</div></li>
+          <li><div class="cell">${ic('Lightning Tendrils', 36)}${ic('Grayson the Armourer', 36)}<div><b>Put Static on a Grayson target dummy</b> with Lightning Tendrils, then fire Rain of Bolts at it. Five separate shock numbers mean Static has no cooldown; one shock per second or so means it does.</div></div></li>
+          <li><div class="cell">${ic('Lightning Tendrils', 36)}<div><b>Count Tendrils' bolts</b> on a boss that moves. A and B+ need nearly all 7 to land: at 80%, A2 is ~22 DPS ahead.</div></div></li>
+          <li><div class="cell">${ic('Blood Storm', 36)}<div><b>Count Blood Storm's bolts</b> on the dummy. A needs nearly all 25: at 75%, B+ is already ahead.</div></div></li>
+          <li><div><b>Choose:</b> all three pass → <b>A</b> (its lead is only 0.2–1.6 DPS). Static has a cooldown or Tendrils misses → <b>A2</b>. Blood Storm's bolts miss → <b>B+</b>. Unsure → <b>A2</b>: it is never more than ~15 DPS behind.</div></li>
         </ol>
       </div>
-      <div class="card"><h2>The four builds</h2>
+      <div class="card"><h2>The three builds</h2>
         <div class="builds">${builds.map(b => `<div class="build${b.top ? ' top' : ''}">
           <div class="head"><b>${b.k}</b><span>${b.dps} DPS</span></div>
           <div class="spells">${b.spells.map(s => ic(s, 46)).join('')}</div>
           <div style="font-size:13px">${b.spells.slice(1).join(' · ')}</div>
-          <dl><dt>Blood</dt><dd><span class="cell" style="gap:6px">${b.blood.map(x => ic(x, 26)).join('')}${b.bloodText}</span></dd>
-          <dt>Elixir</dt><dd><span class="cell" style="gap:6px">${ic(b.elixir, 26)}${b.elixir.replace('Elixir of the ', '')}</span></dd>
-          <dt>Rolls</dt><dd>${b.rolls}</dd><dt>Pick when</dt><dd>${b.when}</dd></dl></div>`).join('')}</div>
-        <p>All four share Veil of Chaos, Dracula's Maleficer (4 pieces), the Soul Shard of Dracula, Witch Potion and the passives Enhanced Conductivity · Wicked Power · Hunger for Blood · Renewing Flames · Cold Soul.</p>
-        ${tiles(["Dracula's Maleficer Chestguard", 'Soul Shard of Dracula', 'Witch Potion', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'])}
+          <dl><dt>Pick when</dt><dd>${b.when}</dd></dl></div>`).join('')}</div>
+        <p>All three share Veil of Frost, Draculin 100% + Scholar T2 (Homogenizer), Elixir of the Twisted, Unholy Coating, Dracula's Maleficer (4 pieces), the Soul Shard of Dracula, Witch Potion, the weapon rolls Crit · Crit Power · Spell Cooldown and the passives Enhanced Conductivity · Wicked Power · Hunger for Blood · Renewing Flames · Cold Soul.</p>
+        ${tiles(['Veil of Frost', 'Draculin', 'Scholar', 'Elixir of the Twisted', 'Unholy Coating', "Dracula's Maleficer Chestguard", 'Soul Shard of Dracula', 'Witch Potion', 'Enhanced Conductivity', 'Wicked Power', 'Hunger for Blood', 'Renewing Flames', 'Cold Soul'])}
       </div>
       <div class="card"><h2>How each build holds up</h2>
         <p>The same builds re-scored with one assumption changed. The best value in each row is highlighted. DPS is the average of 90/180/300/600-second fights from the simulator.</p>
-        <div class="scroll"><table><thead><tr><th>Scenario</th><th>A</th><th>A2</th><th>A3</th><th>B+</th></tr></thead><tbody>${scRows}</tbody></table></div>
+        <div class="scroll"><table><thead><tr><th>Scenario</th><th>A</th><th>A2</th><th>B+</th></tr></thead><tbody>${scRows}</tbody></table></div>
+        <p>Veil of Chaos instead of Veil of Frost scores 321.6 with A's spells. Eye of the Storm (Soul Shard of the Monster) matches A only if all 37 of its strikes land.</p>
       </div>
       <div class="grid2">
-        <div class="card"><h3 class="cell">${ic('Mutant', 36)}Mutant blood for A</h3><p>Since 1.1, Mutant Spitters in Gloomrot South can be dominated and imprisoned. Keep one and feed it Corrupted Fish (Brighthaven Docks or Oakveil) up to 100%. Don't rely on Irradiant Gruel: each feed has a 35% chance to turn the prisoner into an Abomination you have to kill. Homogenize Draculin T2 from a 90%+ Draculin potion.</p></div>
-        <div class="card"><h3 class="cell">${ic('Veil of Chaos', 36)}Build A rotation</h3><p>Veil of Chaos → primary attack right away (triggers Mutant's ultimate cut) → recast for the second illusion. Then Lightning Tendrils → Unholy Chains. Cast Blood Storm when both spells are on cooldown, without holding it more than a second or two.</p></div>
+        <div class="card"><h3 class="cell">${ic('Draculin', 36)}Draculin + Scholar</h3><p>Every spell crit gives Draculin's +30% Spell Cooldown Rate for 3 s; with ~50% crit and Tendrils' seven bolts it is up almost all the time. Homogenize Scholar T2 (+12% cooldown rate) from a 90%+ Scholar potion. Draculin carriers: Vampire Cultists, Blood Prophets, Night Maidens.</p></div>
+        <div class="card"><h3 class="cell">${ic('Veil of Frost', 36)}Build A rotation</h3><p>Chaos Volley → Lightning Tendrils → Veil of Frost, then a crossbow shot right away (the Veil attack: Freeze, nova, Chill). Fill every gap with Rain of Bolts, Snapshot and shots; the Unholy Coating rides on a shot every 12 s. Cast Blood Storm when both spells are on cooldown.</p></div>
       </div>`;
   }
 
@@ -323,8 +324,9 @@
           <tr><td><span class="cell">${ic('Veil of Chaos', 36)}Chaos T1</span></td><td>Veil cooldown +5%</td><td>Lv 30 (Errol, Lidia, Clive)</td></tr>
           <tr><td><span class="cell">${ic('Chaos Barrage', 36)}Chaos T2</span></td><td>Ultimate Power +5%</td><td>Angram 61</td></tr>
           <tr><td><span class="cell">${ic('Chaos Kindling', 36)}Chaos T3</span></td><td>Ignite +1 tick</td><td>Stavros 75</td></tr>
-          <tr><td><span class="cell">${ic('Phantom Aegis', 36)}Illusion T1</span></td><td>Cooldown rate +5%</td><td>Christina 44 (Grayson, Polora, Christina)</td></tr></tbody></table></div>
-          <p>Traits unlock as you spend 3 / 5 / 7 points in a school. Tendrils (Storm T2) is required; leftover Frost, Storm and Blood points are free.</p></div>
+          <tr><td><span class="cell">${ic('Phantom Aegis', 36)}Illusion T1</span></td><td>Cooldown rate +5%</td><td>Christina 44 (Grayson, Polora, Christina)</td></tr>
+          <tr><td><span class="cell">${ic('Ball Lightning', 36)}Storm T1</span></td><td>Attack speed +5% (faster crossbow shots)</td><td>Lv 60 (Grethel, Domina, Ziva)</td></tr></tbody></table></div>
+          <p>Traits unlock as you spend 3 / 5 / 7 points in a school. Ball Lightning (Storm T1) and Tendrils (Storm T2) are required; leftover Frost and Blood points are free.</p></div>
         <div class="card"><h2>Stygian passive slots</h2><div class="tiles">${slots.map(([n, lv, id]) => `<span class="tile" style="width:84px">${id ? `<a href="${M(id)}" target="_blank" rel="noopener">${ic(n, 56)}</a>` : ic(n, 56)}<em>${n.replace(/^(General|Sir|Lord) /, '').split(' the ')[0]}<br><span class="mono">Lv ${lv}</span></em></span>`).join('')}</div><p>Simon Belmont has no fixed marker; he roams. Elemental passives cost 400 Stygian Shards and vampire passives 600 Greater; each Discover is random.</p></div>
         <div class="card"><h2>Mining gates</h2><div class="tiles">${tiles(['Iron Ore', 'Silver Ore', 'Blood Crystal']).replace(/^<div class="tiles">|<\/div>$/g, '')}</div><p>Iron Ore needs a GL 12+ weapon, Silver Ore GL 18+, Blood Crystals GL 23+ (only at Dracula's Demise).</p></div>
         <div class="card"><h2>Map layers</h2><div style="display:flex;flex-wrap:wrap;gap:8px">${layers.map(([n, id, i]) => `<a class="btn small" href="${C(id)}" target="_blank" rel="noopener">${i && srcOf(i) ? `<img src="${srcOf(i)}" alt="" width="18" height="18" style="border-radius:4px">` : '📍'} ${n}</a>`).join('')}</div></div>
@@ -337,7 +339,7 @@
     resources: RES,
     needs: (window.BR_NEEDS || {}).spellcaster || {},
     // Loadout slot text → icon (first spell named).
-    slotIcons: ['Bone Explosion', 'Shadowbolt', 'Chaos Volley', 'Unholy Chains', 'Lightning Tendrils', 'Chaos Barrage', 'Blood Storm', 'Veil of Blood', 'Veil of Chaos'],
+    slotIcons: ['Bone Explosion', 'Shadowbolt', 'Chaos Volley', 'Ball Lightning', 'Unholy Chains', 'Lightning Tendrils', 'Chaos Barrage', 'Blood Storm', 'Veil of Blood', 'Veil of Bones', 'Veil of Frost', 'Veil of Chaos'],
     finish: { icon: 'Soul Shard of Dracula', title: 'Dracula has fallen', text: 'Pick your final build on the Endgame builds tab and keep the Soul Shard repaired in Tier 2 Rift Incursions.' },
     renderEndgame, renderRef,
   });

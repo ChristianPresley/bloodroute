@@ -19,17 +19,24 @@ const pre = curated ? curated['late-pre'].top : readTop(inputs[1]);
 const label = r => `${r.build.veil} | ${r.build.s1} + ${r.build.s2} | ${r.build.ult} | ${r.cfg.amulet}`;
 const seen = new Set();   // the same spells with different blood or gear are different builds
 const bestNonStorm = late.find(r => r.build.ult !== 'Blood Storm');   // e.g. Chaos Barrage while wearing the shard
-const builds = [...late.slice(0, 6), ...(bestNonStorm ? [bestNonStorm] : []), ...pre.slice(0, 3)]
+// The top build with Eye of the Storm instead (its shard replaces the amulet): how many strikes land decides it.
+const eye = late.find(r => r.build.ult === 'Eye of the Storm')
+  || (b => ({ build: b, cfg: V.fixAmulet(b, late[0].cfg) }))({ ...late[0].build, ult: 'Eye of the Storm' });
+const builds = [...late.slice(0, 6), ...(bestNonStorm ? [bestNonStorm] : []), eye, ...pre.slice(0, 3)]
   .filter(r => { const k = label(r) + '#' + V.cfgKey(r.cfg); return !seen.has(k) && seen.add(k); });
 const blood = r => r.cfg.primary + (r.cfg.secondary ? ` + ${r.cfg.secondary.blood} T${r.cfg.secondary.tier}` : '');
 
 const base = { ...V.ASSUME };
 const scenarios = [
   ['baseline', {}],
+  ['crossbow shots and skills deal no damage (spells only)', { weaponDamage: false }],
+  ['half of Rain of Bolts\' bolts hit', { rainBoltsFrac: 0.5 }],
+  ['the Blood Key\'s +4 equip Spell Power isn\'t real', { bloodKeyBuff: false }],
   ['Ultimate Cooldown Rate works as described', { ultCdrMode: 'works' }],
   ['Ultimate Cooldown Rate does nothing', { ultCdrMode: 'none' }],
   ['Ult CDR does nothing, Veil of Chaos recast = 2nd Veil attack', { ultCdrMode: 'twoCuts' }],
   ['Blood Efficiency does not boost fixed traits (7s cut, 30%)', { effScalesFixed: false }],
+  ['Blood Efficiency also boosts the secondary blood trait', { effOnSecondary: true }],
   ['80% of Lightning Tendrils bolts hit', { tendrilsBoltFrac: 0.8 }],
   ['Static shock at most once per second', { staticIcd: 1 }],
   ['80% Tendrils bolts + Static once per second', { tendrilsBoltFrac: 0.8, staticIcd: 1 }],
@@ -39,6 +46,8 @@ const scenarios = [
   ['50% of Blood Storm bolts hit', { bloodStormBoltFrac: 0.5 }],
   ['25% of Unholy Chains channels fail', { chainsCompleteFrac: 0.75 }],
   ['45% of Rain meteors hit', { rainHitFrac: 0.45 }],
+  ['60% of Eye of the Storm strikes hit', { eyeHitFrac: 0.6 }],
+  ['every Eye of the Storm strike hits', { eyeHitFrac: 1 }],
   ['caps are hard (no bypass)', { capBypass: false }],
   ['Bonus Spell Power applies to base 10 only', { spFormula: 'base' }],
 ];
