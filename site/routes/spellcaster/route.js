@@ -167,7 +167,7 @@
       goal: 'Setup B, the late-game build before Dracula, plus the Blood Key.',
       steps: [
         { ic: 'Greater Stygian Shard', t: 'Farm Greater Stygian Shards in Tier 2 Rift Incursions (Lv 80, ~65 per solo run) or convert 12:1 at the Gem Cutting Table.' },
-        { ic: 'Wicked Power', t: 'Discover Wicked Power and Hunger for Blood (600 Greater each, random; about 5,000 Greater on average for both). Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
+        { ic: 'Wicked Power', t: 'Discover Wicked Power and Hunger for Blood (600 Greater each, random; about 5,000 Greater on average for both), and swap Chaos Kindling for Cold Soul (400 Stygian; +8% Spell Critical Power). Awakening Scrolls unlock directly; spare scrolls salvage for 100 Greater.' },
         { ic: 'Draculin', t: 'Switch blood: Draculin 100% primary (Vampire Cultists, Blood Prophets, Night Maidens), then homogenize Scholar T2 from a 90%+ Scholar potion.' },
       ],
       bosses: [
@@ -178,7 +178,7 @@
         { lv: 76, name: 'Lucile the Venom Alchemist', must: true, map: 450465, where: 'Oakveil', gets: ['Blood Homogenizer'], take: '<b>Blood Homogenizer</b>. Blood T2 point.' },
         { lv: 76, name: 'Terrorclaw the Ogre', map: 178281, where: 'Hallowed Mountains', gets: ['Tannery'], take: 'Advanced Tannery. Frost T3 point.' },
         { lv: 79, name: 'Azariel the Sunbringer', must: true, map: 178466, where: 'Silverlight Hills; bring a Holy Resistance Flask', gets: ['Gold Ingot'], take: 'Gold Ingot. Chaos T3 point (8th).' },
-        { lv: 79, name: 'Voltatia the Power Master', must: true, map: 284506, where: 'Gloomrot North', gets: ['Power Core'], take: 'Power Core.' },
+        { lv: 79, name: 'Voltatia the Power Master', must: true, map: 284506, where: 'Gloomrot North', gets: ['Power Core'], take: 'Power Core. Storm T2 point.' },
         { lv: 80, name: 'Simon Belmont the Vampire Hunter', must: true, map: null, where: `no fixed marker: patrols Farbane, Dunley and Silverlight roads, ending at the ${L(M(178286), 'Colosseum')}`, gets: [], take: 'Passive slot 5, Sanguine Whip. He matches your Gear Level.' },
         { lv: 82, name: 'Dantos the Forgebinder', must: true, map: 450466, where: 'Oakveil', gets: ['Fusion Forge', 'Ember Glass'], take: '<b>Fusion Forge</b> and Ember Glass. Frost T2 point.' },
         { lv: 84, name: 'General Valencia the Depraved', must: true, map: 356943, where: 'Ruins of Mortium', gets: ['Primal jewel', 'Shadow Weave'], take: 'Primal jewels (4 mods) and Shadow Weave.' },
