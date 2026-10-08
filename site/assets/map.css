@@ -27,6 +27,8 @@
 /* ---------- Pins (cards and viewer) ---------- */
 .pin { position: absolute; transform: translate(-50%, -50%); box-sizing: border-box; display: grid; place-items: center; border-radius: 50%;
   color: #fff; font: 700 10px/1 var(--font-body); font-style: normal; }
+/* .pin sets display, which would otherwise win over the hidden attribute the layer toggles set (Waygates). */
+.pin[hidden] { display: none; }
 .pin-boss { width: 14px; height: 14px; border: 3px solid var(--pin-boss); background: var(--pin-ink); box-shadow: 0 0 0 1px rgba(0, 0, 0, .7), 0 0 6px rgba(255, 61, 99, .6); }
 .pin-boss.has-ic { width: 24px; height: 24px; border-width: 2px; }
 .pin .pin-ic { width: 18px; height: 18px; padding: 0; border: 0; border-radius: 50%; object-fit: cover; background: var(--pin-ink); }

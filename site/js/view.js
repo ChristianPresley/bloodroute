@@ -1,6 +1,6 @@
 // Bloodroute views: the HTML builders for the route planner (phase cards, boss cards, loadout containers, rotation
 // strips, material sources). Pure functions of the route data and saved state; js/app.js wires them up.
-// ctx: { def, phases, done, stock, ui, order, filters, plans: { [phaseId]: { ids, legs } }, hueOf }
+// ctx: { def, phases, done, stock, ui, order, filters, regions: { [phaseId]: region }, plans: { [phaseId]: { ids, legs } }, hueOf }
 (() => {
   'use strict';
   const BR = window.BR;
@@ -163,9 +163,12 @@
       </div>`;
   }
 
-  // ---------- Boss toolbar (one setting for every phase) ----------
+  // The regions a phase's V Bloods are in: the options of that phase's region filter.
+  function regionsOf(p) { return [...new Set(p.bosses.map(b => ((L().data.VBLOOD || {})[b.name] || {}).region).filter(Boolean))]; }
+
+  // ---------- Boss toolbar (order and Needed only are one setting for every phase; the region filter is per phase) ----------
   function bossToolbar(p, ctx) {
-    const regions = [...new Set(p.bosses.map(b => ((L().data.VBLOOD || {})[b.name] || {}).region).filter(Boolean))];
+    const regions = regionsOf(p), picked = (ctx.regions || {})[p.id];
     const orders = Object.entries(BR.state.ORDERS).map(([k, label]) => {
       // The direct route needs boss positions, which come with the game data.
       const off = k === 'route' && !(window.BR_GAME && window.BR_GAME.npcs) ? ' disabled title="Needs the game data (gamedata.js)"' : '';
@@ -177,7 +180,7 @@
     return `<div class="boss-tools" role="toolbar" aria-label="Boss order and filters">
         <span class="lbl">Order</span><div class="seg">${orders}</div>
         <label class="flt"><input type="checkbox" data-filter="needed"${ctx.filters.needed ? ' checked' : ''}> Needed only</label>
-        ${regions.length > 1 ? `<select data-filter="region" aria-label="Show bosses in one region"><option value="">All regions</option>${regions.map(r => `<option${ctx.filters.region === r ? ' selected' : ''}>${esc(r)}</option>`).join('')}</select>` : ''}
+        ${regions.length > 1 ? `<select data-filter="region" data-region-phase="${p.id}" aria-label="Show bosses in one region"><option value="">All regions</option>${regions.map(r => `<option${picked === r ? ' selected' : ''}>${esc(r)}</option>`).join('')}</select>` : ''}
         ${route}
       </div>`;
   }
@@ -232,5 +235,5 @@
   }
 
   BR.view = { stageOf, stageLabel, regionName, regionChip, sourceLine, mapLinks, matRow, needsList, rewardTiles, bossCard, itemRow, craftGroups,
-    rotationStrip, loadoutBlock, bossToolbar, phaseCard, rail, metres, pips, SLOT_KEYS };
+    rotationStrip, loadoutBlock, regionsOf, bossToolbar, phaseCard, rail, metres, pips, SLOT_KEYS };
 })();

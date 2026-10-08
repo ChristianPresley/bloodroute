@@ -116,6 +116,11 @@
     const done = R.done, stock = R.stock;
     const U = BR.store.ui(arch.id);
     U.filters ??= {};
+    // The region filter is per phase (each phase's list has its own), so it can't empty a phase it wasn't set in.
+    // Views saved by the old route-wide filter lose it, and so does a region the phase no longer has.
+    U.regions ??= {};
+    delete U.filters.region;
+    for (const p of PHASES) if (U.regions[p.id] && !V.regionsOf(p).includes(U.regions[p.id])) delete U.regions[p.id];
     if (!S.ORDERS[U.order] || (U.order === 'route' && !(window.BR_GAME && window.BR_GAME.npcs))) U.order = 'level';
     const items = [];
     PHASES.forEach((p, pi) => {
@@ -128,7 +133,7 @@
     });
     const byId = new Map(items.map(it => [it.id, it]));
     const bossItems = p => p.items.filter(i => i.kind === 'Boss');
-    const visible = it => it.kind !== 'Boss' || S.bossVisible(it, U.filters);
+    const visible = it => it.kind !== 'Boss' || S.bossVisible(it, { ...U.filters, region: U.regions[it.phase.id] });
 
     // Boss order per phase. The direct route starts from the boss defeated last in the phase, else where the previous
     // phase's route ended; it's planned when the order is picked or the page opens, so rows don't jump as you tick.
@@ -207,7 +212,7 @@
     function setStock(r, v) { stock[r] = Math.max(0, Math.floor(+v || 0)); save(); updateStockUI(r); }
 
     // ---------- Rendering ----------
-    const ctx = () => ({ def, phases: PHASES, done, stock, ui: U, order: U.order, filters: U.filters, plans, hueOf, open, stockSection });
+    const ctx = () => ({ def, phases: PHASES, done, stock, ui: U, order: U.order, filters: U.filters, regions: U.regions, plans, hueOf, open, stockSection });
     let open = {};
     function renderPhases() {
       $('rail').innerHTML = V.rail(ctx());
@@ -315,7 +320,7 @@
       if (!el) return;
       const art = el.closest('.phase'); if (art && !open[art.id]) setOpen(art.id, true);
       let d = el.closest('details'); while (d) { d.open = true; d = d.parentElement && d.parentElement.closest('details'); }
-      if (el.classList.contains('filtered')) { U.filters = {}; saveUI(); renderBosses(); el = $(el.id) || el; }
+      if (el.classList.contains('filtered')) { U.filters = {}; if (art) delete U.regions[art.id]; saveUI(); renderBosses(); el = $(el.id) || el; }
       if (document.body.classList.contains('hide-done') && el.classList.contains('checked')) el.classList.add('force-show');
       const top = el.getBoundingClientRect().top + scrollY - barH();
       scrollTo({ top, behavior: smooth ? 'smooth' : 'instant' });
@@ -451,7 +456,12 @@
       const t = e.target, d = t.dataset || {};
       if (d.id) setDone(d.id, t.checked);
       if (d.resInput) setStock(d.resInput, t.value);
-      if (d.filter) {
+      if (d.filter === 'region') {
+        const regions = { ...U.regions };
+        if (t.value) regions[d.regionPhase] = t.value; else delete regions[d.regionPhase];
+        U.regions = regions;
+        saveUI(); renderBosses();
+      } else if (d.filter) {
         U.filters = { ...U.filters, [d.filter]: t.type === 'checkbox' ? t.checked : t.value };
         saveUI(); renderBosses();
       }
